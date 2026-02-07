@@ -1,0 +1,7 @@
+.carousel-main{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 80%;
+    margin: 0 10%;
+}
