@@ -1,14 +1,31 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/teck-web/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>teck</title>
-    <script type="module" crossorigin src="/teck-web/assets/index-jovecMWN.js"></script>
-    <link rel="stylesheet" crossorigin href="/teck-web/assets/index-hponr7cQ.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/teck/src/Components/Images/logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script type="text/javascript">
+
+    (function (l) {
+      if (l.search[1] === '/') {
+        var decoded = l.search.slice(1).split('&').map(function (s) {
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location))
+  </script>
+
+  <title>Teck</title>
+  <script type="module" crossorigin src="/teck-web/assets/index-DioKZnGY.js"></script>
+  <link rel="stylesheet" crossorigin href="/teck-web/assets/index-Cq8YszNH.css">
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
 </html>
