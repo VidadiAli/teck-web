@@ -22,7 +22,7 @@ const CategoryGrid = () => {
         <div key={category.category} className="category-block">
           <div className="category-header">
             <h2 className="category-title">{category.category.toUpperCase()}</h2>
-            <NavLink className="category-link" to={`/${category.category}`}>
+            <NavLink className="category-link" to={`/teck-web/`}>
               Daha çox
             </NavLink>
           </div>

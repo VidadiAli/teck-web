@@ -1,7 +1,26 @@
-.carousel-main{
+.carousel-main {
     display: flex;
     flex-direction: row;
     gap: 20px;
     width: 80%;
     margin: 0 10%;
+}
+
+@media(max-width: 1150px){
+    .carousel-main{
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+@media(max-width: 1000px) {
+    .carousel-main {
+        flex-direction: column;
+    }
+}
+
+@media(max-width: 600px){
+    .carousel-main{
+        width: 96%;
+    }
 }
