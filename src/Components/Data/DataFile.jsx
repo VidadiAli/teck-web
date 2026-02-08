@@ -1,6 +1,6 @@
 const productsData = [
   {
-    category: "Notebook",
+    category: "notebook",
     items: [
       {
         itemName: "Laptop Ultra 15",
@@ -75,7 +75,7 @@ const productsData = [
     ]
   },
   {
-    category: "Telefon",
+    category: "telefon",
     items: [
       {
         itemName: "Smartphone X20",
@@ -235,7 +235,7 @@ const productsData = [
     ]
   },
   {
-    category: "Soyuducu",
+    category: "soyuducu",
     items: [
       {
         itemName: "Smart Fridge 300",

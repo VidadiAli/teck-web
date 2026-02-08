@@ -152,5 +152,14 @@
 @media(max-width: 600px) {
     .category-grid-container {
         width: 96%;
+        padding: 16px 5px;
+    }
+    .product-image {
+        height: 12rem;
+        width: 80%;
+        margin: 0 10%;
+    }
+    .card-grid{
+        gap: 10px;
     }
 }

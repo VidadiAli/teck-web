@@ -5,8 +5,8 @@ import CategoryGrid from './Categories/CategoryGrid'
 const Main = () => {
   return (
     <div>
-        <Carousel />
-        <CategoryGrid />
+      <Carousel />
+      <CategoryGrid valueOfProducts={"all"} />
     </div>
   )
 }
