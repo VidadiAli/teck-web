@@ -3,20 +3,20 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/teck/src/Components/Images/logo.png" />
+  <link rel="icon" type="image/svg+xml" href="/teck-web/assets/logo-Bj5vUG5G.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script type="text/javascript">
-
+  <script>
     (function (l) {
-      if (l.search[1] === '/') {
-        var decoded = l.search.slice(1).split('&').map(function (s) {
-          return s.replace(/~and~/g, '&')
-        }).join('?');
-        window.history.replaceState(null, null,
-          l.pathname.slice(0, -1) + decoded + l.hash
+      if (l.search.startsWith("?/")) {
+        const base = "/teck-web";
+        const decoded = l.search.slice(2);
+        window.history.replaceState(
+          null,
+          null,
+          base + "/" + decoded + l.hash
         );
       }
-    }(window.location))
+    })(window.location);
   </script>
 
   <title>Teck</title>
