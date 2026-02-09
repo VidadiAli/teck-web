@@ -54,7 +54,7 @@ const CategoryGrid = ({ valueOfProducts }) => {
           <p className="product-rating">
             <span className="stars">{getStars(item.rating)}</span> ({item.rating})
           </p>
-          <button className="product-button">İndi al</button>
+          <NavLink className="product-button" to={`/category-item/${item?.id}`}>İndi al</NavLink>
         </div>
       </div>
     ))
@@ -67,7 +67,7 @@ const CategoryGrid = ({ valueOfProducts }) => {
             <h2 className="category-title">{category.category.toUpperCase()}</h2>
             {
               valueOfProducts == "all" && (
-                <NavLink className="category-link" to={`/teck-web/${category.category}`}>
+                <NavLink className="category-link" to={`/${category.category}`}>
                   Daha çox
                 </NavLink>
               )

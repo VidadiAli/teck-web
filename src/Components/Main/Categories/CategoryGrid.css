@@ -125,6 +125,7 @@
     cursor: pointer;
     align-self: start;
     transition: background-color 0.3s ease;
+    text-decoration: none;
 }
 
 .product-button:hover {

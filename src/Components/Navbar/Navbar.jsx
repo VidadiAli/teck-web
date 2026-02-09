@@ -23,19 +23,19 @@ const Navbar = () => {
 
       <ul className={`navbar__links ${menuOpen ? "navbar__links--active" : ""}`}>
         <li className="navbar__item">
-          <NavLink to="/teck-web/" className="navbar__link">
+          <NavLink to="/" className="navbar__link">
             <FiHeart className="navbar__icon" />
             <span>Bəyəndiklərim</span>
           </NavLink>
         </li>
         <li className="navbar__item">
-          <NavLink to="/teck-web/" className="navbar__link">
+          <NavLink to="/" className="navbar__link">
             <FiShoppingCart className="navbar__icon" />
             <span>Səbətim</span>
           </NavLink>
         </li>
         <li className="navbar__item navbar__cta">
-          <NavLink to="/teck-web/" className="navbar__link navbar__link--cta">
+          <NavLink to="/" className="navbar__link navbar__link--cta">
             <span>İndi Al</span>
             <FiArrowRight className="navbar__arrow" />
           </NavLink>
