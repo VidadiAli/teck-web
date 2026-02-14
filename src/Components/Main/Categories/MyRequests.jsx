@@ -15,7 +15,7 @@ const MyRequests = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const res = await fetch('https://teck-web-back.onrender.com/api/users/getItemStatus')
+        const res = await fetch('https://teck-web-back-1.onrender.com/api/users/getItemStatus')
         const data = await res.json()
         setRequests(data)
       } catch (error) {

@@ -9,7 +9,7 @@ const BasketPage = () => {
   const createRequest = async () => {
     try {
       basket.forEach(async (item) => {
-        const req = await axios.post('https://teck-web-back.onrender.com/api/users/createItemStatus',
+        const req = await axios.post('https://teck-web-back-1.onrender.com/api/users/createItemStatus',
           {
             ...item,
             productStatus: 1,
