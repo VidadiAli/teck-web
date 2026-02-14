@@ -8,15 +8,21 @@ import {
   FaCalendarAlt
 } from "react-icons/fa";
 import "./CategoryItem.css";
+import ChooseSalesCompany from "./ChooseSalesCompany";
 
 const { productsData } = data;
 
-const CategoryItem = () => {
+const CategoryItem = ({ setBasketValue, setResponse }) => {
   const { itemId } = useParams();
   const [month, setMonth] = useState(6);
+  const [showCompanies, setShowCompanies] = useState(false)
 
   const allItems = productsData.flatMap(cat => cat.items);
   const product = allItems.find(item => item.id == itemId);
+
+  const addItem = () => {
+    setShowCompanies(true)
+  }
 
   if (!product) {
     return <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>;
@@ -68,12 +74,23 @@ const CategoryItem = () => {
             </div>
           </div>
 
-          <button className="add-to-cart">
+          <button className="add-to-cart-main" onClick={addItem}>
             <FaShoppingCart /> Səbətə əlavə et
           </button>
         </div>
 
       </div>
+
+      {
+        showCompanies && (
+          <ChooseSalesCompany
+            product={product}
+            setResponse={setResponse}
+            setBasketValue={setBasketValue}
+            setShowCompanies={setShowCompanies}
+          />
+        )
+      }
     </section>
   );
 };

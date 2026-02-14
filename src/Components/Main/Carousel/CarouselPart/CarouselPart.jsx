@@ -20,7 +20,28 @@ const CarouselPart = () => {
         let start = carouselPartArr[1].id;
         let i = 1;
         const listOfIds = carouselPartArr.map(e => e.id);
-        showItem(carouselPartArr[0].id)
+        showItem(carouselPartArr[0].id);
+        const btnHover = document.querySelectorAll('.carousel-ids-btns-hover');
+
+        btnHover.forEach((e) => {
+            if (e.getAttribute("id") !== `${carouselPartArr[0].id}Id`) {
+                e.style.transition = "none";
+                e.style.width = "0%";
+                e.style.visibility = "hidden";
+            }
+        });
+
+        const active = document.getElementById(`${carouselPartArr[0].id}Id`);
+        if (active) {
+            active.style.visibility = "visible";
+            active.style.width = "0%";
+
+            active.offsetWidth;
+
+            active.style.transition = "width 6s linear";
+            active.style.width = "100%";
+        }
+
         const carouselInterval = setInterval(() => {
             showItem(start);
             start = listOfIds[i + 1];
@@ -58,6 +79,27 @@ const CarouselPart = () => {
                 e.style.display = "flex"
             }
         })
+
+        const btnHover = document.querySelectorAll('.carousel-ids-btns-hover');
+
+        btnHover.forEach((e) => {
+            if (e.getAttribute("id") !== `${itemId.toString()}Id`) {
+                e.style.transition = "none";
+                e.style.width = "0%";
+                e.style.visibility = "hidden";
+            }
+        });
+
+        const active = document.getElementById(`${itemId.toString()}Id`);
+        if (active) {
+            active.style.visibility = "visible";
+            active.style.width = "0%";
+
+            active.offsetWidth;
+
+            active.style.transition = "width 6s linear";
+            active.style.width = "100%";
+        }
     }
 
     return (
@@ -83,7 +125,7 @@ const CarouselPart = () => {
                 {
                     carouselPartArr.map((e) => {
                         return <button className="carousel-ids-btns" onClick={() => showItem(e.id)} key={e.id + "1"}>
-
+                            <span className="carousel-ids-btns-hover" id={`${e.id}Id`}></span>
                         </button>
                     })
                 }

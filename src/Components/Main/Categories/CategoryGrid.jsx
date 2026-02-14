@@ -29,12 +29,21 @@ const CategoryGrid = ({ valueOfProducts }) => {
   }, [])
 
   const callDatas = (items) => {
+    let productNumbers = [];
+    const newItems = items.filter((item) => {
+      if (!productNumbers.includes(item.productNumber)) {
+        productNumbers.push(item.productNumber);
+        return true; 
+      }
+      return false; 
+    });
+
     let lengthOfData = [];
     if (valueOfProducts == "all") {
-      lengthOfData = items.slice(0, 4);
+      lengthOfData = newItems.slice(0, 4);
     }
     else {
-      lengthOfData = items;
+      lengthOfData = newItems;
     }
     return lengthOfData.map((item) => (
       <div key={item.serialNumber} className="product-card">

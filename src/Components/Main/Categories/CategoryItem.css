@@ -85,7 +85,7 @@
     color: var(--color-text-secondary);
 }
 
-.add-to-cart {
+.add-to-cart-main {
     margin-top: 25px;
     width: 100%;
     padding: 14px;
@@ -100,7 +100,7 @@
     cursor: pointer;
 }
 
-.add-to-cart:hover {
+.add-to-cart-main:hover {
     background: var(--color-primary-hover);
 }
 

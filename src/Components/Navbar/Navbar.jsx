@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../Images/logo.png';
 import { FiSearch, FiHeart, FiShoppingCart, FiArrowRight } from "react-icons/fi";
-import { HiOutlineMenu, HiOutlineX } from "react-icons/hi"; 
+import { MdOutlineAssignmentTurnedIn } from 'react-icons/md';
+import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import './Navbar.css'
 
-const Navbar = () => {
+const Navbar = ({ basketValue }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav className="navbar">
       <div className="navbar__logo">
-        <NavLink to="/teck-web">
+        <NavLink to="/">
           <img src={logo} alt="Logo" className="navbar__logo-img" />
         </NavLink>
       </div>
@@ -29,9 +30,18 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li className="navbar__item">
-          <NavLink to="/" className="navbar__link">
+          <NavLink to="/basket" className="navbar__link">
             <FiShoppingCart className="navbar__icon" />
             <span>Səbətim</span>
+          </NavLink>
+          {
+            basketValue > 0 && <span className='element__count'>{basketValue}</span>
+          }
+        </li>
+        <li className="navbar__item">
+          <NavLink to="/requests" className="navbar__link">
+            <MdOutlineAssignmentTurnedIn className="navbar__icon" />
+            <span>Sorğularım</span>
           </NavLink>
         </li>
         <li className="navbar__item navbar__cta">
@@ -43,7 +53,7 @@ const Navbar = () => {
       </ul>
 
       <div className="navbar__menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? <HiOutlineX size={28}/> : <HiOutlineMenu size={28}/>}
+        {menuOpen ? <HiOutlineX size={28} /> : <HiOutlineMenu size={28} />}
       </div>
     </nav>
   );

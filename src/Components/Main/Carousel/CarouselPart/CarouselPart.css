@@ -136,10 +136,24 @@
     background-color: var(--color-primary);
     border: none;
     outline: none;
-    padding: 2px 15px;
+    width: 30px;
+    height: 4px;
     border-radius: .6rem;
     color: white;
     font-weight: 600;
+    position: relative;
+}
+
+.carousel-ids-btns-hover {
+    background-color: var(--color-primary-hover);
+    border-radius: .6rem;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 6s linear;
 }
 
 @media(max-width: 1000px) {

@@ -84,6 +84,25 @@
     color: #fff !important;
 }
 
+.navbar__item {
+    position: relative;
+}
+
+.element__count {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    color: white;
+    background-color: var(--color-error);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+}
+
 @keyframes moveRight {
     0% {
         transform: translateX(0);
@@ -128,7 +147,7 @@
     }
 
     .navbar__links--active {
-        height: 140px;
+        height: 170px;
         visibility: visible;
     }
 
