@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom'
 import CategoryGrid from '../Main/Categories/CategoryGrid'
 import CategoryItem from '../Main/Categories/CategoryItem'
 import Basket from '../Main/Categories/Basket'
+import MyRequests from '../Main/Categories/MyRequests'
 
 const Body = ({
   response, setResponse,
@@ -22,6 +23,7 @@ const Body = ({
         <Route path='/paltaryuyan' element={<CategoryGrid valueOfProducts={'paltaryuyan'} />} />
         <Route path='/category-item/:itemId' element={<CategoryItem setBasketValue={setBasketValue} setResponse={setResponse} />} />
         <Route path='/basket' element={<Basket />} />
+        <Route path='/requests' element={<MyRequests />} />
       </Routes>
     </div>
   )

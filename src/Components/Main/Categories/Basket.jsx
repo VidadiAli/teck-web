@@ -1,9 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { FiPlus, FiMinus, FiTrash2 } from 'react-icons/fi'
 import './Basket.css'
+import axios from 'axios'
 
 const BasketPage = () => {
-  const [basket, setBasket] = useState([])
+  const [basket, setBasket] = useState([]);
+
+  const createRequest = async () => {
+    try {
+      basket.forEach(async (item) => {
+        const req = await axios.post('https://teck-web-back.onrender.com/api/users/createItemStatus',
+          {
+            ...item,
+            productStatus: 1,
+            quantity: item?.quantity ? item?.quantity : 1
+          })
+        console.log(req)
+      })
+      localStorage.setItem('basket', JSON.stringify([]))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     const stored = localStorage.getItem('basket')
@@ -70,7 +88,7 @@ const BasketPage = () => {
           </div>
           <div className="basket-footer">
             <p className="total">Cəmi: ${totalPrice.toFixed(2)}</p>
-            <button className="checkout">Alış-verişi tamamla</button>
+            <button className="checkout" onClick={createRequest}>Sifariş et</button>
           </div>
         </>
       )}
