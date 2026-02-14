@@ -22,7 +22,7 @@ const Body = ({
         <Route path='/soyuducu' element={<CategoryGrid valueOfProducts={'soyuducu'} />} />
         <Route path='/paltaryuyan' element={<CategoryGrid valueOfProducts={'paltaryuyan'} />} />
         <Route path='/category-item/:itemId' element={<CategoryItem setBasketValue={setBasketValue} setResponse={setResponse} />} />
-        <Route path='/basket' element={<Basket />} />
+        <Route path='/basket' element={<Basket setResponse={setResponse} setBasketValue={setBasketValue}/>} />
         <Route path='/requests' element={<MyRequests />} />
       </Routes>
     </div>

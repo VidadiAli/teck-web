@@ -3,7 +3,7 @@ import { FiPlus, FiMinus, FiTrash2 } from 'react-icons/fi'
 import './Basket.css'
 import axios from 'axios'
 
-const BasketPage = () => {
+const BasketPage = ({ setResponse, setBasketValue }) => {
   const [basket, setBasket] = useState([]);
 
   const createRequest = async () => {
@@ -15,9 +15,17 @@ const BasketPage = () => {
             productStatus: 1,
             quantity: item?.quantity ? item?.quantity : 1
           })
-        console.log(req)
       })
       localStorage.setItem('basket', JSON.stringify([]))
+      setResponse(prev => ({
+        ...prev,
+        message: 'Sifarişlərim səhifəsində davam edin',
+        head: 'Sifariş uğurla yaradıldı!',
+        showAlert: true,
+        type: 'success'
+      }))
+      setBasketValue(0);
+      setBasket([]);
     } catch (error) {
       console.log(error)
     }
