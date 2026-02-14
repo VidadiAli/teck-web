@@ -19,7 +19,7 @@ const BasketPage = ({ setResponse, setBasketValue }) => {
       localStorage.setItem('basket', JSON.stringify([]))
       setResponse(prev => ({
         ...prev,
-        message: 'Sifarişlərim səhifəsində davam edin',
+        message: 'Sifarişlərim bölməsində davam edin',
         head: 'Sifariş uğurla yaradıldı!',
         showAlert: true,
         type: 'success'

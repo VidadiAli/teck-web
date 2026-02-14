@@ -49,6 +49,7 @@ const ChooseSalesCompany = ({ product, setResponse, setBasketValue, setShowCompa
     return (
         <div className="overlay" onClick={() => { setShowCompanies(false) }}>
             <div className="sales-card-box" onClick={(e) => e.stopPropagation()}>
+                <h2>Satıcı seç!</h2>
                 <button className="close-btn-add" onClick={() => { setShowCompanies(false) }}>✖</button>
                 {salesCompanies?.map((item, index) => (
                     <div key={index} className="sales-card">
