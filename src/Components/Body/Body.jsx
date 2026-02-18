@@ -2,28 +2,36 @@ import React from 'react'
 import Navbar from '../Navbar/Navbar'
 import Main from '../Main/Main'
 import { Route, Routes } from 'react-router-dom'
-import CategoryGrid from '../Main/Categories/CategoryGrid'
 import CategoryItem from '../Main/Categories/CategoryItem'
 import Basket from '../Main/Categories/Basket'
-import MyRequests from '../Main/Categories/MyRequests'
+import CategoryElements from '../Main/Categories/CategoryElements'
+import ProductOrder from '../Main/Categories/ProductOrder/ProductOrder'
 
 const Body = ({
-  response, setResponse,
-  basketValue, setBasketValue
+  response, setResponse
 }) => {
   return (
     <div>
-      <Navbar basketValue={basketValue} />
+      <Navbar />
       <Routes>
-        <Route path='/' element={<Main />} />
-        <Route path='/notebook' element={<CategoryGrid valueOfProducts={'notebook'} />} />
-        <Route path='/telefon' element={<CategoryGrid valueOfProducts={'telefon'} />} />
-        <Route path='/televizor' element={<CategoryGrid valueOfProducts={'televizor'} />} />
-        <Route path='/soyuducu' element={<CategoryGrid valueOfProducts={'soyuducu'} />} />
-        <Route path='/paltaryuyan' element={<CategoryGrid valueOfProducts={'paltaryuyan'} />} />
-        <Route path='/category-item/:itemId' element={<CategoryItem setBasketValue={setBasketValue} setResponse={setResponse} />} />
-        <Route path='/basket' element={<Basket setResponse={setResponse} setBasketValue={setBasketValue}/>} />
-        <Route path='/requests' element={<MyRequests />} />
+        <Route path="/" element={<Main />} />
+
+        <Route
+          path="/category/:categoryId"
+          element={<CategoryElements />}
+        />
+
+        <Route
+          path="/product/:productId"
+          element={
+            <CategoryItem
+              setResponse={setResponse}
+            />
+          }
+        />
+
+        <Route path='/basket' element={<Basket setResponse={setResponse}/>} />
+        <Route path='/orders' element={<ProductOrder />} />
       </Routes>
     </div>
   )

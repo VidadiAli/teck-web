@@ -1,94 +1,109 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import data from "../../Data/DataFile";
+import api from "../../../api";
 import "./CategoryGrid.css";
 
-const { productsData } = data;
+const CategoryGrid = () => {
+  const [groupedProducts, setGroupedProducts] = useState({});
 
-const getStars = (rating) => {
-  const full = Math.floor(rating);
-  const half = rating - full >= 0.5;
-  let stars = "";
-  for (let i = 0; i < full; i++) stars += "★";
-  if (half) stars += "☆";
-  while (stars.length < 5) stars += "☆";
-  return stars;
-};
+  const fetchProducts = async () => {
+    try {
+      const res = await api.get("/products/getProducts");
+      const products = res?.data || [];
 
-const CategoryGrid = ({ valueOfProducts }) => {
-  const [productsArr, setProductsArr] = useState([]);
+      // 🔥 Category-yə görə qruplaşdırma
+      const grouped = products.reduce((acc, product) => {
+        const categoryId = product.category?._id;
+        const categoryName = product.category?.name;
+
+        if (!categoryId) return acc;
+
+        if (!acc[categoryId]) {
+          acc[categoryId] = {
+            name: categoryName,
+            products: [],
+          };
+        }
+
+        acc[categoryId].products.push(product);
+        return acc;
+      }, {});
+
+      setGroupedProducts(grouped);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    if (valueOfProducts == "all") {
-      setProductsArr(productsData);
-    }
-    else {
-      const dataOfProducts = productsData.filter(d => d.category == valueOfProducts);
-      setProductsArr(dataOfProducts);
-    }
-  }, [])
+    fetchProducts();
+  }, []);
 
-  const callDatas = (items) => {
-    let productNumbers = [];
-    const newItems = items.filter((item) => {
-      if (!productNumbers.includes(item.productNumber)) {
-        productNumbers.push(item.productNumber);
-        return true; 
-      }
-      return false; 
-    });
-
-    let lengthOfData = [];
-    if (valueOfProducts == "all") {
-      lengthOfData = newItems.slice(0, 4);
-    }
-    else {
-      lengthOfData = newItems;
-    }
-    return lengthOfData.map((item) => (
-      <div key={item.serialNumber} className="product-card">
-        {item.hasDiscount && (
-          <div className="discount-badge">-{item.discountPercent}%</div>
-        )}
-        <img
-          src={item.itemImage}
-          alt={item.itemName}
-          className="product-image"
-        />
-        <div className="product-info">
-          <h3 className="product-name">{item.itemName}</h3>
-          <p className="product-price">Qiymət: ${item.price}</p>
-          <p className="product-serial">Serial: {item.serialNumber}</p>
-          <p className="product-sales">Satış: {item.salesCount}</p>
-          <p className="product-rating">
-            <span className="stars">{getStars(item.rating)}</span> ({item.rating})
-          </p>
-          <NavLink className="product-button" to={`/category-item/${item?.id}`}>İndi al</NavLink>
-        </div>
-      </div>
-    ))
-  }
   return (
     <div className="category-grid-container">
-      {productsArr.map((category) => (
-        <div key={category.category} className="category-block">
-          <div className="category-header">
-            <h2 className="category-title">{category.category.toUpperCase()}</h2>
-            {
-              valueOfProducts == "all" && (
-                <NavLink className="category-link" to={`/${category.category}`}>
-                  Daha çox
-                </NavLink>
-              )
-            }
+      {Object.keys(groupedProducts).map((categoryId) => {
+        const categoryData = groupedProducts[categoryId];
+
+        return (
+          <div key={categoryId} className="category-block">
+            <div className="category-header">
+              <h2 className="category-title">
+                {categoryData.name.toUpperCase()}
+              </h2>
+
+              <NavLink
+                className="category-link"
+                to={`/category/${categoryId}`}
+              >
+                Daha çox
+              </NavLink>
+            </div>
+
+            <div className="card-grid">
+              {categoryData.products
+                .slice(0, 4) 
+                .map((item) => (
+                  <div key={item._id} className="product-card">
+                    {item.hasDiscount && (
+                      <div className="discount-badge">
+                        -{item.discountPercent}%
+                      </div>
+                    )}
+
+                    <img
+                      src={
+                        item.itemImage || "/no-image.png"
+                      }
+                      alt={item.itemName}
+                      className="product-image"
+                    />
+
+                    <div className="product-info">
+                      <h3 className="product-name">
+                        {item.itemName}
+                      </h3>
+
+                      <p className="product-price">
+                        ₼{item.price}
+                      </p>
+
+                      <p className="product-sales">
+                        Satış: {item.salesCount}
+                      </p>
+
+                      <NavLink
+                        className="product-button"
+                        to={`/product/${item._id}`}
+                      >
+                        İndi al
+                      </NavLink>
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
-          <div className="card-grid">
-            {
-              callDatas(category.items)
-            }
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

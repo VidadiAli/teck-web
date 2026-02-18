@@ -1,0 +1,82 @@
+.product-order-page {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.po-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.po-order-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.po-product-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.po-product-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.po-product-details h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.po-product-details p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.po-order-status {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  text-align: right;
+  font-size: 14px;
+}
+
+.po-status {
+  padding: 3px 8px;
+  border-radius: 5px;
+  text-transform: capitalize;
+  font-weight: bold;
+  color: #fff;
+}
+
+.po-status.pending {
+  background-color: orange;
+}
+
+.po-status.completed {
+  background-color: green;
+}
+
+.po-status.cancelled {
+  background-color: red;
+}
+
+.po-loading,
+.po-empty {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 16px;
+  color: #333;
+}

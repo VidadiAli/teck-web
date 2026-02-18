@@ -13,28 +13,12 @@ const App = () => {
     type: ''
   });
 
-  const getBasketLength = () => {
-    const basket = localStorage.getItem("basket");
-    if (!basket) return 0;
-
-    try {
-      const parsed = JSON.parse(basket);
-      return Array.isArray(parsed) ? parsed.length : 0;
-    } catch (e) {
-      console.error("Basket parsing error:", e);
-      return 0;
-    }
-  };
-
-  const [basketValue, setBasketValue] = useState(getBasketLength());
 
   return (
     <div>
       <Body
         response={response}
-        setResponse={setResponse}
-        basketValue={basketValue}
-        setBasketValue={setBasketValue} />
+        setResponse={setResponse} />
       {
         response?.showAlert && (
           <Alerts response={response} setResponse={setResponse} />

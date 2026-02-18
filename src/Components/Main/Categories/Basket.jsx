@@ -1,70 +1,131 @@
 import React, { useEffect, useState } from 'react'
 import { FiPlus, FiMinus, FiTrash2 } from 'react-icons/fi'
 import './Basket.css'
-import axios from 'axios'
+import api from '../../../api'
 
-const BasketPage = ({ setResponse, setBasketValue }) => {
-  const [basket, setBasket] = useState([]);
+const BasketPage = ({ setResponse }) => {
+  const [basket, setBasket] = useState([])
 
-  const createRequest = async () => {
+  // Basket-i backend-dən çəkmək
+  const fetchBasket = async () => {
     try {
-      basket.forEach(async (item) => {
-        const req = await axios.post('https://teck-web-back-1.onrender.com/api/users/createItemStatus',
-          {
-            ...item,
-            productStatus: 1,
-            quantity: item?.quantity ? item?.quantity : 1
-          })
+      const token = localStorage.getItem('customerAccessToken')
+      if (!token) return
+
+      const res = await api.get('/basket', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
-      localStorage.setItem('basket', JSON.stringify([]))
-      setResponse(prev => ({
-        ...prev,
-        message: 'Sifarişlərim bölməsində davam edin',
-        head: 'Sifariş uğurla yaradıldı!',
-        showAlert: true,
-        type: 'success'
-      }))
-      setBasketValue(0);
-      setBasket([]);
+      setBasket(res.data.items || [])
+      console.log(res.data)
+
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
   useEffect(() => {
-    const stored = localStorage.getItem('basket')
-    setBasket(stored ? JSON.parse(stored) : [])
+    fetchBasket()
   }, [])
 
-  const updateBasket = (newBasket) => {
-    setBasket(newBasket)
-    localStorage.setItem('basket', JSON.stringify(newBasket))
-  }
+  const increment = async (index) => {
+    try {
+      const item = basket[index];
+      const token = localStorage.getItem("customerAccessToken");
+      if (!token) return;
 
-  const increment = (index) => {
-    const newBasket = [...basket]
-    newBasket[index].quantity = (newBasket[index].quantity || 1) + 1
-    updateBasket(newBasket)
-  }
+      const res = await api.post(
+        "/basket/increase",
+        { productId: item._id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-  const decrement = (index) => {
-    const newBasket = [...basket]
-    if (newBasket[index].quantity > 1) {
-      newBasket[index].quantity -= 1
-      updateBasket(newBasket)
+      // backenddən gələn count əsasında update et
+      fetchBasket(); // basket-i backenddən təzədən çəkmək
+    } catch (error) {
+      console.error(error);
     }
-  }
+  };
 
-  const removeItem = (index) => {
-    const newBasket = [...basket]
-    newBasket.splice(index, 1)
-    updateBasket(newBasket)
-  }
+  const decrement = async (index) => {
+    try {
+      const item = basket[index];
+      const token = localStorage.getItem("customerAccessToken");
+      if (!token) return;
+
+      const res = await api.post(
+        "/basket/decrease",
+        { productId: item._id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      fetchBasket();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const totalPrice = basket.reduce(
     (acc, item) => acc + (item.price * (item.quantity || 1)),
     0
   )
+
+  const createOrder = async (index) => {
+    try {
+      const token = localStorage.getItem("customerAccessToken");
+      if (!token) return;
+
+      // Yalnız lazım olan məlumatları göndəririk
+
+      const item = basket[index];
+
+      const payload = {
+        productId: item._id,          // product-un ID-si
+        orderStatus: "pending"        // default status
+      };
+
+      const res = await api.post(
+        "/orders/createOrder",
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      console.log("Yeni order yaradıldı:", res.data);
+      alert(`Sifariş uğurla yaradıldı: ${item.itemName}`);
+    } catch (error) {
+      console.error(error);
+      alert("Sifariş yaradılmadı!");
+    }
+  };
+
+
+  // Basketdə hər məhsul üçün düymə
+  basket.map((item) => (
+    <div key={item._id}>
+      <p>{item.itemName}</p>
+      <button onClick={() => createOrder(item._id)}>Order et</button>
+    </div>
+  ));
+
+
+
+  const removeItem = async (productId) => {
+    try {
+      const token = localStorage.getItem("customerAccessToken");
+      if (!token) return;
+
+      await api.post(
+        "/basket/remove",
+        { productId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      fetchBasket(); // basket-i backend-dən yenidən çək
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="basket-page">
@@ -89,14 +150,17 @@ const BasketPage = ({ setResponse, setBasketValue }) => {
                     <span>{item.quantity || 1}</span>
                     <FiPlus onClick={() => increment(index)} />
                   </div>
-                  <FiTrash2 className="trash" onClick={() => removeItem(index)} />
+                  <FiTrash2
+                    className="trash"
+                    onClick={() => removeItem(item._id)}
+                  />
                 </div>
+                <button className="checkout" onClick={()=>createOrder(index)}>Sifariş et</button>
               </div>
             ))}
           </div>
           <div className="basket-footer">
             <p className="total">Cəmi: ${totalPrice.toFixed(2)}</p>
-            <button className="checkout" onClick={createRequest}>Sifariş et</button>
           </div>
         </>
       )}

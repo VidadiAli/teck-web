@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import data from "../../Data/DataFile";
 import {
   FaStar,
   FaShoppingCart,
@@ -9,24 +8,109 @@ import {
 } from "react-icons/fa";
 import "./CategoryItem.css";
 import ChooseSalesCompany from "./ChooseSalesCompany";
+import api from "../../../api";
+import AuthForm from "../../Register/AuthForm";
 
-const { productsData } = data;
-
-const CategoryItem = ({ setBasketValue, setResponse }) => {
-  const { itemId } = useParams();
+const CategoryItem = ({ setResponse }) => {
+  const { productId } = useParams();
   const [month, setMonth] = useState(6);
-  const [showCompanies, setShowCompanies] = useState(false)
+  const [showCompanies, setShowCompanies] = useState(false);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [companyOptions, setCompanyOptions] = useState([]);
+  const [showAuthForm, setShowAuthForm] = useState(false);
+  const [customerToken, setCustomerToken] = useState('')
 
-  const allItems = productsData.flatMap(cat => cat.items);
-  const product = allItems.find(item => item.id == itemId);
+  // 🔹 Product fetch
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const res = await api.get(`/products/getProductById/${productId}`);
+        setProduct(res.data);
+      } catch (err) {
+        console.error(err);
+        setError("Məhsul tapılmadı ❌");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const addItem = () => {
-    setShowCompanies(true)
-  }
+    fetchProduct();
+  }, [productId]);
 
-  if (!product) {
-    return <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>;
-  }
+  const addItem = async () => {
+    try {
+      // 1️⃣ Token yoxla
+      const token = localStorage.getItem("customerAccessToken");
+      if (!token) {
+        // Əgər token yoxdursa → login/register modal aç
+        setResponse({ type: "info", message: "Xahiş olunur hesabınıza daxil olun", showAlert: true });
+        setShowAuthForm(true)
+        return;
+      }
+
+      const res = await api.get(
+        `/products/getProductsByBarcodAsCustomer/${product.productBarcod}`
+      );
+
+      const productsByBarcod = res.data;
+
+      if (!productsByBarcod || productsByBarcod.length === 0) {
+        setResponse({ type: "error", message: "Məhsul tapılmadı ❌" });
+        return;
+      }
+
+      if (productsByBarcod.length > 1) {
+        setCompanyOptions(productsByBarcod);
+        setShowCompanies(true);
+      } else {
+        const addRes = await api.post(
+          "/basket/addToBasket",
+          { productId: productsByBarcod[0]._id },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        setResponse({ type: "success", message: "Səbətə əlavə olundu ✅" });
+      }
+
+    } catch (error) {
+      console.error(error);
+      setResponse({ type: "error", message: "Xəta baş verdi ❌" });
+    }
+  };
+
+  const addToBasket = async (productId) => {
+    try {
+      const res = await api.post("/basket/addToBasket", {
+        productId,
+        quantity: 1,
+      });
+
+      // setBasketValue(res.data.count);
+
+      setResponse({
+        type: "success",
+        message: "Səbətə əlavə olundu ✅",
+        showAlert: true,
+        head: "Uğurlu!",
+      });
+
+      setShowCompanies(false);
+
+    } catch (error) {
+      console.error(error);
+      setResponse({
+        type: "error",
+        message: "Səbətə əlavə edilə bilmədi ❌",
+      });
+    }
+  };
+
+  if (loading) return <h2 style={{ padding: "40px" }}>Yüklənir...</h2>;
+  if (error) return <h2 style={{ padding: "40px" }}>{error}</h2>;
+  if (!product) return <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>;
 
   const { itemName, price, rating, itemImage, salesCount } = product;
 
@@ -81,14 +165,19 @@ const CategoryItem = ({ setBasketValue, setResponse }) => {
 
       </div>
 
+      {showCompanies && (
+        <ChooseSalesCompany
+          setShowCompanies={setShowCompanies}
+          products={companyOptions}
+          addToBasket={(selectedProduct) =>
+            addToBasket(selectedProduct._id)
+          }
+        />
+      )}
+
       {
-        showCompanies && (
-          <ChooseSalesCompany
-            product={product}
-            setResponse={setResponse}
-            setBasketValue={setBasketValue}
-            setShowCompanies={setShowCompanies}
-          />
+        showAuthForm && (
+          <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} />
         )
       }
     </section>

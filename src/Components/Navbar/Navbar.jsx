@@ -1,13 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../Images/logo.png';
 import { FiSearch, FiHeart, FiShoppingCart, FiArrowRight } from "react-icons/fi";
 import { MdOutlineAssignmentTurnedIn } from 'react-icons/md';
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import './Navbar.css'
+import api from '../../api';
 
-const Navbar = ({ basketValue }) => {
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [basketValue, setBasketValue] = useState(0)
+
+  useEffect(() => {
+    const fetchBasketCount = async () => {
+      try {
+        const res = await api.get("/basket/count");
+        setBasketValue(res.data.count);
+      } catch (error) {
+        console.error("Basket count error:", error);
+      }
+    };
+
+    const token = localStorage.getItem("customerAccessToken");
+    if (token) {
+      fetchBasketCount();
+    }
+  }, []);
 
   return (
     <nav className="navbar">
@@ -23,13 +41,13 @@ const Navbar = ({ basketValue }) => {
       </div>
 
       <ul className={`navbar__links ${menuOpen ? "navbar__links--active" : ""}`}>
-        <li className="navbar__item" onClick={()=>{setMenuOpen(false)}}>
+        <li className="navbar__item" onClick={() => { setMenuOpen(false) }}>
           <NavLink to="/" className="navbar__link">
             <FiHeart className="navbar__icon" />
             <span>Bəyəndiklərim</span>
           </NavLink>
         </li>
-        <li className="navbar__item" onClick={()=>{setMenuOpen(false)}}>
+        <li className="navbar__item" onClick={() => { setMenuOpen(false) }}>
           <NavLink to="/basket" className="navbar__link">
             <FiShoppingCart className="navbar__icon" />
             <span>Səbətim</span>
@@ -38,13 +56,13 @@ const Navbar = ({ basketValue }) => {
             basketValue > 0 && <span className='element__count'>{basketValue}</span>
           }
         </li>
-        <li className="navbar__item" onClick={()=>{setMenuOpen(false)}}>
-          <NavLink to="/requests" className="navbar__link">
+        <li className="navbar__item" onClick={() => { setMenuOpen(false) }}>
+          <NavLink to="/orders" className="navbar__link">
             <MdOutlineAssignmentTurnedIn className="navbar__icon" />
             <span>Sifarişlərim</span>
           </NavLink>
         </li>
-        <li className="navbar__item navbar__cta" onClick={()=>{setMenuOpen(false)}}>
+        <li className="navbar__item navbar__cta" onClick={() => { setMenuOpen(false) }}>
           <NavLink to="/" className="navbar__link navbar__link--cta">
             <span>İndi Al</span>
             <FiArrowRight className="navbar__arrow" />
