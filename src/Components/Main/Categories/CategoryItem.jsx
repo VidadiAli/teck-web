@@ -58,7 +58,7 @@ const CategoryItem = ({ setResponse }) => {
       const productsByBarcod = res.data;
 
       if (!productsByBarcod || productsByBarcod.length === 0) {
-        setResponse({ type: "error", message: "Məhsul tapılmadı ❌" });
+        setResponse({ type: "error", message: "Məhsul tapılmadı ❌", showAlert: true });
         return;
       }
 
@@ -72,12 +72,12 @@ const CategoryItem = ({ setResponse }) => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        setResponse({ type: "success", message: "Səbətə əlavə olundu ✅" });
+        setResponse({ type: "success", message: "Səbətə əlavə olundu ✅", showAlert: true });
       }
 
     } catch (error) {
       console.error(error);
-      setResponse({ type: "error", message: "Xəta baş verdi ❌" });
+      setResponse({ type: "error", message: "Xəta baş verdi ❌", showAlert: true });
     }
   };
 
@@ -104,6 +104,7 @@ const CategoryItem = ({ setResponse }) => {
       setResponse({
         type: "error",
         message: "Səbətə əlavə edilə bilmədi ❌",
+        showAlert: true
       });
     }
   };
