@@ -76,13 +76,12 @@ const BasketPage = ({ setResponse }) => {
       const token = localStorage.getItem("customerAccessToken");
       if (!token) return;
 
-      // Yalnız lazım olan məlumatları göndəririk
 
       const item = basket[index];
 
       const payload = {
-        productId: item._id,          // product-un ID-si
-        orderStatus: "pending"        // default status
+        productId: item._id,
+        orderStatus: "pending"
       };
 
       const res = await api.post(
@@ -92,7 +91,15 @@ const BasketPage = ({ setResponse }) => {
       );
 
       console.log("Yeni order yaradıldı:", res.data);
-      alert(`Sifariş uğurla yaradıldı: ${item.itemName}`);
+      setResponse({
+        message: 'Sifariş uğurla yaradıldı',
+        head: 'Uğurlu!',
+        api: '',
+        isQuestion: false,
+        showAlert: true,
+        type: 'success'
+      });
+
     } catch (error) {
       console.error(error);
       alert("Sifariş yaradılmadı!");
@@ -155,7 +162,7 @@ const BasketPage = ({ setResponse }) => {
                     onClick={() => removeItem(item._id)}
                   />
                 </div>
-                <button className="checkout" onClick={()=>createOrder(index)}>Sifariş et</button>
+                <button className="checkout" onClick={() => createOrder(index)}>Sifariş et</button>
               </div>
             ))}
           </div>

@@ -3,7 +3,7 @@ import Login from "./Login";
 import Register from "./Register";
 import "./AuthForm.css";
 
-const AuthForm = ({ setCustomerToken, setShowAuthForm }) => {
+const AuthForm = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
     const [isLogin, setIsLogin] = useState(true);
 
     return (
@@ -30,9 +30,9 @@ const AuthForm = ({ setCustomerToken, setShowAuthForm }) => {
 
                 <div className="form-wrapper">
                     {isLogin ? (
-                        <Login setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} />
+                        <Login setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
                     ) : (
-                        <Register setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} />
+                        <Register setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
                     )}
                 </div>
             </div>

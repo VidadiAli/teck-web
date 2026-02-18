@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import api from "../../api";
 
-const Register = ({ setCustomerToken, setShowAuthForm }) => {
+const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");

@@ -177,7 +177,7 @@ const CategoryItem = ({ setResponse }) => {
 
       {
         showAuthForm && (
-          <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} />
+          <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
         )
       }
     </section>

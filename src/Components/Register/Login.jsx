@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import api from "../../api";
 
-const Login = ({ setCustomerToken }) => {
+const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,9 +14,16 @@ const Login = ({ setCustomerToken }) => {
       localStorage.setItem("customerAccessToken", res.data.accessToken);
       localStorage.setItem("customerRefreshToken", res.data.refreshToken);
 
+      localStorage.setItem("customerEmail", email);
+      localStorage.setItem("customerPassword", password);
+
       setCustomerToken(res.data.accessToken);
       setShowAuthForm(false)
-
+      setResponse({
+        showAlert: true,
+        message: 'Heaba daxil oldunuz. Xoş alış-verişlər',
+        type: 'success'
+      })
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Xəta baş verdi");
