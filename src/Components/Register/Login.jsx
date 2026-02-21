@@ -14,9 +14,6 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
       localStorage.setItem("customerAccessToken", res.data.accessToken);
       localStorage.setItem("customerRefreshToken", res.data.refreshToken);
 
-      localStorage.setItem("customerEmail", email);
-      localStorage.setItem("customerPassword", password);
-
       setCustomerToken(res.data.accessToken);
       setShowAuthForm(false)
       setResponse({

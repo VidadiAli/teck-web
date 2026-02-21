@@ -4,7 +4,7 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter basename="/teck-web">
+  <BrowserRouter basename="/teck-web/">
     <App />
   </BrowserRouter>,
 )

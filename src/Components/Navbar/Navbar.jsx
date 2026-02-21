@@ -19,21 +19,6 @@ const Navbar = () => {
       } catch (error) {
         localStorage.removeItem("customerRefreshToken");
         localStorage.removeItem("customerAccessToken");
-        try {
-          const email = localStorage.getItem("customerEmail");
-          const password = localStorage.getItem("customerPassword");
-          const res = await api.post("/customer/login", { email, password });
-
-          localStorage.setItem("customerAccessToken", res.data.accessToken);
-          localStorage.setItem("customerRefreshToken", res.data.refreshToken);
-
-          setCustomerToken(res.data.accessToken);
-          setShowAuthForm(false)
-
-        } catch (err) {
-          console.error(err);
-          setError(err.response?.data?.message || "Xəta baş verdi");
-        }
         console.log("Basket count error:", error);
       }
     };

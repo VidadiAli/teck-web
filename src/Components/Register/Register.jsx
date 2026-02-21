@@ -21,6 +21,11 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
             localStorage.setItem("customerAccessToken", res.data.accessToken);
             localStorage.setItem("customerRefreshToken", res.data.refreshToken);
 
+            setResponse({
+                showAlert: true,
+                message: 'Heaba daxil oldunuz. Xoş alış-verişlər',
+                type: 'success'
+            })
             setCustomerToken(res.data.accessToken);
             setShowAuthForm(false);
 
