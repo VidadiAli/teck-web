@@ -8,11 +8,19 @@ import CategoryElements from '../Main/Categories/CategoryElements'
 import ProductOrder from '../Main/Categories/ProductOrder/ProductOrder'
 
 const Body = ({
-  response, setResponse
+  response, setResponse,
+  basketValue, setBasketValue,
+  orderValue, setOrderValue
 }) => {
   return (
     <div>
-      <Navbar />
+      <Navbar
+        basketValue={basketValue}
+        setBasketValue={setBasketValue}
+        orderValue={orderValue}
+        setOrderValue={setOrderValue}
+      />
+
       <Routes>
         <Route path="/" element={<Main />} />
 
@@ -26,12 +34,19 @@ const Body = ({
           element={
             <CategoryItem
               setResponse={setResponse}
+              setBasketValue={setBasketValue}
             />
           }
         />
 
-        <Route path='/basket' element={<Basket setResponse={setResponse}/>} />
+        <Route path='/basket' element={<Basket
+          setResponse={setResponse}
+          setBasketValue={setBasketValue}
+          setOrderValue={setOrderValue}
+        />} />
+
         <Route path='/orders' element={<ProductOrder />} />
+
       </Routes>
     </div>
   )

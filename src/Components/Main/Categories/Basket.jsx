@@ -3,12 +3,19 @@ import { FiPlus, FiMinus, FiTrash2 } from 'react-icons/fi'
 import './Basket.css'
 import api from '../../../api'
 
-const BasketPage = ({ setResponse }) => {
+const BasketPage = ({
+  setResponse,
+  setBasketValue,
+  setOrderValue
+}) => {
   const [basket, setBasket] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [creatingMessage, setCreatingMessage] = useState(false)
 
   // Basket-i backend-dən çəkmək
   const fetchBasket = async () => {
     try {
+      setLoading(true)
       const token = localStorage.getItem('customerAccessToken')
       if (!token) return
 
@@ -18,15 +25,15 @@ const BasketPage = ({ setResponse }) => {
         }
       })
       setBasket(res.data.items || [])
-      console.log(res.data)
-
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       console.error(error)
     }
   }
 
   useEffect(() => {
-    fetchBasket()
+    fetchBasket();
   }, [])
 
   const increment = async (index) => {
@@ -41,6 +48,7 @@ const BasketPage = ({ setResponse }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      setBasketValue(res?.data?.count)
       // backenddən gələn count əsasında update et
       fetchBasket(); // basket-i backenddən təzədən çəkmək
     } catch (error) {
@@ -60,6 +68,7 @@ const BasketPage = ({ setResponse }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      setBasketValue(res?.data?.count)
       fetchBasket();
     } catch (error) {
       console.error(error);
@@ -71,11 +80,11 @@ const BasketPage = ({ setResponse }) => {
     0
   )
 
-  const createOrder = async (index) => {
+  const createOrder = async (index, productId) => {
+    setCreatingMessage(true)
     try {
       const token = localStorage.getItem("customerAccessToken");
       if (!token) return;
-
 
       const item = basket[index];
 
@@ -90,7 +99,8 @@ const BasketPage = ({ setResponse }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log("Yeni order yaradıldı:", res.data);
+      setOrderValue(res?.data?.count);
+      removeItem(productId)
       setResponse({
         message: 'Sifariş uğurla yaradıldı',
         head: 'Uğurlu!',
@@ -100,14 +110,24 @@ const BasketPage = ({ setResponse }) => {
         type: 'success'
       });
 
+      setCreatingMessage(false)
+      window.location = "/teck-web/orders/"
+
     } catch (error) {
       console.error(error);
-      alert("Sifariş yaradılmadı!");
+      setResponse({
+        message: 'Sifariş yaradılmadı',
+        head: 'Uğursuz!',
+        api: '',
+        isQuestion: false,
+        showAlert: true,
+        type: 'error'
+      });
+      setCreatingMessage(false)
     }
   };
 
 
-  // Basketdə hər məhsul üçün düymə
   basket.map((item) => (
     <div key={item._id}>
       <p>{item.itemName}</p>
@@ -115,24 +135,29 @@ const BasketPage = ({ setResponse }) => {
     </div>
   ));
 
-
-
   const removeItem = async (productId) => {
     try {
       const token = localStorage.getItem("customerAccessToken");
       if (!token) return;
 
-      await api.post(
+      const res = await api.post(
         "/basket/remove",
         { productId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      setBasketValue(res?.data?.count)
       fetchBasket(); // basket-i backend-dən yenidən çək
     } catch (error) {
       console.error(error);
     }
   };
+
+  if (loading) return (
+    <>
+      <h1>Səbət</h1>
+      <p className="empty">Yüklənir...</p></>
+  );
 
   return (
     <div className="basket-page">
@@ -162,7 +187,11 @@ const BasketPage = ({ setResponse }) => {
                     onClick={() => removeItem(item._id)}
                   />
                 </div>
-                <button className="checkout" onClick={() => createOrder(index)}>Sifariş et</button>
+                <button className="checkout" onClick={() => createOrder(index, item._id)}>
+                  {
+                    creatingMessage ? "Sifariş yaradılır..." : "Sifariş et"
+                  }
+                </button>
               </div>
             ))}
           </div>

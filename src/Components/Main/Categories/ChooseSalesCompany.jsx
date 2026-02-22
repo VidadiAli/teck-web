@@ -5,6 +5,7 @@ const ChooseSalesCompany = ({
   products,
   addToBasket,
   setShowCompanies,
+  addingMesage
 }) => {
 
   return (
@@ -54,7 +55,7 @@ const ChooseSalesCompany = ({
                 setShowCompanies(false);
               }}
             >
-              🛒 Səbətə əlavə et
+               {addingMesage ? "🛒 Səbətə Əlavə edilir..." : "🛒 Səbətə əlavə et"}
             </button>
           </div>
         ))}

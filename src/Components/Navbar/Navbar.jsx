@@ -7,9 +7,8 @@ import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import './Navbar.css'
 import api from '../../api';
 
-const Navbar = () => {
+const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [basketValue, setBasketValue] = useState(0)
 
   useEffect(() => {
     const fetchBasketCount = async () => {
@@ -17,15 +16,24 @@ const Navbar = () => {
         const res = await api.get("/basket/count");
         setBasketValue(res.data.count);
       } catch (error) {
-        localStorage.removeItem("customerRefreshToken");
-        localStorage.removeItem("customerAccessToken");
         console.log("Basket count error:", error);
+      }
+    };
+
+
+    const fetchOrderCount = async () => {
+      try {
+        const res = await api.get("/orders/getMyOrdersCount", { headers: { Authorization: `{Bearer ${token}` } });
+        setOrderValue(res.data.count);
+      } catch (error) {
+        console.log("Order count error:", error);
       }
     };
 
     const token = localStorage.getItem("customerAccessToken");
     if (token) {
       fetchBasketCount();
+      fetchOrderCount();
     }
   }, []);
 
@@ -63,6 +71,9 @@ const Navbar = () => {
             <MdOutlineAssignmentTurnedIn className="navbar__icon" />
             <span>Sifarişlərim</span>
           </NavLink>
+          {
+            orderValue > 0 && <span className='element__count'>{orderValue}</span>
+          }
         </li>
         <li className="navbar__item navbar__cta" onClick={() => { setMenuOpen(false) }}>
           <NavLink to="/" className="navbar__link navbar__link--cta">

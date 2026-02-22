@@ -14,11 +14,18 @@ const App = () => {
   });
 
 
+  const [basketValue, setBasketValue] = useState(0)
+  const [orderValue, setOrderValue] = useState(0)
+
   return (
     <div>
       <Body
         response={response}
-        setResponse={setResponse} />
+        setResponse={setResponse}
+        basketValue={basketValue}
+        setBasketValue={setBasketValue}
+        orderValue={orderValue}
+        setOrderValue={setOrderValue} />
       {
         response?.showAlert && (
           <Alerts response={response} setResponse={setResponse} />

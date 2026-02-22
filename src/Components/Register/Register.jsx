@@ -7,8 +7,10 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loginSystem, setLoginSystem] = useState(false)
 
     const handleSubmit = async e => {
+        setLoginSystem(true)
         e.preventDefault();
         try {
             const res = await api.post("/customer/register", {
@@ -28,10 +30,12 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
             })
             setCustomerToken(res.data.accessToken);
             setShowAuthForm(false);
+            setLoginSystem(false);
 
         } catch (err) {
             console.error(err);
             setError(err.response?.data?.message || "Xəta baş verdi");
+            setLoginSystem(false)
         }
     };
 
@@ -67,7 +71,7 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
                 onChange={e => setPassword(e.target.value)}
                 required
             />
-            <button type="submit">Qeydiyyatdan keç</button>
+            <button type="submit">{loginSystem ? "Hesab yaradılır..." : "Qeydiyyatdan keç"}</button>
         </form>
     );
 };

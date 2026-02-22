@@ -11,7 +11,7 @@ import ChooseSalesCompany from "./ChooseSalesCompany";
 import api from "../../../api";
 import AuthForm from "../../Register/AuthForm";
 
-const CategoryItem = ({ setResponse }) => {
+const CategoryItem = ({ setResponse, setBasketValue }) => {
   const { productId } = useParams();
   const [month, setMonth] = useState(6);
   const [showCompanies, setShowCompanies] = useState(false);
@@ -21,8 +21,8 @@ const CategoryItem = ({ setResponse }) => {
   const [companyOptions, setCompanyOptions] = useState([]);
   const [showAuthForm, setShowAuthForm] = useState(false);
   const [customerToken, setCustomerToken] = useState('')
+  const [addingMesage, setAddingMessage] = useState(false)
 
-  // 🔹 Product fetch
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -42,10 +42,8 @@ const CategoryItem = ({ setResponse }) => {
 
   const addItem = async () => {
     try {
-      // 1️⃣ Token yoxla
       const token = localStorage.getItem("customerAccessToken");
       if (!token) {
-        // Əgər token yoxdursa → login/register modal aç
         setResponse({ type: "info", message: "Xahiş olunur hesabınıza daxil olun", showAlert: true });
         setShowAuthForm(true)
         return;
@@ -66,12 +64,14 @@ const CategoryItem = ({ setResponse }) => {
         setCompanyOptions(productsByBarcod);
         setShowCompanies(true);
       } else {
+        setAddingMessage(true)
         const addRes = await api.post(
           "/basket/addToBasket",
           { productId: productsByBarcod[0]._id },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-
+        setBasketValue(addRes?.data?.count)
+        setAddingMessage(false)
         setResponse({ type: "success", message: "Səbətə əlavə olundu ✅", showAlert: true });
       }
 
@@ -83,6 +83,8 @@ const CategoryItem = ({ setResponse }) => {
 
   const addToBasket = async (productId) => {
     try {
+      setLoading(true)
+      setError("S")
       const res = await api.post("/basket/addToBasket", {
         productId,
         quantity: 1,
@@ -160,7 +162,7 @@ const CategoryItem = ({ setResponse }) => {
           </div>
 
           <button className="add-to-cart-main" onClick={addItem}>
-            <FaShoppingCart /> Səbətə əlavə et
+            <FaShoppingCart /> {addingMesage ? "Səbətə Əlavə edilir..." : "Səbətə əlavə et"}
           </button>
         </div>
 
@@ -173,6 +175,7 @@ const CategoryItem = ({ setResponse }) => {
           addToBasket={(selectedProduct) =>
             addToBasket(selectedProduct._id)
           }
+          addingMesage={addingMesage}
         />
       )}
 
