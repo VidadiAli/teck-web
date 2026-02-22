@@ -38,18 +38,22 @@
 .item-info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .item-name {
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 0.25rem;
     color: #111827;
+    font-size: .9rem;
 }
 
 .item-price {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin: 0px !important;
+    height: min-content;
 }
 
 .old-price {
@@ -96,5 +100,8 @@
 @media(max-width: 600px) {
     .most-selling-container {
         width: 96%;
+    }
+    .item-name{
+        font-size: .85rem;
     }
 }

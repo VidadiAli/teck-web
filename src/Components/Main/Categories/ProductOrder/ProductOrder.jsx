@@ -23,13 +23,13 @@ const ProductOrder = () => {
 
   if (loading) return <p className="po-loading">Yüklənir...</p>;
 
-  if (!orders.length) return <p className="po-empty">Hələ sifarişiniz yoxdur.</p>;
+  if (!orders?.length) return <p className="po-empty">Hələ sifarişiniz yoxdur.</p>;
 
   return (
     <div className="product-order-page">
-      <h1>My Orders</h1>
+      <h1>Sifarişlərim</h1>
       <div className="po-orders-list">
-        {orders.map((order) => (
+        {orders?.map((order) => (
           <div className="po-order-card" key={order._id}>
             <div className="po-product-info">
               <img

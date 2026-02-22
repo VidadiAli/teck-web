@@ -5,8 +5,10 @@ import "./CategoryGrid.css";
 
 const CategoryGrid = () => {
   const [groupedProducts, setGroupedProducts] = useState({});
+  const [loading, setLoading] = useState(false)
 
   const fetchProducts = async () => {
+    setLoading(true)
     try {
       const res = await api.get("/products/getProducts");
       const products = res?.data || [];
@@ -30,14 +32,18 @@ const CategoryGrid = () => {
       }, {});
 
       setGroupedProducts(grouped);
+      setLoading(false)
     } catch (error) {
       console.error(error);
+      setLoading(false)
     }
   };
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  if (loading) return <p style={{width: '80%', margin: 'auto', fontSize: '1.5rem'}}>Yüklənir...</p>
 
   return (
     <div className="category-grid-container">
@@ -61,7 +67,7 @@ const CategoryGrid = () => {
 
             <div className="card-grid">
               {categoryData.products
-                .slice(0, 4) 
+                .slice(0, 4)
                 .map((item) => (
                   <div key={item._id} className="product-card">
                     {item.hasDiscount && (
@@ -70,13 +76,15 @@ const CategoryGrid = () => {
                       </div>
                     )}
 
-                    <img
-                      src={
-                        item.itemImage || "/no-image.png"
-                      }
-                      alt={item.itemName}
-                      className="product-image"
-                    />
+                    <div className="product-image-box">
+                      <img
+                        src={
+                          item.itemImage || "/no-image.png"
+                        }
+                        alt={item.itemName}
+                        className="product-image"
+                      />
+                    </div>
 
                     <div className="product-info">
                       <h3 className="product-name">
@@ -84,12 +92,21 @@ const CategoryGrid = () => {
                       </h3>
 
                       <p className="product-price">
-                        ₼{item.price}
+                        ₼ {item.price}
                       </p>
 
-                      <p className="product-sales">
-                        Satış: {item.salesCount}
-                      </p>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between' }}>
+                        {/* <p className="product-sales">
+                          Satış: {item.salesCount}
+                        </p> */}
+                        <p className="product-sales product-stock">
+                          {
+                            item?.stock > 0 ?
+                              item?.stock < 10 ? `son ${item.stock} məhsul` : 'Məhsul stokda mövcuddur'
+                              : 'Məhsul stokda mövcud deyil'
+                          }
+                        </p>
+                      </div>
 
                       <NavLink
                         className="product-button"

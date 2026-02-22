@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FiPlus, FiMinus, FiTrash2 } from 'react-icons/fi'
 import './Basket.css'
 import api from '../../../api'
+import OrderForm from './ProductOrder/OrderForm'
 
 const BasketPage = ({
   setResponse,
@@ -11,6 +12,8 @@ const BasketPage = ({
   const [basket, setBasket] = useState([])
   const [loading, setLoading] = useState(false)
   const [creatingMessage, setCreatingMessage] = useState(false)
+  const [showOrderForm, setShowOrderForm] = useState(false)
+  const [productInfo, setProductInfo] = useState({})
 
   // Basket-i backend-dən çəkmək
   const fetchBasket = async () => {
@@ -80,17 +83,28 @@ const BasketPage = ({
     0
   )
 
-  const createOrder = async (index, productId) => {
+  const createOrderInfo = (index, productId) => {
+    setShowOrderForm(true)
+    setProductInfo({
+      index: index,
+      productId: productId
+    })
+  }
+
+  const createOrder = async (orderData) => {
     setCreatingMessage(true)
     try {
       const token = localStorage.getItem("customerAccessToken");
       if (!token) return;
 
-      const item = basket[index];
+      const item = basket[orderData?.index];
 
       const payload = {
         productId: item._id,
-        orderStatus: "pending"
+        orderStatus: "pending",
+        orderType: orderData?.orderType,
+        orderLocation: orderData?.orderLocation,
+        location: orderData?.location
       };
 
       const res = await api.post(
@@ -100,7 +114,8 @@ const BasketPage = ({
       );
 
       setOrderValue(res?.data?.count);
-      removeItem(productId)
+      removeItem(orderData?.productId);
+
       setResponse({
         message: 'Sifariş uğurla yaradıldı',
         head: 'Uğurlu!',
@@ -187,7 +202,7 @@ const BasketPage = ({
                     onClick={() => removeItem(item._id)}
                   />
                 </div>
-                <button className="checkout" onClick={() => createOrder(index, item._id)}>
+                <button className="checkout" onClick={() => createOrderInfo(index, item._id)}>
                   {
                     creatingMessage ? "Sifariş yaradılır..." : "Sifariş et"
                   }
@@ -200,6 +215,18 @@ const BasketPage = ({
           </div>
         </>
       )}
+
+      {
+        showOrderForm && (
+          <OrderForm
+            setShowOrderForm={setShowOrderForm}
+            setProductInfo={setProductInfo}
+            productInfo={productInfo}
+            createOrder={createOrder}
+            creatingMessage={creatingMessage}
+          />
+        )
+      }
     </div>
   )
 }

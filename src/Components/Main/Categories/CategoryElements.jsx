@@ -13,6 +13,7 @@ const CategoryElements = () => {
       const res = await api.get(`/products/getProductsByCategory/${categoryId}`);
       const data = res?.data || [];
       setProducts(data);
+      console.log(data)
       if (data.length > 0) setCategoryName(data[0].category.name);
     } catch (error) {
       console.error(error);
