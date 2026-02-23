@@ -48,6 +48,24 @@ const ProductOrder = () => {
               <p>Miqdar: {order.product.quantity || 1}</p>
               <p>Tarix: {new Date(order.createdAt).toLocaleString()}</p>
             </div>
+            <div className="order-location">
+              <p>
+                Sifarişin forması: <span
+                  style={{
+                    backgroundColor: 'rgb(31, 155, 20)', color: 'white',
+                    padding: '2px 5px', borderRadius: '3px', textTransform: 'capitalize', 
+                    fontSize: '.7rem', fontWeight: '600'
+                  }}>
+                  {order?.orderType}
+                </span>
+              </p>
+              <p>{order?.orderLocation == "store" ? "Sifariş: " : "Sifariş çatdırılacaq: "} <span
+              style={{color: 'rgb(33, 49, 186)', fontWeight: '600'}}
+              >
+                {order?.location}
+              </span>
+              </p>
+            </div>
           </div>
         ))}
       </div>

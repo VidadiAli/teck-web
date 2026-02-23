@@ -545,3 +545,42 @@ const carouselPartArr = [
 ];
 
 export default { carouselPartArr, productsData }
+
+
+export const  percentage = [
+    {
+        id: 1,
+        percentageMonth: 2,
+        percentage: 3
+    },
+    {
+        id: 2,
+        percentageMonth: 3,
+        percentage: 4.2
+    },
+    {
+        id: 3,
+        percentageMonth: 6,
+        percentage: 7.4
+    },
+    {
+        id: 4,
+        percentageMonth: 12,
+        percentage: 14.3
+    },
+    {
+        id: 5,
+        percentageMonth: 18,
+        percentage: 21.6
+    },
+    {
+        id: 6,
+        percentageMonth: 24,
+        percentage: 29
+    },
+    {
+        id: 7,
+        percentageMonth: 35,
+        percentage: 45
+    }
+]

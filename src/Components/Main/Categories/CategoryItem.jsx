@@ -10,10 +10,12 @@ import "./CategoryItem.css";
 import ChooseSalesCompany from "./ChooseSalesCompany";
 import api from "../../../api";
 import AuthForm from "../../Register/AuthForm";
+import { percentage } from "../../Data/DataFile";
 
 const CategoryItem = ({ setResponse, setBasketValue }) => {
   const { productId } = useParams();
-  const [month, setMonth] = useState(6);
+  const [month, setMonth] = useState(2);
+  const [percentageValue, setPercentageValue] = useState(3)
   const [showCompanies, setShowCompanies] = useState(false);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -135,7 +137,7 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
           <div className="item-price">
             <FaMoneyBillWave />
             <span>{price} ₼</span>
-            <p>Nağd qiymət</p>
+            <p>Birdəfəlik Qiymət</p>
           </div>
 
           <div className="installment">
@@ -144,20 +146,25 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
             </h3>
 
             <div className="month-options">
-              {[6, 12, 18].map(m => (
+              {percentage.map(m => (
                 <button
-                  key={m}
-                  className={month === m ? "active" : ""}
-                  onClick={() => setMonth(m)}
+                  key={m?.id}
+                  className={month === m?.percentageMonth ? "active" : ""}
+                  onClick={() => {
+                    setMonth(m?.percentageMonth);
+                    setPercentageValue(m?.percentage)
+                  }}
                 >
-                  {m} ay
+                  {m?.percentageMonth} ay
                 </button>
               ))}
             </div>
 
             <div className="monthly-result">
-              <strong>{(price / month).toFixed(2)} ₼</strong>
-              <span>{month} ay x {(price / month).toFixed(2)} ₼</span>
+              <strong>{
+                (((price * percentageValue) / 100) + price).toFixed(2)
+              } ₼</strong>
+              <span>{month} ay x {((((price * percentageValue) / 100) + price) / month).toFixed(2)} ₼</span>
             </div>
           </div>
 

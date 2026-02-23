@@ -87,7 +87,8 @@ const BasketPage = ({
     setShowOrderForm(true)
     setProductInfo({
       index: index,
-      productId: productId
+      productId: productId,
+      productPrice: basket[index].price * basket[index].quantity
     })
   }
 
@@ -104,7 +105,9 @@ const BasketPage = ({
         orderStatus: "pending",
         orderType: orderData?.orderType,
         orderLocation: orderData?.orderLocation,
-        location: orderData?.location
+        location: orderData?.location,
+        orderMonth: orderData?.orderMonth,
+        percentageValue: orderData?.percentageValue,
       };
 
       const res = await api.post(
@@ -114,7 +117,7 @@ const BasketPage = ({
       );
 
       setOrderValue(res?.data?.count);
-      removeItem(orderData?.productId);
+      await removeItem(orderData?.productId);
 
       setResponse({
         message: 'Sifariş uğurla yaradıldı',
