@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, NavLink } from "react-router-dom";
 import api from "../../../api";
-import "./CategoryElements.css";
+import "./CategoryElements.css"; import {
+  FaStar
+} from "react-icons/fa";
 
 const CategoryElements = () => {
   const { categoryId } = useParams();
@@ -48,8 +50,27 @@ const CategoryElements = () => {
             </div>
 
             <div className="category-product-body">
-              <h3 className="category-product-title">{item.itemName}</h3>
-              <div className="category-product-price">₼ {item.price}</div>
+              <h3 className="category-product-title">
+                {item.itemName}
+              </h3>
+
+              <p className="item-rating">
+                <FaStar /> {item?.rating} • {item?.salesCount} satış
+              </p>
+
+              <div className="category-product-price">
+                {item?.hasDiscount ? <>
+                  <span style={{ paddingRight: '15px' }}>₼ {(item?.price - (item?.price * item?.discountPercent) / 100).toFixed(2)}</span>
+                  <del style={{ fontSize: '.9rem', color: 'gray' }}>₼ {item?.price}</del>
+                </> : <span>₼ {item?.price}</span>}
+              </div>
+              <p className="product-sales product-stock">
+                {
+                  item?.stock > 0 ?
+                    item?.stock < 10 ? `son ${item.stock} məhsul` : 'Stokda mövcuddur'
+                    : 'Stokda mövcud deyil'
+                }
+              </p>
               <NavLink
                 to={`/product/${item._id}`}
                 className="category-product-button"

@@ -40,7 +40,19 @@ const ProductOrder = () => {
               <div className="po-product-details">
                 <h3>{order.product.itemName}</h3>
                 <p>Şirkət: {order.product.salesCompany}</p>
-                <p>Qiymət: ${order.product.price}</p>
+                <p >
+                  Qiymət:{" "}
+                  {order?.product?.hasDiscount
+                    ? order?.orderType === "Hissəli"
+                      ? <span style={{color: 'red'}}>{order.product.price} ₼</span>
+                      : <>
+                        <span style={{color: 'red', paddingRight: '10px'}}>
+                          {(order?.product?.price - (order?.product?.price * order?.product?.discountPercent) / 100).toFixed(2)} ₼
+                        </span>
+                        <del>{order?.product?.price} ₼</del>
+                      </>
+                    : <span style={{color: 'red'}}>{order?.product?.price} ₼</span>}
+                </p>
               </div>
             </div>
             <div className="po-order-status">
@@ -53,14 +65,14 @@ const ProductOrder = () => {
                 Sifarişin forması: <span
                   style={{
                     backgroundColor: 'rgb(31, 155, 20)', color: 'white',
-                    padding: '2px 5px', borderRadius: '3px', textTransform: 'capitalize', 
+                    padding: '2px 5px', borderRadius: '3px', textTransform: 'capitalize',
                     fontSize: '.7rem', fontWeight: '600'
                   }}>
                   {order?.orderType}
                 </span>
               </p>
               <p>{order?.orderLocation == "store" ? "Sifariş: " : "Sifariş çatdırılacaq: "} <span
-              style={{color: 'rgb(33, 49, 186)', fontWeight: '600'}}
+                style={{ color: 'rgb(33, 49, 186)', fontWeight: '600' }}
               >
                 {order?.location}
               </span>

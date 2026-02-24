@@ -117,7 +117,7 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
   if (error) return <h2 style={{ padding: "40px" }}>{error}</h2>;
   if (!product) return <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>;
 
-  const { itemName, price, rating, itemImage, salesCount } = product;
+  const { itemName, price, rating, itemImage, salesCount, hasDiscount, discountPercent } = product;
 
   return (
     <section className="item-detail">
@@ -136,7 +136,10 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
 
           <div className="item-price">
             <FaMoneyBillWave />
-            <span>{price} ₼</span>
+            <span >{hasDiscount ? <>
+              <span style={{ paddingRight: '15px' }}>{(price - (price * discountPercent) / 100).toFixed(2)} ₼</span>
+              <del style={{ fontSize: '1.5rem', color: 'gray' }}>{price} ₼</del>
+            </> : <span>{price} ₼</span>}</span>
             <p>Birdəfəlik Qiymət</p>
           </div>
 

@@ -141,7 +141,11 @@
 
 .product-stock {
     color: rgb(28, 170, 28);
-    padding-top: 5px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: 1px solid rgba(28, 170, 28, .4);
+    font-weight: 600;
+    margin-top: 3px;
 }
 
 .product-rating {
@@ -204,7 +208,7 @@
     }
 
     .product-name {
-        font-size: .85rem;
+        font-size: .95rem;
     }
 
     .category-title {
@@ -230,5 +234,8 @@
 
     .card-grid {
         gap: 10px;
+    }
+    .product-stock{
+        font-size: .8rem;
     }
 }

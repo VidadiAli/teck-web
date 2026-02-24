@@ -30,7 +30,8 @@
     align-items: center;
     gap: 6px;
     color: var(--color-warning);
-    margin-bottom: 20px;
+    margin-bottom: 8px;
+    margin-top: 5px;
 }
 
 .item-price {

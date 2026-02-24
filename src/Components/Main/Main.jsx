@@ -6,7 +6,7 @@ const Main = () => {
   return (
     <div>
       <Carousel />
-      <CategoryGrid valueOfProducts={"all"} />
+      <CategoryGrid />
     </div>
   )
 }

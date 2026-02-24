@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import api from "../../../api";
 import "./CategoryGrid.css";
+import { FaStar } from "react-icons/fa";
 
 const CategoryGrid = () => {
   const [groupedProducts, setGroupedProducts] = useState({});
@@ -11,7 +12,7 @@ const CategoryGrid = () => {
     setLoading(true)
     try {
       const res = await api.get("/products/getProducts");
-      const products = res?.data || [];
+      const products = res?.data.reverse() || [];
 
       // 🔥 Category-yə görə qruplaşdırma
       const grouped = products.reduce((acc, product) => {
@@ -43,7 +44,7 @@ const CategoryGrid = () => {
     fetchProducts();
   }, []);
 
-  if (loading) return <p style={{width: '80%', margin: 'auto', fontSize: '1.5rem'}}>Yüklənir...</p>
+  if (loading) return <p style={{ width: '80%', margin: 'auto', fontSize: '1.5rem' }}>Yüklənir...</p>
 
   return (
     <div className="category-grid-container">
@@ -91,8 +92,15 @@ const CategoryGrid = () => {
                         {item.itemName}
                       </h3>
 
+                      <p className="item-rating">
+                        <FaStar /> {item?.rating} • {item?.salesCount} satış
+                      </p>
+
                       <p className="product-price">
-                        ₼ {item.price}
+                        {item?.hasDiscount ? <>
+                          <span style={{ paddingRight: '15px' }}>₼ {(item?.price - (item?.price * item?.discountPercent) / 100).toFixed(2)}</span>
+                          <del style={{ fontSize: '.9rem', color: 'gray' }}>₼ {item?.price}</del>
+                        </> : <span>₼ {item?.price}</span>}
                       </p>
 
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between' }}>
@@ -102,8 +110,8 @@ const CategoryGrid = () => {
                         <p className="product-sales product-stock">
                           {
                             item?.stock > 0 ?
-                              item?.stock < 10 ? `son ${item.stock} məhsul` : 'Məhsul stokda mövcuddur'
-                              : 'Məhsul stokda mövcud deyil'
+                              item?.stock < 10 ? `Son ${item.stock} məhsul` : 'Stokda mövcuddur'
+                              : 'Stokda mövcud deyil'
                           }
                         </p>
                       </div>

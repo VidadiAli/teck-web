@@ -90,7 +90,7 @@
         width: 100%;
     }
 
-    .most-selling-item{
+    .most-selling-item {
         min-width: 250px;
         padding: 5px;
         padding-left: 8px;
@@ -101,7 +101,12 @@
     .most-selling-container {
         width: 96%;
     }
-    .item-name{
+
+    .most-selling-container-head {
+        font-size: 1.1rem;
+    }
+
+    .item-name {
         font-size: .85rem;
     }
 }

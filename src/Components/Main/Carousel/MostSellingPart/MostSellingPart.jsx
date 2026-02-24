@@ -25,7 +25,7 @@ const MostSellingPart = () => {
 
   return (
     <div className="most-selling-container">
-      <h2>Ən çox satılan</h2>
+      <h2 className="most-selling-container-head">Ən çox satılan</h2>
 
       <div className="most-selling-list">
         {top10Products.map((item) => (
