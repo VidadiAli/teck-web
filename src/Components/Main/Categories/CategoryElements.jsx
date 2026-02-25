@@ -1,30 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { useParams, NavLink } from "react-router-dom";
 import api from "../../../api";
-import "./CategoryElements.css"; import {
-  FaStar
-} from "react-icons/fa";
+import "./CategoryElements.css";
+import { FaStar } from "react-icons/fa";
 
 const CategoryElements = () => {
   const { categoryId } = useParams();
   const [products, setProducts] = useState([]);
   const [categoryName, setCategoryName] = useState("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20)
+  const [totalItem, setTotalItem] = useState(0);
+  const [loading, setLoading] = useState(false)
 
   const fetchCategoryProducts = async () => {
+    setLoading(true)
     try {
-      const res = await api.get(`/products/getProductsByCategory/${categoryId}`);
-      const data = res?.data || [];
-      setProducts(data);
-      console.log(data)
+      const res = await api.get(`/products/getProductsByCategory/${categoryId}`,
+        {
+          params: {
+            page, pageSize
+          }
+        }
+      );
+      const data = res?.data?.products || [];
+      setTotalItem(res?.data?.total)
+      setProducts((prev) => [...prev, ...data]);
+      setLoading(false);
       if (data.length > 0) setCategoryName(data[0].category.name);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
+
+  const moreProducts = () => {
+    setPage((prev) => prev + 1)
+  }
+
   useEffect(() => {
     fetchCategoryProducts();
-  }, [categoryId]);
+  }, [categoryId, page]);
 
   return (
     <div className="category-page">
@@ -81,6 +98,13 @@ const CategoryElements = () => {
           </div>
         ))}
       </div>
+      {
+        products?.length < totalItem && (
+          loading ? <div className="loading-box">
+            <div className="loading-box-child"></div>
+          </div> : <button onClick={moreProducts} className="more-products">Daha çox</button>
+        )
+      }
     </div>
   );
 };

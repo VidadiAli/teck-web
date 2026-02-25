@@ -5,70 +5,76 @@ import "./CategoryGrid.css";
 import { FaStar } from "react-icons/fa";
 
 const CategoryGrid = () => {
-  const [groupedProducts, setGroupedProducts] = useState({});
   const [loading, setLoading] = useState(false)
+  const [mainData, setMainData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5)
 
-  const fetchProducts = async () => {
-    setLoading(true)
+  const callCategories = async () => {
     try {
-      const res = await api.get("/products/getProducts");
-      const products = res?.data.reverse() || [];
+      const resCat = await api.get('/categories/getCategories');
 
-      // 🔥 Category-yə görə qruplaşdırma
-      const grouped = products.reduce((acc, product) => {
-        const categoryId = product.category?._id;
-        const categoryName = product.category?.name;
+      const elements = await Promise.all(
+        resCat?.data?.map(async (data) => {
+          try {
+            const res = await api.get(
+              `/products/getProductsByCategory/${data?._id}`,
+              {
+                params: {
+                  page: page,
+                  pageSize: pageSize
+                }
+              }
+            );
 
-        if (!categoryId) return acc;
+            console.log(res?.data)
+            return {
+              categoryName: data?.name,
+              categoryId: data?._id,
+              data: res?.data?.products
+            };
+          } catch (error) {
+            return null;
+          }
+        })
+      );
 
-        if (!acc[categoryId]) {
-          acc[categoryId] = {
-            name: categoryName,
-            products: [],
-          };
-        }
+      const filtered = elements.filter(Boolean).reverse();
 
-        acc[categoryId].products.push(product);
-        return acc;
-      }, {});
+      setMainData(filtered);
 
-      setGroupedProducts(grouped);
-      setLoading(false)
     } catch (error) {
-      console.error(error);
-      setLoading(false)
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
+    callCategories();
   }, []);
 
   if (loading) return <p style={{ width: '80%', margin: 'auto', fontSize: '1.5rem' }}>Yüklənir...</p>
 
   return (
     <div className="category-grid-container">
-      {Object.keys(groupedProducts).map((categoryId) => {
-        const categoryData = groupedProducts[categoryId];
+      {mainData?.map((product, index) => {
 
         return (
-          <div key={categoryId} className="category-block">
+          <div key={product?.categoryName + "/" + index} className="category-block">
             <div className="category-header">
               <h2 className="category-title">
-                {categoryData.name.toUpperCase()}
+                {product?.categoryName.toUpperCase()}
               </h2>
 
               <NavLink
                 className="category-link"
-                to={`/category/${categoryId}`}
+                to={`/category/${product?.categoryId}`}
               >
                 Daha çox
               </NavLink>
             </div>
 
             <div className="card-grid">
-              {categoryData.products
-                .slice(0, 4)
+              {product?.data
                 .map((item) => (
                   <div key={item._id} className="product-card">
                     {item.hasDiscount && (

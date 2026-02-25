@@ -164,10 +164,10 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
             </div>
 
             <div className="monthly-result">
-              <strong>{
+              <strong>{month} ay x {((((price * percentageValue) / 100) + price) / month).toFixed(2)} ₼</strong>
+              <span>{
                 (((price * percentageValue) / 100) + price).toFixed(2)
-              } ₼</strong>
-              <span>{month} ay x {((((price * percentageValue) / 100) + price) / month).toFixed(2)} ₼</span>
+              } ₼</span>
             </div>
           </div>
 

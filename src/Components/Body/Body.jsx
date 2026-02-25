@@ -6,11 +6,13 @@ import CategoryItem from '../Main/Categories/CategoryItem'
 import Basket from '../Main/Categories/Basket'
 import CategoryElements from '../Main/Categories/CategoryElements'
 import ProductOrder from '../Main/Categories/ProductOrder/ProductOrder'
+import SearchAll from '../Navbar/SearchAll'
 
 const Body = ({
   response, setResponse,
   basketValue, setBasketValue,
-  orderValue, setOrderValue
+  orderValue, setOrderValue,
+  searchData, setSearchData
 }) => {
   return (
     <div>
@@ -19,6 +21,8 @@ const Body = ({
         setBasketValue={setBasketValue}
         orderValue={orderValue}
         setOrderValue={setOrderValue}
+        searchData={searchData}
+        setSearchData={setSearchData}
       />
 
       <Routes>
@@ -46,6 +50,8 @@ const Body = ({
         />} />
 
         <Route path='/orders' element={<ProductOrder />} />
+
+        <Route path='/search' element={<SearchAll searchData={searchData} />} />
 
       </Routes>
     </div>

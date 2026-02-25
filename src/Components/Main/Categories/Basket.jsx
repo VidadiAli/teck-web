@@ -187,11 +187,13 @@ const BasketPage = ({
           <div className="basket-items">
             {basket.map((item, index) => (
               <div className="basket-item" key={index}>
-                <img src={item.itemImage} alt={item.itemName} />
+                <div className='basket-image-box'>
+                  <img src={item.itemImage} alt={item.itemName} className='basket-img'/>
+                </div>
                 <div className="info">
                   <h3>{item.itemName}</h3>
                   <p>{item.salesCompany}</p>
-                  <p>${item.price} | 18 ay: ${(item.price / 18).toFixed(2)} / ay</p>
+                  <p>₼ {item.price} | 35 ay: ₼ {((item.price + (item.price * 45) / 100) / 35).toFixed(2)} / ay</p>
                   <p>⭐ {item.rating}</p>
                 </div>
                 <div className="actions">
@@ -214,7 +216,7 @@ const BasketPage = ({
             ))}
           </div>
           <div className="basket-footer">
-            <p className="total">Cəmi: ${totalPrice.toFixed(2)}</p>
+            <p className="total">Cəmi: ₼ {totalPrice.toFixed(2)}</p>
           </div>
         </>
       )}

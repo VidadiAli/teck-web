@@ -15,7 +15,9 @@ const App = () => {
 
 
   const [basketValue, setBasketValue] = useState(0)
-  const [orderValue, setOrderValue] = useState(0)
+  const [orderValue, setOrderValue] = useState(0);
+
+  const [searchData, setSearchData] = useState([]);
 
   return (
     <div>
@@ -25,7 +27,9 @@ const App = () => {
         basketValue={basketValue}
         setBasketValue={setBasketValue}
         orderValue={orderValue}
-        setOrderValue={setOrderValue} />
+        setOrderValue={setOrderValue}
+        searchData={searchData}
+        setSearchData={setSearchData} />
       {
         response?.showAlert && (
           <Alerts response={response} setResponse={setResponse} />

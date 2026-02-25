@@ -33,8 +33,8 @@ const ChooseSalesCompany = ({
               <h3>{item.itemName}</h3>
 
               <p className="price">
-                {item.price} ₼ | 18 ay:{" "}
-                {(item.price / 18).toFixed(2)} ₼ / ay
+                {item.price} ₼ | 35 ay:{" "}
+                {((item.price + (item?.price * 45) / 100) / 35).toFixed(2)} ₼ / ay
               </p>
 
               <p className="rating">
@@ -55,7 +55,7 @@ const ChooseSalesCompany = ({
                 setShowCompanies(false);
               }}
             >
-               {addingMesage ? "🛒 Səbətə Əlavə edilir..." : "🛒 Səbətə əlavə et"}
+              {addingMesage ? "🛒 Səbətə Əlavə edilir..." : "🛒 Səbətə əlavə et"}
             </button>
           </div>
         ))}

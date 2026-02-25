@@ -6,8 +6,9 @@ import { MdOutlineAssignmentTurnedIn } from 'react-icons/md';
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import './Navbar.css'
 import api from '../../api';
+import SearchNavbar from './SearchNavbar';
 
-const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue }) => {
+const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue, searchData, setSearchData }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -37,6 +38,26 @@ const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue }) => {
     }
   }, []);
 
+  const getProductsBySearchText = async (searchText) => {
+    try {
+      const token = localStorage.getItem("customerAccessToken")
+      if (!token) return;
+
+      console.log(searchText)
+
+      const searchProduct = await api.post("/products/searchByProductNameAsCustomer",
+        { searchText },
+        {
+          headers:
+            { Authorization: `Bearer ${token}` }
+        })
+
+      setSearchData(searchProduct?.data)
+    } catch (error) {
+
+    }
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar__logo">
@@ -46,7 +67,7 @@ const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue }) => {
       </div>
 
       <div className="navbar__search">
-        <input type="text" className="navbar__search-input" placeholder="Axtar..." />
+        <input type="text" className="navbar__search-input" placeholder="Axtar..." onChange={(e) => getProductsBySearchText(e.target.value)} />
         <FiSearch className="navbar__search-icon" />
       </div>
 
@@ -86,6 +107,12 @@ const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue }) => {
       <div className="navbar__menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
         {menuOpen ? <HiOutlineX size={28} /> : <HiOutlineMenu size={28} />}
       </div>
+
+      {
+        searchData.length && !window.location.toString().includes('/search') ? (
+          <SearchNavbar setSearchData={setSearchData} searchData={searchData} />
+        ) : <></>
+      }
     </nav>
   );
 };
