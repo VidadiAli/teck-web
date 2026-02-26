@@ -1,0 +1,19 @@
+
+.loading-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+}
+
+.loading-box-child {
+  border-radius: 50%;
+  border: 3px dashed #6366f1;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

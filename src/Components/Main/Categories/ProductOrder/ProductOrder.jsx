@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ProductOrder.css";
 import api from "../../../../api";
+import LoadingCircle from "../../../Loading/LoadingCircle";
 
 const ProductOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -21,7 +22,7 @@ const ProductOrder = () => {
     fetchOrders();
   }, []);
 
-  if (loading) return <p className="po-loading">Yüklənir...</p>;
+  if (loading) return <LoadingCircle />;
 
   if (!orders?.length) return <p className="po-empty">Hələ sifarişiniz yoxdur.</p>;
 
@@ -44,14 +45,14 @@ const ProductOrder = () => {
                   Qiymət:{" "}
                   {order?.product?.hasDiscount
                     ? order?.orderType === "Hissəli"
-                      ? <span style={{color: 'red'}}>{order.product.price} ₼</span>
+                      ? <span style={{ color: 'red' }}>{order.product.price} ₼</span>
                       : <>
-                        <span style={{color: 'red', paddingRight: '10px'}}>
+                        <span style={{ color: 'red', paddingRight: '10px' }}>
                           {(order?.product?.price - (order?.product?.price * order?.product?.discountPercent) / 100).toFixed(2)} ₼
                         </span>
                         <del>{order?.product?.price} ₼</del>
                       </>
-                    : <span style={{color: 'red'}}>{order?.product?.price} ₼</span>}
+                    : <span style={{ color: 'red' }}>{order?.product?.price} ₼</span>}
                 </p>
               </div>
             </div>

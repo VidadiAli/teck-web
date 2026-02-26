@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import api from "../../../api";
 import "./CategoryGrid.css";
 import { FaStar } from "react-icons/fa";
+import LoadingCircle from "../../Loading/LoadingCircle";
 
 const CategoryGrid = () => {
   const [loading, setLoading] = useState(false)
@@ -11,6 +12,7 @@ const CategoryGrid = () => {
   const [pageSize, setPageSize] = useState(5)
 
   const callCategories = async () => {
+    setLoading(true)
     try {
       const resCat = await api.get('/categories/getCategories');
 
@@ -42,9 +44,10 @@ const CategoryGrid = () => {
       const filtered = elements.filter(Boolean).reverse();
 
       setMainData(filtered);
-
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
@@ -52,7 +55,7 @@ const CategoryGrid = () => {
     callCategories();
   }, []);
 
-  if (loading) return <p style={{ width: '80%', margin: 'auto', fontSize: '1.5rem' }}>Yüklənir...</p>
+  if (loading) return <LoadingCircle />
 
   return (
     <div className="category-grid-container">

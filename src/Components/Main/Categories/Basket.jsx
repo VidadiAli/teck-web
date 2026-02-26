@@ -3,6 +3,7 @@ import { FiPlus, FiMinus, FiTrash2 } from 'react-icons/fi'
 import './Basket.css'
 import api from '../../../api'
 import OrderForm from './ProductOrder/OrderForm'
+import LoadingCircle from '../../Loading/LoadingCircle'
 
 const BasketPage = ({
   setResponse,
@@ -11,16 +12,16 @@ const BasketPage = ({
 }) => {
   const [basket, setBasket] = useState([])
   const [loading, setLoading] = useState(false)
+  const [loadingFirst, setLoadingFirst] = useState(false)
   const [creatingMessage, setCreatingMessage] = useState(false)
   const [showOrderForm, setShowOrderForm] = useState(false)
   const [productInfo, setProductInfo] = useState({})
 
-  // Basket-i backend-dən çəkmək
-  const fetchBasket = async () => {
+  const fetchBasket = async (valueOfLoading) => {
     try {
-      setLoading(true)
+      valueOfLoading == "firstFetch" && setLoadingFirst(true)
       const token = localStorage.getItem('customerAccessToken')
-      if (!token) return
+      if (!token) throw new Error("No Token")
 
       const res = await api.get('/basket', {
         headers: {
@@ -28,15 +29,15 @@ const BasketPage = ({
         }
       })
       setBasket(res.data.items || [])
-      setLoading(false)
+      valueOfLoading == "firstFetch" && setLoadingFirst(false)
     } catch (error) {
-      setLoading(false)
+      valueOfLoading == "firstFetch" && setLoadingFirst(false)
       console.error(error)
     }
   }
 
   useEffect(() => {
-    fetchBasket();
+    fetchBasket("firstFetch");
   }, [])
 
   const increment = async (index) => {
@@ -44,7 +45,7 @@ const BasketPage = ({
       const item = basket[index];
       const token = localStorage.getItem("customerAccessToken");
       if (!token) return;
-
+      setLoading(true)
       const res = await api.post(
         "/basket/increase",
         { productId: item._id },
@@ -52,10 +53,11 @@ const BasketPage = ({
       );
 
       setBasketValue(res?.data?.count)
-      // backenddən gələn count əsasında update et
-      fetchBasket(); // basket-i backenddən təzədən çəkmək
+      await fetchBasket("increment");
+      setLoading(false)
     } catch (error) {
       console.error(error);
+      setLoading(false)
     }
   };
 
@@ -65,6 +67,7 @@ const BasketPage = ({
       const token = localStorage.getItem("customerAccessToken");
       if (!token) return;
 
+      setLoading(true)
       const res = await api.post(
         "/basket/decrease",
         { productId: item._id },
@@ -72,9 +75,11 @@ const BasketPage = ({
       );
 
       setBasketValue(res?.data?.count)
-      fetchBasket();
+      await fetchBasket("decrement");
+      setLoading(false)
     } catch (error) {
       console.error(error);
+      setLoading(false)
     }
   };
 
@@ -146,18 +151,19 @@ const BasketPage = ({
   };
 
 
-  basket.map((item) => (
-    <div key={item._id}>
-      <p>{item.itemName}</p>
-      <button onClick={() => createOrder(item._id)}>Order et</button>
-    </div>
-  ));
+  // basket.map((item) => (
+  //   <div key={item._id}>
+  //     <p>{item.itemName}</p>
+  //     <button onClick={() => createOrder(item._id)}>Order et</button>
+  //   </div>
+  // ));
 
   const removeItem = async (productId) => {
     try {
       const token = localStorage.getItem("customerAccessToken");
       if (!token) return;
 
+      setLoading(true)
       const res = await api.post(
         "/basket/remove",
         { productId },
@@ -165,16 +171,16 @@ const BasketPage = ({
       );
 
       setBasketValue(res?.data?.count)
-      fetchBasket(); // basket-i backend-dən yenidən çək
+      await fetchBasket("remove");
+      setLoading(false)
     } catch (error) {
       console.error(error);
+      setLoading(false)
     }
   };
 
-  if (loading) return (
-    <>
-      <h1>Səbət</h1>
-      <p className="empty">Yüklənir...</p></>
+  if (loadingFirst) return (
+    <LoadingCircle />
   );
 
   return (
@@ -188,7 +194,7 @@ const BasketPage = ({
             {basket.map((item, index) => (
               <div className="basket-item" key={index}>
                 <div className='basket-image-box'>
-                  <img src={item.itemImage} alt={item.itemName} className='basket-img'/>
+                  <img src={item.itemImage} alt={item.itemName} className='basket-img' />
                 </div>
                 <div className="info">
                   <h3>{item.itemName}</h3>
@@ -197,15 +203,20 @@ const BasketPage = ({
                   <p>⭐ {item.rating}</p>
                 </div>
                 <div className="actions">
-                  <div className="quantity">
-                    <FiMinus onClick={() => decrement(index)} />
-                    <span>{item.quantity || 1}</span>
-                    <FiPlus onClick={() => increment(index)} />
-                  </div>
-                  <FiTrash2
-                    className="trash"
-                    onClick={() => removeItem(item._id)}
-                  />
+                  {
+                    loading ? <LoadingCircle size='30px' /> :
+                      <>
+                        <div className="quantity">
+                          <FiMinus onClick={() => decrement(index)} />
+                          <span>{item.quantity || 1}</span>
+                          <FiPlus onClick={() => increment(index)} />
+                        </div>
+                        <FiTrash2
+                          className="trash"
+                          onClick={() => removeItem(item._id)}
+                        />
+                      </>
+                  }
                 </div>
                 <button className="checkout" onClick={() => createOrderInfo(index, item._id)}>
                   {

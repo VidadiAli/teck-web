@@ -11,6 +11,7 @@ import ChooseSalesCompany from "./ChooseSalesCompany";
 import api from "../../../api";
 import AuthForm from "../../Register/AuthForm";
 import { percentage } from "../../Data/DataFile";
+import LoadingCircle from "../../Loading/LoadingCircle";
 
 const CategoryItem = ({ setResponse, setBasketValue }) => {
   const { productId } = useParams();
@@ -113,7 +114,7 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
     }
   };
 
-  if (loading) return <h2 style={{ padding: "40px" }}>Yüklənir...</h2>;
+  if (loading) return <LoadingCircle />;
   if (error) return <h2 style={{ padding: "40px" }}>{error}</h2>;
   if (!product) return <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>;
 

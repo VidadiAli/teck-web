@@ -9,12 +9,13 @@ const CategoryElements = () => {
   const [products, setProducts] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20)
+  const [pageSize, setPageSize] = useState(15)
   const [totalItem, setTotalItem] = useState(0);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [loadingFirst, setLoadingFirst] = useState(false)
 
-  const fetchCategoryProducts = async () => {
-    setLoading(true)
+  const fetchCategoryProducts = async (valueOfLoading) => {
+    valueOfLoading == "loadingFirst" ? setLoadingFirst(true) : setLoading(true)
     try {
       const res = await api.get(`/products/getProductsByCategory/${categoryId}`,
         {
@@ -26,11 +27,11 @@ const CategoryElements = () => {
       const data = res?.data?.products || [];
       setTotalItem(res?.data?.total)
       setProducts((prev) => [...prev, ...data]);
-      setLoading(false);
+      valueOfLoading == "loadingFirst" ? setLoadingFirst(false) : setLoading(false)
       if (data.length > 0) setCategoryName(data[0].category.name);
     } catch (error) {
       console.error(error);
-      setLoading(false);
+      valueOfLoading == "loadingFirst" ? setLoadingFirst(false) : setLoading(false)
     }
   };
 
@@ -40,8 +41,20 @@ const CategoryElements = () => {
   }
 
   useEffect(() => {
-    fetchCategoryProducts();
-  }, [categoryId, page]);
+    fetchCategoryProducts("loadingFirst");
+  }, [categoryId]);
+
+  useEffect(() => {
+    if (page != 1) {
+      fetchCategoryProducts("loading");
+    }
+  }, [page]);
+
+  if (loadingFirst) {
+    return <div className="loading-box">
+      <div className="loading-box-child"></div>
+    </div>
+  }
 
   return (
     <div className="category-page">
