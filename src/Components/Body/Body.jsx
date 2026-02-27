@@ -25,11 +25,12 @@ const Body = ({
         searchData={searchData}
         setSearchData={setSearchData}
         categoriesForNav={categoriesForNav}
+        setCategoriesForNav={setCategoriesForNav}
         setResponse={setResponse}
       />
 
       <Routes>
-        <Route path="/" element={<Main setCategoriesForNav={setCategoriesForNav} />} />
+        <Route path="/" element={<Main categoriesForNav={categoriesForNav} />} />
 
         <Route
           path="/category/:categoryId"

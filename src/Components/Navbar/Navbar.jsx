@@ -10,7 +10,12 @@ import api from '../../api';
 import SearchNavbar from './SearchNavbar';
 import AuthForm from '../Register/AuthForm';
 
-const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue, searchData, setSearchData, categoriesForNav, setResponse }) => {
+const Navbar = ({
+  basketValue, setBasketValue,
+  orderValue, setOrderValue,
+  searchData, setSearchData,
+  categoriesForNav, setCategoriesForNav,
+  setResponse }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAuthForm, setShowAuthForm] = useState(false);
   const [customerToken, setCustomerToken] = useState('')
@@ -25,7 +30,6 @@ const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue, search
       }
     };
 
-
     const fetchOrderCount = async () => {
       try {
         const res = await api.get("/orders/getMyOrdersCount", { headers: { Authorization: `{Bearer ${token}` } });
@@ -35,10 +39,20 @@ const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue, search
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const resCat = await api.get('/categories/getCategories');
+        setCategoriesForNav(resCat?.data);
+      } catch (error) {
+        console.log("Get categories error:", error);
+      }
+    }
+
     const token = localStorage.getItem("customerAccessToken");
     if (token) {
       fetchBasketCount();
       fetchOrderCount();
+      fetchCategories();
     }
   }, []);
 

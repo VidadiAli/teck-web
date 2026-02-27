@@ -131,9 +131,9 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
         <div className="item-info">
           <h1 className="item-title">{itemName}</h1>
 
-          <p className="item-rating">
-            <FaStar /> {rating} • {salesCount} satış
-          </p>
+          {/* <p className="item-rating">
+            {<FaStar />}
+          </p> */}
 
           <div className="item-price">
             <FaMoneyBillWave />

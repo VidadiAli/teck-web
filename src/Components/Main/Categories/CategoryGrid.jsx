@@ -5,7 +5,7 @@ import "./CategoryGrid.css";
 import { FaStar } from "react-icons/fa";
 import LoadingCircle from "../../Loading/LoadingCircle";
 
-const CategoryGrid = ({ setCategoriesForNav }) => {
+const CategoryGrid = ({ categoriesForNav }) => {
   const [loading, setLoading] = useState(false)
   const [mainData, setMainData] = useState([]);
   const [page, setPage] = useState(1);
@@ -13,49 +13,40 @@ const CategoryGrid = ({ setCategoriesForNav }) => {
 
   const callCategories = async () => {
     setLoading(true)
-    try {
-      const resCat = await api.get('/categories/getCategories');
-
-      setCategoriesForNav(resCat?.data);
-
-      const elements = await Promise.all(
-        resCat?.data?.map(async (data) => {
-          try {
-            const res = await api.get(
-              `/products/getProductsByCategory/${data?._id}`,
-              {
-                params: {
-                  page: page,
-                  pageSize: pageSize
-                }
+    const elements = await Promise.all(
+      categoriesForNav?.map(async (data) => {
+        try {
+          const res = await api.get(
+            `/products/getProductsByCategory/${data?._id}`,
+            {
+              params: {
+                page: page,
+                pageSize: pageSize
               }
-            );
+            }
+          );
 
-            console.log(res?.data)
-            return {
-              categoryName: data?.name,
-              categoryId: data?._id,
-              data: res?.data?.products
-            };
-          } catch (error) {
-            return null;
-          }
-        })
-      );
+          console.log(res?.data)
+          return {
+            categoryName: data?.name,
+            categoryId: data?._id,
+            data: res?.data?.products
+          };
+        } catch (error) {
+          return null;
+        }
+      })
+    );
 
-      const filtered = elements.filter(Boolean).reverse();
+    const filtered = elements.filter(Boolean).reverse();
 
-      setMainData(filtered);
-      setLoading(false)
-    } catch (error) {
-      console.log(error);
-      setLoading(false)
-    }
+    setMainData(filtered);
+    setLoading(false)
   };
 
   useEffect(() => {
     callCategories();
-  }, []);
+  }, [categoriesForNav]);
 
   if (loading) return <LoadingCircle />
 
