@@ -13,7 +13,7 @@
   color: var(--color-text-primary);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  z-index: 1000;
+  z-index: 10000000;
 }
 
 .alert-content {

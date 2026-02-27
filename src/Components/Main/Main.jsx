@@ -2,11 +2,11 @@ import React from 'react'
 import Carousel from './Carousel/Carousel'
 import CategoryGrid from './Categories/CategoryGrid'
 
-const Main = () => {
+const Main = ({ setCategoriesForNav }) => {
   return (
     <div>
       <Carousel />
-      <CategoryGrid />
+      <CategoryGrid setCategoriesForNav={setCategoriesForNav} />
     </div>
   )
 }

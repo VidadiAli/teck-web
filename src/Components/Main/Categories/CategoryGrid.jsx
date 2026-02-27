@@ -5,7 +5,7 @@ import "./CategoryGrid.css";
 import { FaStar } from "react-icons/fa";
 import LoadingCircle from "../../Loading/LoadingCircle";
 
-const CategoryGrid = () => {
+const CategoryGrid = ({ setCategoriesForNav }) => {
   const [loading, setLoading] = useState(false)
   const [mainData, setMainData] = useState([]);
   const [page, setPage] = useState(1);
@@ -15,6 +15,8 @@ const CategoryGrid = () => {
     setLoading(true)
     try {
       const resCat = await api.get('/categories/getCategories');
+
+      setCategoriesForNav(resCat?.data);
 
       const elements = await Promise.all(
         resCat?.data?.map(async (data) => {
@@ -102,7 +104,8 @@ const CategoryGrid = () => {
                       </h3>
 
                       <p className="item-rating">
-                        <FaStar /> {item?.rating} • {item?.salesCount} satış
+                        {/* <FaStar /> {item?.rating} • {item?.salesCount} satış */}
+                        {((item?.price + (item?.price * 21.6) / 100) / 18).toFixed(2)} ₼ x 18 ay
                       </p>
 
                       <p className="product-price">

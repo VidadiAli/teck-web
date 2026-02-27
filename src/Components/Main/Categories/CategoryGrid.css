@@ -103,7 +103,7 @@
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
-    gap: 10px;
+    gap: 5px;
 }
 
 .product-name {
@@ -115,10 +115,14 @@
 
 .item-rating {
     font-size: 0.85rem;
-    color: var(--color-warning);
+    color: var(--color-surface) !important;
+    background-color: var(--color-warning);
+    padding: 5px;
     display: flex;
     align-items: center;
     gap: 6px;
+    width: min-content;
+    white-space: nowrap;
 }
 
 .product-price {

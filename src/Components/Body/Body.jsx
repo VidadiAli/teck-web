@@ -12,7 +12,8 @@ const Body = ({
   response, setResponse,
   basketValue, setBasketValue,
   orderValue, setOrderValue,
-  searchData, setSearchData
+  searchData, setSearchData,
+  setCategoriesForNav, categoriesForNav
 }) => {
   return (
     <div>
@@ -23,10 +24,12 @@ const Body = ({
         setOrderValue={setOrderValue}
         searchData={searchData}
         setSearchData={setSearchData}
+        categoriesForNav={categoriesForNav}
+        setResponse={setResponse}
       />
 
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Main setCategoriesForNav={setCategoriesForNav} />} />
 
         <Route
           path="/category/:categoryId"

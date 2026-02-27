@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../Images/logo.png';
-import { FiSearch, FiHeart, FiShoppingCart, FiArrowRight } from "react-icons/fi";
+import { FiSearch, FiHeart, FiShoppingCart } from "react-icons/fi";
 import { MdOutlineAssignmentTurnedIn } from 'react-icons/md';
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { FaUserCircle } from "react-icons/fa";
 import './Navbar.css'
 import api from '../../api';
 import SearchNavbar from './SearchNavbar';
+import AuthForm from '../Register/AuthForm';
 
-const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue, searchData, setSearchData }) => {
+const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue, searchData, setSearchData, categoriesForNav, setResponse }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showAuthForm, setShowAuthForm] = useState(false);
+  const [customerToken, setCustomerToken] = useState('')
 
   useEffect(() => {
     const fetchBasketCount = async () => {
@@ -58,6 +62,10 @@ const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue, search
     }
   }
 
+  const isLogin = () => {
+    localStorage.getItem('customerAccessToken') ? '' : setShowAuthForm(true)
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar__logo">
@@ -96,12 +104,28 @@ const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue, search
             orderValue > 0 && <span className='element__count'>{orderValue}</span>
           }
         </li>
-        <li className="navbar__item navbar__cta" onClick={() => { setMenuOpen(false) }}>
-          <NavLink to="/" className="navbar__link navbar__link--cta">
-            <span>İndi Al</span>
-            <FiArrowRight className="navbar__arrow" />
+        <li className="navbar__item navbar__cta" onClick={isLogin}>
+          <NavLink to="/" className="navbar__link">
+            <FaUserCircle className="navbar__icon" />
+            <span>
+              {localStorage.getItem("customerAccessToken") ? "Hesabım" : "Daxil ol"}
+            </span>
           </NavLink>
         </li>
+      </ul>
+
+      <ul className={`categories__name_list ${menuOpen ? "open" : ""}`}>
+        {categoriesForNav?.map((cat) => (
+          <li key={cat._id} className="categories__name">
+            <NavLink
+              className="categories__name_link"
+              to={`/category/${cat._id}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              {cat.name}
+            </NavLink>
+          </li>
+        ))}
       </ul>
 
       <div className="navbar__menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
@@ -112,6 +136,12 @@ const Navbar = ({ basketValue, setBasketValue, orderValue, setOrderValue, search
         searchData.length && !window.location.toString().includes('/search') ? (
           <SearchNavbar setSearchData={setSearchData} searchData={searchData} />
         ) : <></>
+      }
+
+      {
+        showAuthForm && (
+          <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
+        )
       }
     </nav>
   );

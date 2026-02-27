@@ -83,8 +83,13 @@ const CategoryElements = () => {
                 {item.itemName}
               </h3>
 
-              <p className="item-rating">
+              {/* <p className="item-rating">
                 <FaStar /> {item?.rating} • {item?.salesCount} satış
+              </p> */}
+
+              <p className="item-rating">
+                {/* <FaStar /> {item?.rating} • {item?.salesCount} satış */}
+                {((item?.price + (item?.price * 21.6) / 100) / 18).toFixed(2)} ₼ x 18 ay
               </p>
 
               <div className="category-product-price">
