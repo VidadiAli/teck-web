@@ -52,8 +52,8 @@ const Navbar = ({
     if (token) {
       fetchBasketCount();
       fetchOrderCount();
-      fetchCategories();
     }
+    fetchCategories();
   }, []);
 
   const getProductsBySearchText = async (searchText) => {
