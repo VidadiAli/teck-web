@@ -9,6 +9,7 @@ import './Navbar.css'
 import api from '../../api';
 import SearchNavbar from './SearchNavbar';
 import AuthForm from '../Register/AuthForm';
+import MyProfile from './MyProfile/MyProfile';
 
 const Navbar = ({
   basketValue, setBasketValue,
@@ -18,7 +19,8 @@ const Navbar = ({
   setResponse }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAuthForm, setShowAuthForm] = useState(false);
-  const [customerToken, setCustomerToken] = useState('')
+  const [customerToken, setCustomerToken] = useState('');
+  const [profileInfo, setProfileInfo] = useState(null)
 
   useEffect(() => {
     const fetchBasketCount = async () => {
@@ -61,8 +63,6 @@ const Navbar = ({
       const token = localStorage.getItem("customerAccessToken")
       if (!token) return;
 
-      console.log(searchText)
-
       const searchProduct = await api.post("/products/searchByProductNameAsCustomer",
         { searchText },
         {
@@ -76,8 +76,26 @@ const Navbar = ({
     }
   }
 
+  const getProfile = async (profileToken) => {
+    try {
+      const resProfile = await api.get('/customer/getMyprofileAsCustomer', {
+        headers: {
+          Authorization: `Bearer ${profileToken}`
+        }
+      })
+
+      setProfileInfo(resProfile?.data)
+    } catch (error) {
+      console.log(error?.message)
+    }
+  }
+
   const isLogin = () => {
-    localStorage.getItem('customerAccessToken') ? '' : setShowAuthForm(true)
+    if (localStorage.getItem('customerAccessToken')) {
+      getProfile(localStorage.getItem('customerAccessToken'))
+    } else {
+      setShowAuthForm(true)
+    }
   }
 
   return (
@@ -156,6 +174,10 @@ const Navbar = ({
         showAuthForm && (
           <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
         )
+      }
+
+      {
+        profileInfo && <MyProfile profileInfo={profileInfo} setProfileInfo={setProfileInfo} />
       }
     </nav>
   );
