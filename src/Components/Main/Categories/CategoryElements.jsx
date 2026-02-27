@@ -3,6 +3,7 @@ import { useParams, NavLink } from "react-router-dom";
 import api from "../../../api";
 import "./CategoryElements.css";
 import { FaStar } from "react-icons/fa";
+import LoadingCircle from "../../Loading/LoadingCircle";
 
 const CategoryElements = () => {
   const { categoryId } = useParams();
@@ -51,9 +52,7 @@ const CategoryElements = () => {
   }, [page]);
 
   if (loadingFirst) {
-    return <div className="loading-box">
-      <div className="loading-box-child"></div>
-    </div>
+    return <LoadingCircle />
   }
 
   return (
@@ -113,9 +112,7 @@ const CategoryElements = () => {
       </div>
       {
         products?.length < totalItem && (
-          loading ? <div className="loading-box">
-            <div className="loading-box-child"></div>
-          </div> : <button onClick={moreProducts} className="more-products">Daha çox</button>
+          loading ? <LoadingCircle /> : <button onClick={moreProducts} className="more-products">Daha çox</button>
         )
       }
     </div>
