@@ -45,7 +45,9 @@ const CategoryGrid = ({ categoriesForNav }) => {
   };
 
   useEffect(() => {
-    callCategories();
+    if (categoriesForNav?.length > 0) {
+      callCategories()
+    };
   }, [categoriesForNav]);
 
   if (loading) return <LoadingCircle />
