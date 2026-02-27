@@ -508,7 +508,7 @@ const carouselPartArr = [
     imageButton: 'Ətraflı bax',
     imageDate: '',
     imageUrl: 'https://hp.widen.net/content/azqf2pabrp/png/azqf2pabrp.png?w=800&h=600&dpi=72&color=ffffff00',
-    itemLink: '/teck-web'
+    itemLink: '/'
   },
   {
     id: 2,
@@ -516,7 +516,7 @@ const carouselPartArr = [
     imageButton: 'Ətraflı bax',
     imageDate: '',
     imageUrl: 'https://vivax.com/wp-content/uploads/2021/12/TV-75UHD123T2S2SM-P-Left.png',
-    itemLink: '/teck-web'
+    itemLink: '/'
   },
   {
     id: 3,
@@ -524,7 +524,7 @@ const carouselPartArr = [
     imageButton: 'İndi Al',
     imageDate: '',
     imageUrl: 'https://www.lg.com/content/dam/channel/wcms/tr/images/buzdolabi/gr-b31fmlpl_apzpltk_emtk_tr_c/gallery/dz-03.jpg?w=800',
-    itemLink: '/teck-web'
+    itemLink: '/'
   },
   {
     id: 4,
@@ -532,7 +532,7 @@ const carouselPartArr = [
     imageButton: 'Ətraflı bax',
     imageDate: '',
     imageUrl: 'https://eurolux.az/wp-content/uploads/2025/03/Paltaryuyan-Eurolux-EU-WM1417S-7BLDG.jpg',
-    itemLink: '/teck-web'
+    itemLink: '/'
   },
   {
     id: 5,
@@ -540,7 +540,7 @@ const carouselPartArr = [
     imageButton: 'Ətraflı bax',
     imageDate: '',
     imageUrl: 'https://sc04.alicdn.com/kf/Ha00fbaf01dd24bb5a6b92c413487bcb44.jpg',
-    itemLink: '/teck-web'
+    itemLink: '/'
   }
 ];
 

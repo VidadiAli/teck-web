@@ -134,7 +134,7 @@ const BasketPage = ({
       });
 
       setCreatingMessage(false)
-      window.location = "/teck-web/orders/"
+      window.location = "/orders/"
 
     } catch (error) {
       console.error(error);

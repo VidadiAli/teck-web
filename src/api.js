@@ -51,7 +51,7 @@ api.interceptors.response.use(
         // refresh token invalid olduqda logout
         localStorage.removeItem("customerAccessToken");
         localStorage.removeItem("customerRefreshToken");
-        window.location.href = "/teck-web/";
+        window.location.href = "/";
         return Promise.reject(err);
       }
     }
