@@ -5,10 +5,9 @@
     <meta charset="utf-8">
     <title>Teck</title>
     <script>
-        const base = "/";
-        const path = window.location.pathname.replace(base, "");
+        const path = window.location.pathname.slice(1);
         window.location.replace(
-            base + "/?/" + path.slice(1) + window.location.search + window.location.hash
+            "/?/" + path + window.location.search + window.location.hash
         );
     </script>
 
