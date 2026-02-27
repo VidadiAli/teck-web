@@ -82,7 +82,7 @@ const CategoryGrid = () => {
                   <div key={item._id} className="product-card">
                     {item.hasDiscount && (
                       <div className="discount-badge">
-                        -{item.discountPercent}%
+                        - {item.discountPercent}%
                       </div>
                     )}
 
