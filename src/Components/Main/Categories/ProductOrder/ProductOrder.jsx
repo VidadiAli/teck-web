@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ProductOrder.css";
 import api from "../../../../api";
 import LoadingCircle from "../../../Loading/LoadingCircle";
+import { ORDER_STATUS_LABEL } from "../../../Data/DataFile";
 
 const ProductOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -57,7 +58,13 @@ const ProductOrder = () => {
               </div>
             </div>
             <div className="po-order-status">
-              <p>Status: <span className={`po-status ${order.orderStatus}`}>{order.orderStatus}</span></p>
+              <p>Status: <span className={`po-status ${order.orderStatus}`}>{
+                ORDER_STATUS_LABEL?.map((e) => {
+                  if (e?.statusKey == order?.orderStatus) {
+                    return `${e?.statusValue}`
+                  }
+                })
+              }</span></p>
               <p>Miqdar: {order.product.quantity || 1}</p>
               <p>Tarix: {new Date(order.createdAt).toLocaleString()}</p>
             </div>

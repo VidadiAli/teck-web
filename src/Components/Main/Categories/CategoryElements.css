@@ -43,14 +43,18 @@
 .category-product-badge {
   position: absolute;
   top: 10px;
-  left: 10px;
-  background: var(--color-error);
+  right: 10px;
+  background: red;
   color: #fff;
-  padding: 4px 10px;
-  font-size: 0.7rem;
-  border-radius: 20px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  border-radius: 50%;
   font-weight: 600;
-  z-index: 2;
+  z-index: 1;
 }
 
 .category-product-image-wrapper {
@@ -79,7 +83,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
+  gap: 5px;
   flex: 1;
 }
 

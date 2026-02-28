@@ -76,18 +76,38 @@
   text-transform: capitalize;
   font-weight: bold;
   color: #fff;
+  white-space: nowrap;
 }
 
+
 .po-status.pending {
-  background-color: orange;
+  background-color: #fef9c3;
+  color: #92400e;
+}
+
+.po-status.accepted {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.po-status.preparing {
+  background-color: #ede9fe;
+  color: #6d28d9;
+}
+
+.po-status.waiting {
+  background-color: #ffedd5;
+  color: #c2410c;
 }
 
 .po-status.completed {
-  background-color: green;
+  background-color: #dcfce7;
+  color: #166534;
 }
 
 .po-status.cancelled {
-  background-color: red;
+  background-color: #fee2e2;
+  color: #b91c1c;
 }
 
 .po-loading,

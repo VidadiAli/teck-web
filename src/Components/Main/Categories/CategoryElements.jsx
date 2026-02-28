@@ -64,9 +64,9 @@ const CategoryElements = () => {
       <div className="category-page-grid">
         {products.map((item) => (
           <div key={item._id} className="category-product-card">
-            {item.hasDiscount && (
+            {item.hasDiscount && item.discountPercent > 0 && (
               <div className="category-product-badge">
-                -{item.discountPercent}%
+                - {item.discountPercent}%
               </div>
             )}
 

@@ -75,7 +75,7 @@ const CategoryGrid = ({ categoriesForNav }) => {
               {product?.data
                 .map((item) => (
                   <div key={item._id} className="product-card">
-                    {item.hasDiscount && (
+                    {item.hasDiscount && item.discountPercent > 0 && (
                       <div className="discount-badge">
                         - {item.discountPercent}%
                       </div>
