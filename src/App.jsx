@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Body from './Components/Body/Body'
 import Alerts from './Components/Alerts/Alert';
+import './App.css'
 
 const App = () => {
 

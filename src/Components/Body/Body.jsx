@@ -7,6 +7,7 @@ import Basket from '../Main/Categories/Basket'
 import CategoryElements from '../Main/Categories/CategoryElements'
 import ProductOrder from '../Main/Categories/ProductOrder/ProductOrder'
 import SearchAll from '../Navbar/SearchAll'
+import { FaWhatsapp } from "react-icons/fa";
 
 const Body = ({
   response, setResponse,
@@ -58,6 +59,23 @@ const Body = ({
         <Route path='/search' element={<SearchAll searchData={searchData} />} />
 
       </Routes>
+
+
+      <div className="whatsapp-wrapper">
+        <button
+          className="whatsapp-btn"
+          onClick={() => setProfileInfo(null)}
+        >
+          <a
+            href="https://wa.me/994558781998"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="whatsapp-link"
+          >
+            <FaWhatsapp className="whatsapp-icon" />
+          </a>
+        </button>
+      </div>
     </div>
   )
 }
