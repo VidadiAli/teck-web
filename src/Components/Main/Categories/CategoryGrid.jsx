@@ -55,7 +55,7 @@ const CategoryGrid = ({ categoriesForNav }) => {
   return (
     <div className="category-grid-container">
       {mainData?.map((product, index) => {
-
+        if (!(product?.data.length > 0)) return
         return (
           <div key={product?.categoryName + "/" + index} className="category-block">
             <div className="category-header">
