@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://teck-web-back-1.onrender.com/api"; // backend URL
+const BASE_URL = "https://api.vnselectronics.az/api"; // backend URL
 const getAccessToken = () => localStorage.getItem("customerAccessToken");
 const getRefreshToken = () => localStorage.getItem("customerRefreshToken");
 const setAccessToken = (token) => localStorage.setItem("customerAccessToken", token);
