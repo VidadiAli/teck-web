@@ -3,8 +3,7 @@ import api from "../../api";
 
 const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
     const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+    const [phone, setPhone] = useState("+994");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loginSystem, setLoginSystem] = useState(false)
@@ -15,7 +14,6 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
         try {
             const res = await api.post("/customer/register", {
                 name,
-                email,
                 phone,
                 password
             });
@@ -46,13 +44,6 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
                 placeholder="Adınız"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                required
-            />
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
                 required
             />
             <input

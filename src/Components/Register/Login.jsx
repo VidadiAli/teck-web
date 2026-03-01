@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import api from "../../api";
 
 const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loginSystem, setLoginSystem] = useState(false)
@@ -11,7 +11,7 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
     e.preventDefault();
     try {
       setLoginSystem(true)
-      const res = await api.post("/customer/login", { email, password });
+      const res = await api.post("/customer/login", { phone, password });
       setShowAuthForm(false)
       setResponse({
         showAlert: true,
@@ -31,10 +31,10 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
       <h2>Login</h2>
       {error && <p className="error">{error}</p>}
       <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
+        type="text"
+        placeholder="+994XXYYYZZTT"
+        value={phone}
+        onChange={e => setPhone(e.target.value)}
         required
       />
       <input
