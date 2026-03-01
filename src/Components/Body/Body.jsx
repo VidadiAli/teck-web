@@ -14,7 +14,8 @@ const Body = ({
   basketValue, setBasketValue,
   orderValue, setOrderValue,
   searchData, setSearchData,
-  setCategoriesForNav, categoriesForNav
+  setCategoriesForNav, categoriesForNav,
+  setProfileInfo, profileInfo
 }) => {
   return (
     <div>
@@ -28,6 +29,8 @@ const Body = ({
         categoriesForNav={categoriesForNav}
         setCategoriesForNav={setCategoriesForNav}
         setResponse={setResponse}
+        setProfileInfo={setProfileInfo}
+        profileInfo={profileInfo}
       />
 
       <Routes>
@@ -44,6 +47,7 @@ const Body = ({
             <CategoryItem
               setResponse={setResponse}
               setBasketValue={setBasketValue}
+              profileInfo={profileInfo}
             />
           }
         />
@@ -52,9 +56,10 @@ const Body = ({
           setResponse={setResponse}
           setBasketValue={setBasketValue}
           setOrderValue={setOrderValue}
+          profileInfo={profileInfo}
         />} />
 
-        <Route path='/orders' element={<ProductOrder />} />
+        <Route path='/orders' element={<ProductOrder profileInfo={profileInfo}/>} />
 
         <Route path='/search' element={<SearchAll searchData={searchData} />} />
 

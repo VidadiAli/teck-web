@@ -1,12 +1,13 @@
 import React from "react";
 import './MyProfile.css'
+import api from "../../../api";
 
-const MyProfile = ({ profileInfo, setProfileInfo }) => {
+const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
 
-    const handleLogout = () => {
-        localStorage.removeItem("customerAccessToken");
-        localStorage.removeItem("customerRefreshToken");
+    const handleLogout = async () => {
+        const res = await api.post("/customer/logout", {});
         setProfileInfo(null);
+        setCloseProfile(null);
     };
 
     if (!profileInfo) return null;
@@ -15,7 +16,7 @@ const MyProfile = ({ profileInfo, setProfileInfo }) => {
         <>
             <div
                 className="profile-overlay"
-                onClick={() => setProfileInfo(null)}
+                onClick={() => setCloseProfile(null)}
             ></div>
 
             <div className="profile-panel">
@@ -23,7 +24,7 @@ const MyProfile = ({ profileInfo, setProfileInfo }) => {
                     <h3>Profilim</h3>
                     <button
                         className="close-btn"
-                        onClick={() => setProfileInfo(null)}
+                        onClick={() => setCloseProfile(null)}
                     >
                         ✕
                     </button>

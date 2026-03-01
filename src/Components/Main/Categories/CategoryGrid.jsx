@@ -17,7 +17,7 @@ const CategoryGrid = ({ categoriesForNav }) => {
       categoriesForNav?.map(async (data) => {
         try {
           const res = await api.get(
-            `/products/getProductsByCategory/${data?._id}`,
+            `/customer/getProductsByCategory/${data?._id}`,
             {
               params: {
                 page: page,

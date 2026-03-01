@@ -8,7 +8,8 @@ import LoadingCircle from '../../Loading/LoadingCircle'
 const BasketPage = ({
   setResponse,
   setBasketValue,
-  setOrderValue
+  setOrderValue,
+  profileInfo
 }) => {
   const [basket, setBasket] = useState([])
   const [loading, setLoading] = useState(false)
@@ -20,14 +21,8 @@ const BasketPage = ({
   const fetchBasket = async (valueOfLoading) => {
     try {
       valueOfLoading == "firstFetch" && setLoadingFirst(true)
-      const token = localStorage.getItem('customerAccessToken')
-      if (!token) throw new Error("No Token")
 
-      const res = await api.get('/basket', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      const res = await api.get('/customer/basket')
       setBasket(res.data.items || [])
       valueOfLoading == "firstFetch" && setLoadingFirst(false)
     } catch (error) {
@@ -37,19 +32,18 @@ const BasketPage = ({
   }
 
   useEffect(() => {
-    fetchBasket("firstFetch");
-  }, [])
+    profileInfo && (
+      fetchBasket("firstFetch")
+    );
+  }, [profileInfo])
 
   const increment = async (index) => {
     try {
       const item = basket[index];
-      const token = localStorage.getItem("customerAccessToken");
-      if (!token) return;
       setLoading(true)
       const res = await api.post(
-        "/basket/increase",
-        { productId: item._id },
-        { headers: { Authorization: `Bearer ${token}` } }
+        "/customer/increase",
+        { productId: item._id }
       );
 
       setBasketValue(res?.data?.count)
@@ -64,14 +58,10 @@ const BasketPage = ({
   const decrement = async (index) => {
     try {
       const item = basket[index];
-      const token = localStorage.getItem("customerAccessToken");
-      if (!token) return;
-
       setLoading(true)
       const res = await api.post(
-        "/basket/decrease",
-        { productId: item._id },
-        { headers: { Authorization: `Bearer ${token}` } }
+        "/customer/decrease",
+        { productId: item._id }
       );
 
       setBasketValue(res?.data?.count)
@@ -100,8 +90,6 @@ const BasketPage = ({
   const createOrder = async (orderData) => {
     setCreatingMessage(true)
     try {
-      const token = localStorage.getItem("customerAccessToken");
-      if (!token) return;
 
       const item = basket[orderData?.index];
 
@@ -116,9 +104,8 @@ const BasketPage = ({
       };
 
       const res = await api.post(
-        "/orders/createOrder",
-        payload,
-        { headers: { Authorization: `Bearer ${token}` } }
+        "/customer/createOrder",
+        payload
       );
 
       setOrderValue(res?.data?.count);
@@ -160,14 +147,10 @@ const BasketPage = ({
 
   const removeItem = async (productId) => {
     try {
-      const token = localStorage.getItem("customerAccessToken");
-      if (!token) return;
-
       setLoading(true)
       const res = await api.post(
-        "/basket/remove",
-        { productId },
-        { headers: { Authorization: `Bearer ${token}` } }
+        "/customer/remove",
+        { productId }
       );
 
       setBasketValue(res?.data?.count)

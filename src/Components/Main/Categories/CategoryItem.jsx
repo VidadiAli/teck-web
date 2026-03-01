@@ -13,7 +13,7 @@ import AuthForm from "../../Register/AuthForm";
 import { percentage } from "../../Data/DataFile";
 import LoadingCircle from "../../Loading/LoadingCircle";
 
-const CategoryItem = ({ setResponse, setBasketValue }) => {
+const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   const { productId } = useParams();
   const [month, setMonth] = useState(2);
   const [percentageValue, setPercentageValue] = useState(3)
@@ -30,7 +30,7 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const res = await api.get(`/products/getProductById/${productId}`);
+        const res = await api.get(`/customer/getProductById/${productId}`);
         setProduct(res.data);
       } catch (err) {
         console.error(err);
@@ -45,15 +45,14 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
 
   const addItem = async () => {
     try {
-      const token = localStorage.getItem("customerAccessToken");
-      if (!token) {
+      if (!profileInfo) {
         setResponse({ type: "info", message: "Xahiş olunur hesabınıza daxil olun", showAlert: true });
         setShowAuthForm(true)
         return;
       }
 
       const res = await api.get(
-        `/products/getProductsByBarcodAsCustomer/${product.productBarcod}`
+        `/customer/getProductsByBarcodAsCustomer/${product.productBarcod}`
       );
 
       const productsByBarcod = res.data;
@@ -69,9 +68,8 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
       } else {
         setAddingMessage(true)
         const addRes = await api.post(
-          "/basket/addToBasket",
-          { productId: productsByBarcod[0]._id },
-          { headers: { Authorization: `Bearer ${token}` } }
+          "/customer/addToBasket",
+          { productId: productsByBarcod[0]._id }
         );
         setBasketValue(addRes?.data?.count)
         setAddingMessage(false)
@@ -93,7 +91,7 @@ const CategoryItem = ({ setResponse, setBasketValue }) => {
         quantity: 1,
       });
 
-      // setBasketValue(res.data.count);
+      setBasketValue(res.data.count);
 
       setResponse({
         type: "success",

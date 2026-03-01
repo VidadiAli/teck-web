@@ -4,13 +4,14 @@ import api from "../../../../api";
 import LoadingCircle from "../../../Loading/LoadingCircle";
 import { ORDER_STATUS_LABEL } from "../../../Data/DataFile";
 
-const ProductOrder = () => {
+const ProductOrder = ({ profileInfo }) => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchOrders = async () => {
     try {
-      const res = await api.get("/orders/getOrdersAsCustomer");
+      setLoading(true);
+      const res = await api.get("/customer/getOrdersAsCustomer");
       setOrders(res.data);
       setLoading(false);
     } catch (err) {
@@ -20,8 +21,10 @@ const ProductOrder = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    profileInfo && (
+      fetchOrders()
+    );
+  }, [profileInfo]);
 
   if (loading) return <LoadingCircle />;
 

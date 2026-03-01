@@ -10,7 +10,7 @@ const MostSellingPart = () => {
   const callData = async () => {
     setLoadingFirst(true)
     try {
-      const resData = await api.get("/products/getProducts");
+      const resData = await api.get("/customer/getProducts");
       setMainProductsData(resData?.data || []);
       setLoadingFirst(false)
     } catch (error) {

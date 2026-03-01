@@ -12,11 +12,6 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
     try {
       setLoginSystem(true)
       const res = await api.post("/customer/login", { email, password });
-
-      localStorage.setItem("customerAccessToken", res.data.accessToken);
-      localStorage.setItem("customerRefreshToken", res.data.refreshToken);
-
-      setCustomerToken(res.data.accessToken);
       setShowAuthForm(false)
       setResponse({
         showAlert: true,

@@ -16,16 +16,17 @@ const Navbar = ({
   orderValue, setOrderValue,
   searchData, setSearchData,
   categoriesForNav, setCategoriesForNav,
+  setProfileInfo, profileInfo,
   setResponse }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAuthForm, setShowAuthForm] = useState(false);
   const [customerToken, setCustomerToken] = useState('');
-  const [profileInfo, setProfileInfo] = useState(null)
+  const [closeProfile, setCloseProfile] = useState(false)
 
   useEffect(() => {
     const fetchBasketCount = async () => {
       try {
-        const res = await api.get("/basket/count");
+        const res = await api.get("/customer/count");
         setBasketValue(res.data.count);
       } catch (error) {
         console.log("Basket count error:", error);
@@ -34,7 +35,7 @@ const Navbar = ({
 
     const fetchOrderCount = async () => {
       try {
-        const res = await api.get("/orders/getMyOrdersCount", { headers: { Authorization: `{Bearer ${token}` } });
+        const res = await api.get("/customer/getMyOrdersCount");
         setOrderValue(res.data.count);
       } catch (error) {
         console.log("Order count error:", error);
@@ -43,32 +44,23 @@ const Navbar = ({
 
     const fetchCategories = async () => {
       try {
-        const resCat = await api.get('/categories/getCategories');
+        const resCat = await api.get('/customer/getCategories');
         setCategoriesForNav(resCat?.data);
       } catch (error) {
         console.log("Get categories error:", error);
       }
     }
-
-    const token = localStorage.getItem("customerAccessToken");
-    if (token) {
+    if (profileInfo) {
       fetchBasketCount();
       fetchOrderCount();
     }
     fetchCategories();
-  }, []);
+  }, [profileInfo]);
 
   const getProductsBySearchText = async (searchText) => {
     try {
-      const token = localStorage.getItem("customerAccessToken")
-      if (!token) return;
-
-      const searchProduct = await api.post("/products/searchByProductNameAsCustomer",
-        { searchText },
-        {
-          headers:
-            { Authorization: `Bearer ${token}` }
-        })
+      const searchProduct = await api.post("/customer/searchByProductNameAsCustomer",
+        { searchText })
 
       setSearchData(searchProduct?.data)
     } catch (error) {
@@ -76,13 +68,9 @@ const Navbar = ({
     }
   }
 
-  const getProfile = async (profileToken) => {
+  const getProfile = async () => {
     try {
-      const resProfile = await api.get('/customer/getMyprofileAsCustomer', {
-        headers: {
-          Authorization: `Bearer ${profileToken}`
-        }
-      })
+      const resProfile = await api.get('/customer/getMyprofileAsCustomer')
 
       setProfileInfo(resProfile?.data)
     } catch (error) {
@@ -91,12 +79,21 @@ const Navbar = ({
   }
 
   const isLogin = () => {
-    if (localStorage.getItem('customerAccessToken')) {
-      getProfile(localStorage.getItem('customerAccessToken'))
+    if (profileInfo) {
+      setCloseProfile(true)
     } else {
       setShowAuthForm(true)
     }
   }
+
+  useEffect(() => {
+    getProfile()
+  }, [])
+
+  // useEffect(()=>{
+  //   isLogin()
+  // }, [profileInfo])
+
 
   return (
     <nav className="navbar">
@@ -140,7 +137,7 @@ const Navbar = ({
           <NavLink to="/" className="navbar__link">
             <FaUserCircle className="navbar__icon" />
             <span>
-              {localStorage.getItem("customerAccessToken") ? "Hesabım" : "Daxil ol"}
+              {profileInfo ? "Hesabım" : "Daxil ol"}
             </span>
           </NavLink>
         </li>
@@ -177,7 +174,7 @@ const Navbar = ({
       }
 
       {
-        profileInfo && <MyProfile profileInfo={profileInfo} setProfileInfo={setProfileInfo} />
+        closeProfile && <MyProfile profileInfo={profileInfo} setProfileInfo={setProfileInfo} setCloseProfile={setCloseProfile} />
       }
     </nav>
   );
