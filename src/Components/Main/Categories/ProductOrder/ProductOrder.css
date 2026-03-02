@@ -118,14 +118,58 @@
   color: #333;
 }
 
+.order-station {
+  grid-row: 1 span;
+  grid-column: 3 span;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+}
+
+.order-station::before {
+  content: '';
+  width: 100%;
+  height: 1px;
+  background-color: rgba(29, 78, 216, .3);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.order-station-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  width: min-content;
+  gap: 10px;
+  z-index: 10;
+  padding: 5px;
+}
+
+.order-station-box-text {
+  font-size: .75rem;
+  white-space: nowrap;
+}
+
+.done-proses {
+  color: royalblue;
+}
+
+.waiting-proses {
+  color: lightgray;
+}
+
+@media(max-width: 1250px) {
+  .po-orders-list {
+    grid-template-columns: 1fr;
+  }
+}
 
 @media(max-width: 1000px) {
   .product-order-page {
     max-width: 75%;
-  }
-
-  .po-orders-list {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -139,28 +183,101 @@
 }
 
 
-@media(max-width: 600px) {
-  .product-order-page {
-    max-width: 96%;
+@media(max-width: 650px) {
+  .po-order-card {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 14px;
+    padding: 20px;
   }
 
-  .po-order-card {
+  .po-3 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 4;
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    gap: 20px;
+    align-items: center;
+    justify-content: center;
   }
 
-  .po-product-info {
-    gap: 5px;
-    margin: 10px auto;
+  .po-1 {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+
+  .po-2 {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+
+  .po-4 {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+  }
+
+  .order-station {
+    position: relative;
+    padding: 0;
+    width: min-content;
+  }
+
+  .order-station::before {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    background-color: rgba(29, 78, 216, .3);
+  }
+
+  .product-order-page {
+    max-width: 96%;
+    padding: 10px;
   }
 
   .po-product-details>h3 {
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
 
   .po-order-status {
     text-align: left;
+  }
+
+}
+
+
+@media(max-width: 525px) {
+  .product-order-page {
+    padding: 10px 5px;
+    width: 97%;
+  }
+
+  .po-product-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .po-order-card {
+    grid-template-columns: 100px 1fr;
+    padding: 10px;
+    column-gap: 30px;
+  }
+
+  .po-1,
+  .po-2,
+  .po-4 {
+    font-size: .8rem;
+  }
+
+  .po-product-details h3,
+  .po-product-details p {
+    font-size: .8rem !important;
+  }
+
+  .po-product-img {
+    margin: 0 auto;
   }
 }

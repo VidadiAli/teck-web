@@ -153,9 +153,7 @@
     .categories__name_list.open {
         right: 5%;
     }
-}
 
-@media (max-width: 768px) {
     .navbar__links {
         position: absolute;
         top: 100%;
@@ -182,7 +180,6 @@
         display: block;
     }
 }
-
 
 @media(max-width: 600px) {
     .navbar {

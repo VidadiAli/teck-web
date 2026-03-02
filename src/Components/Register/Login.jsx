@@ -19,6 +19,7 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
         type: 'success'
       })
       setLoginSystem(false)
+      window.location.reload();
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Xəta baş verdi");

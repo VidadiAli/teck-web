@@ -3,6 +3,8 @@ import "./ProductOrder.css";
 import api from "../../../../api";
 import LoadingCircle from "../../../Loading/LoadingCircle";
 import { ORDER_STATUS_LABEL } from "../../../Data/DataFile";
+import { FiCircle } from "react-icons/fi";
+import { FaCircle } from "react-icons/fa";
 
 const ProductOrder = ({ profileInfo }) => {
   const [orders, setOrders] = useState([]);
@@ -26,6 +28,26 @@ const ProductOrder = ({ profileInfo }) => {
     );
   }, [profileInfo]);
 
+  const createOrderStation = (item, index, orderStatus, arr) => {
+    let mainIndex = 0;
+    arr.forEach((e) => {
+      if (e.statusKey == orderStatus) {
+        mainIndex = e.statusDot
+      }
+    })
+    return <div className="order-station-box" key={item.statusDot + item.statusKey}>
+      <span className={`order-station-box-text 
+      ${mainIndex > index ?
+          'done-proses' :
+          'waiting-proses'}`}>{item.statusValue}</span>
+      {
+        mainIndex > index ?
+          <FaCircle className="order-station-box-text done-proses" /> :
+          <FiCircle className="order-station-box-text waiting-proses" />
+      }
+    </div>
+  }
+
   if (loading) return <LoadingCircle />;
 
   if (!orders?.length) return <p className="po-empty">Hələ sifarişiniz yoxdur.</p>;
@@ -36,7 +58,7 @@ const ProductOrder = ({ profileInfo }) => {
       <div className="po-orders-list">
         {orders?.map((order) => (
           <div className="po-order-card" key={order._id}>
-            <div className="po-product-info">
+            <div className="po-product-info po-1">
               <img
                 src={order.product.itemImage}
                 alt={order.product.itemName}
@@ -60,7 +82,7 @@ const ProductOrder = ({ profileInfo }) => {
                 </p>
               </div>
             </div>
-            <div className="po-order-status">
+            <div className="po-order-status po-2">
               <p>Status: <span className={`po-status ${order.orderStatus}`}>{
                 ORDER_STATUS_LABEL?.map((e) => {
                   if (e?.statusKey == order?.orderStatus) {
@@ -71,7 +93,20 @@ const ProductOrder = ({ profileInfo }) => {
               <p>Miqdar: {order.product.quantity || 1}</p>
               <p>Tarix: {new Date(order.createdAt).toLocaleString()}</p>
             </div>
-            <div className="order-location">
+            {
+              order?.orderStatus != 'cancelled' && (
+                <div className="order-station po-3">
+                  {
+                    ORDER_STATUS_LABEL.map((s, index, arr) => {
+                      if (s.statusKey != 'cancelled') {
+                        return createOrderStation(s, index, order?.orderStatus, arr)
+                      }
+                    })
+                  }
+                </div>
+              )
+            }
+            <div className="order-location po-4">
               <p>
                 Sifarişin forması: <span
                   style={{

@@ -587,26 +587,32 @@ export const percentage = [
 
 export const ORDER_STATUS_LABEL = [
   {
+    statusDot: 1,
     statusValue: "Gözləyir",
     statusKey: 'pending'
   },
   {
+    statusDot: 2,
     statusValue: "Qəbul edildi",
     statusKey: 'accepted'
   },
   {
+    statusDot: 3,
     statusValue: "Ləğv edildi",
     statusKey: 'cancelled'
   },
   {
+    statusDot: 4,
     statusValue: "Hazırlanır",
     statusKey: 'preparing'
   },
   {
+    statusDot: 5,
     statusValue: "Çatdırılma gözləyir",
     statusKey: 'waiting'
   },
   {
+    statusDot: 6,
     statusValue: "Tamamlandı",
     statusKey: 'completed'
   }
