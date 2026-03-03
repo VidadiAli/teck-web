@@ -78,7 +78,7 @@ const ProductOrder = ({ profileInfo }) => {
                         </span>
                         <del>{order?.product?.price} ₼</del>
                       </>
-                    : <span style={{ color: 'red' }}>{order?.product?.price} ₼</span>}
+                    : <span style={{ color: 'red' }}>{order?.product?.price * Number(order.productQuantity)} ₼</span>}
                 </p>
               </div>
             </div>
@@ -90,7 +90,7 @@ const ProductOrder = ({ profileInfo }) => {
                   }
                 })
               }</span></p>
-              <p>Miqdar: {order.product.quantity || 1}</p>
+              <p>Miqdar: {order.productQuantity || 1}</p>
               <p>Tarix: {new Date(order.createdAt).toLocaleString()}</p>
             </div>
             {

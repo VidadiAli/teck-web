@@ -56,6 +56,19 @@
     gap: 20px;
 }
 
+.profile-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.profile-item input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
 .profile-item span {
     font-size: 13px;
     color: gray;
@@ -79,6 +92,82 @@
 
 .logout-btn:hover {
     background: #e63946;
+}
+
+.update-ope {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.update-profile {
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    width: 100%;
+    transition: .5s;
+}
+
+.update-profile:hover {
+    background-color: rgb(219, 219, 219);
+}
+
+/* .update-profile-info{
+    background-color: rgb(167, 251, 169);
+    color: rgb(9, 93, 9);
+}
+
+.update-profile-info:hover{
+    background-color: rgb(95, 250, 98);
+}
+
+.update-password{
+    background-color: rgb(251, 223, 167);
+    color: rgb(93, 65, 9);
+}
+
+.update-password:hover{
+    background-color: rgb(245, 193, 91);
+} */
+
+
+.change-pass-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.change-pass-box>label {
+    width: 100%;
+    position: relative;
+}
+
+.change-pass-box>label>input {
+    border-radius: 5px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    outline: none;
+    transition: .5s;
+}
+
+.change-pass-box>label>input:focus {
+    border: 1px solid var(--color-primary);
+    outline: 2px solid rgba(87, 15, 100, 0.15);
+}
+
+.update-pass-eye {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
 }
 
 @media(max-width: 450px) {

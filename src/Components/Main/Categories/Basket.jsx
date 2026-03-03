@@ -95,6 +95,7 @@ const BasketPage = ({
 
       const payload = {
         productId: item._id,
+        productQuantity: item.quantity,
         orderStatus: "pending",
         orderType: orderData?.orderType,
         orderLocation: orderData?.orderLocation,
