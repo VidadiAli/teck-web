@@ -115,6 +115,7 @@
         flex-direction: row;
         overflow-x: auto;
         width: 100%;
+        padding-bottom: 10px;
     }
 
     .most-selling-item {
@@ -133,5 +134,9 @@
 
     .item-name {
         font-size: .85rem;
+    }
+
+    .product-button-most-selling {
+        padding: 10px 5px !important;
     }
 }

@@ -1,137 +1,135 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
-import data from "../../../Data/DataFile";
 import "./CarouselPart.css";
-
-const { carouselPartArr } = data;
+import api from "../../../../api";
 
 const CarouselPart = () => {
-    const [width, setWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [carouselPartArr, setCarouselPartArr] = useState([]);
+  const intervalRef = useRef(null);
 
-    useEffect(() => {
-        if (width > 600) {
-            const allItems = document.querySelectorAll('.carousel-part__card');
-            allItems.forEach(e => {
-                e.style.display = "flex";
-            });
-            return;
-        }
+  const allCarouselPosts = async () => {
+    try {
+      const res = await api.get("/customer/getAllCarouselPosts");
+      const list = Array.isArray(res?.data) ? res.data : res?.data?.posts || [];
+      setCarouselPartArr(list);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-        let start = carouselPartArr[1].id;
-        let i = 1;
-        const listOfIds = carouselPartArr.map(e => e.id);
-        showItem(carouselPartArr[0].id);
-        const btnHover = document.querySelectorAll('.carousel-ids-btns-hover');
+  useEffect(() => {
+    allCarouselPosts();
+  }, []);
 
-        btnHover.forEach((e) => {
-            if (e.getAttribute("id") !== `${carouselPartArr[0].id}Id`) {
-                e.style.transition = "none";
-                e.style.width = "0%";
-                e.style.visibility = "hidden";
-            }
-        });
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-        const active = document.getElementById(`${carouselPartArr[0].id}Id`);
-        if (active) {
-            active.style.visibility = "visible";
-            active.style.width = "0%";
+  const showItem = (itemId) => {
+    const allItems = document.querySelectorAll(".carousel-part__card");
+    allItems.forEach((el) => {
+      el.style.display = "none";
+      if (el.getAttribute("id") === String(itemId)) el.style.display = "flex";
+    });
 
-            active.offsetWidth;
+    const btnHover = document.querySelectorAll(".carousel-ids-btns-hover");
+    btnHover.forEach((el) => {
+      if (el.getAttribute("id") !== `${String(itemId)}Id`) {
+        el.style.transition = "none";
+        el.style.width = "0%";
+        el.style.visibility = "hidden";
+      }
+    });
 
-            active.style.transition = "width 6s linear";
-            active.style.width = "100%";
-        }
+    const active = document.getElementById(`${String(itemId)}Id`);
+    if (active) {
+      active.style.visibility = "visible";
+      active.style.width = "0%";
+      active.offsetWidth;
+      active.style.transition = "width 6s linear";
+      active.style.width = "100%";
+    }
+  };
 
-        const carouselInterval = setInterval(() => {
-            showItem(start);
-            start = listOfIds[i + 1];
-            i++;
-
-            if (i == listOfIds.length) {
-                i = 0;
-                start = listOfIds[i];
-            }
-        }, 6000);
-
-        return () => {
-            clearInterval(carouselInterval);
-        };
-    }, [width]);
-
-
-    useEffect(() => {
-        const handleResize = () => {
-            setWidth(window.innerWidth);
-        };
-
-        window.addEventListener("resize", handleResize);
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    }, []);
-
-    const showItem = (itemId) => {
-        const allItems = document.querySelectorAll('.carousel-part__card');
-        allItems.forEach((e) => {
-            e.style.display = "none";
-            if (e.getAttribute("id") == itemId) {
-                e.style.display = "flex"
-            }
-        })
-
-        const btnHover = document.querySelectorAll('.carousel-ids-btns-hover');
-
-        btnHover.forEach((e) => {
-            if (e.getAttribute("id") !== `${itemId.toString()}Id`) {
-                e.style.transition = "none";
-                e.style.width = "0%";
-                e.style.visibility = "hidden";
-            }
-        });
-
-        const active = document.getElementById(`${itemId.toString()}Id`);
-        if (active) {
-            active.style.visibility = "visible";
-            active.style.width = "0%";
-
-            active.offsetWidth;
-
-            active.style.transition = "width 6s linear";
-            active.style.width = "100%";
-        }
+  useEffect(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
 
-    return (
-        <section className="carousel-part">
-            <div className="carousel-part__grid">
-                {carouselPartArr?.map((e) => (
-                    <NavLink to={e.itemLink} key={e.id} className="carousel-part__card" id={e.id}>
-                        <div className="carousel-part__image-box">
-                            <img src={e.imageUrl} alt="" className="carousel-part__image" />
-                        </div>
-                        <div className="carousel-part__card-content">
-                            <p className="carousel-part__text">{e.imageText}</p>
-                            <p className="carousel-part__text-absolute">{e.imageText}</p>
-                            {e.imageDate && (
-                                <span className="carousel-part__date">{e.imageDate}</span>
-                            )}
-                            <button className="carousel-part__button">{e.imageButton}</button>
-                        </div>
-                    </NavLink>
-                ))}
+    if (!carouselPartArr || carouselPartArr.length === 0) return;
+
+    if (width > 600) {
+      const allItems = document.querySelectorAll(".carousel-part__card");
+      allItems.forEach((el) => (el.style.display = "flex"));
+
+      const btnHover = document.querySelectorAll(".carousel-ids-btns-hover");
+      btnHover.forEach((el) => {
+        el.style.transition = "none";
+        el.style.width = "0%";
+        el.style.visibility = "hidden";
+      });
+
+      return;
+    }
+
+    const listOfIds = carouselPartArr.map((x) => x._id);
+
+    showItem(listOfIds[0]);
+
+    let i = 1;
+    intervalRef.current = setInterval(() => {
+      showItem(listOfIds[i]);
+      i++;
+      if (i >= listOfIds.length) i = 0;
+    }, 6000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [width, carouselPartArr]);
+
+  return (
+    <section className="carousel-part">
+      <div className="carousel-part__grid">
+        {carouselPartArr?.map((e) => (
+          <NavLink
+            to={`category/${e.itemLink}`}
+            key={e._id}
+            className="carousel-part__card"
+            id={e._id}
+          >
+            <div className="carousel-part__image-box">
+              <img src={e.itemImage} alt="" className="carousel-part__image" />
             </div>
-            <div className="carousel-ids">
-                {
-                    carouselPartArr.map((e) => {
-                        return <button className="carousel-ids-btns" onClick={() => showItem(e.id)} key={e.id + "1"}>
-                            <span className="carousel-ids-btns-hover" id={`${e.id}Id`}></span>
-                        </button>
-                    })
-                }
+
+            <div className="carousel-part__card-content">
+              <button className="carousel-part__button">Ətraflı</button>
             </div>
-        </section>
-    );
+          </NavLink>
+        ))}
+      </div>
+
+      <div className="carousel-ids">
+        {carouselPartArr.map((e) => (
+          <button
+            className="carousel-ids-btns"
+            type="button"
+            onClick={() => showItem(e._id)}
+            key={e._id + "1"}
+          >
+            <span className="carousel-ids-btns-hover" id={`${e._id}Id`}></span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
 };
 
 export default CarouselPart;
