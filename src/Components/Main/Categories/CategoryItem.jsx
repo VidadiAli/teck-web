@@ -116,7 +116,15 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   if (error) return <h2 style={{ padding: "40px" }}>{error}</h2>;
   if (!product) return <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>;
 
-  const { itemName, price, rating, itemImage, salesCount, hasDiscount, discountPercent } = product;
+  const { itemName, price, rating, itemImage, salesCount, hasDiscount, discountPercent,
+    productSize,
+    ram,
+    operationSystem,
+    nfc,
+    countOfNuva,
+    brend,
+    year,
+    videoFormat } = product;
 
   return (
     <section className="item-detail">
@@ -175,6 +183,35 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
           </button>
         </div>
 
+        <div className="detail">
+          <h2>Xüsusiyyətlər</h2>
+          <div className="detail-box">
+            <div className="detail-box-child">
+              <span className="detail-name">Brend</span> <span className="detail-value">{brend || '-'}</span>
+            </div>
+            <div className="detail-box-child">
+              <span className="detail-name">Daxili yaddaş</span> <span className="detail-value">{productSize || '-'}</span>
+            </div>
+            <div className="detail-box-child">
+              <span className="detail-name">Operativ yaddaş</span> <span className="detail-value">{ram || '-'}</span>
+            </div>
+            <div className="detail-box-child">
+              <span className="detail-name">Əməliyyat Sistemi</span> <span className="detail-value">{operationSystem || '-'}</span>
+            </div>
+            <div className="detail-box-child">
+              <span className="detail-name">Nüvələrin sayı</span> <span className="detail-value">{countOfNuva || '-'}</span>
+            </div>
+            <div className="detail-box-child">
+              <span className="detail-name">NFC</span> <span className="detail-value">{nfc ? 'var' : 'yoxdur'}</span>
+            </div>
+            <div className="detail-box-child">
+              <span className="detail-name">Video Format</span> <span className="detail-value">{videoFormat || '-'}</span>
+            </div>
+            <div className="detail-box-child">
+              <span className="detail-name">İstehsal ili</span> <span className="detail-value">{year || '-'}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {showCompanies && (
