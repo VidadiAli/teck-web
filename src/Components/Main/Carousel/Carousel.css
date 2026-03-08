@@ -15,12 +15,14 @@
 
 @media(max-width: 1000px) {
     .carousel-main {
-        flex-direction: column;
+        width: 100%;
+        gap: 10px;
     }
 }
 
-@media(max-width: 600px){
-    .carousel-main{
-        width: 96%;
+@media(max-width: 800px){
+     .carousel-main {
+        flex-direction: column;
+        gap: 20px;
     }
 }

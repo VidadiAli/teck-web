@@ -18,7 +18,7 @@ const Body = ({
   setProfileInfo, profileInfo
 }) => {
   return (
-    <div>
+    <div style={{ padding: '0px' }}>
       <Navbar
         basketValue={basketValue}
         setBasketValue={setBasketValue}
@@ -59,7 +59,7 @@ const Body = ({
           profileInfo={profileInfo}
         />} />
 
-        <Route path='/orders' element={<ProductOrder profileInfo={profileInfo}/>} />
+        <Route path='/orders' element={<ProductOrder profileInfo={profileInfo} />} />
 
         <Route path='/search' element={<SearchAll searchData={searchData} />} />
 

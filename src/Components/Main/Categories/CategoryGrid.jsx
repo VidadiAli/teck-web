@@ -125,7 +125,7 @@ const CategoryGrid = ({ categoriesForNav }) => {
                         className="product-button"
                         to={`/product/${item._id}`}
                       >
-                        İndi al
+                        Ətraflı Bax
                       </NavLink>
                     </div>
                   </div>

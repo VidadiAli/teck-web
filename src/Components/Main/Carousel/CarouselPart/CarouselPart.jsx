@@ -62,7 +62,7 @@ const CarouselPart = () => {
 
     if (!carouselPartArr || carouselPartArr.length === 0) return;
 
-    if (width > 600) {
+    if (width > 1000) {
       const allItems = document.querySelectorAll(".carousel-part__card");
       allItems.forEach((el) => (el.style.display = "flex"));
 

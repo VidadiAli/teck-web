@@ -155,7 +155,7 @@
     left: 0;
     transition: width 6s linear;
 }
-
+/* 
 @media(max-width: 1000px) {
     .carousel-part__grid {
         grid-template-columns: 1fr 1fr;
@@ -174,19 +174,32 @@
         font-size: .9rem;
         width: 300px;
     }
-}
+} */
 
-@media(max-width: 600px) {
+@media(max-width: 1000px) {
     .carousel-part__grid {
         grid-template-columns: 1fr;
     }
 
     .carousel-part {
-        width: 96%;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0px !important;
+        margin-top: 10px;
+        margin-left: 10px;
     }
 
     .carousel-part__image-box {
-        height: 290px;
+        height: 450px;
+        border-radius: 0px;
+    }
+
+    .carousel-part__image{
+        border-radius: 0px;
+    }
+    
+    .carousel-part__card-content{
+        border-radius: 0px;
     }
 
     .carousel-part__card {
@@ -199,5 +212,37 @@
 
     .carousel-ids {
         display: flex;
+    }
+}
+
+@media(max-width: 800px){
+    .carousel-part{
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+}
+
+@media(max-width: 600px){
+    .carousel-part__image-box{
+        height: 380px;
+    }
+}
+
+
+@media(max-width: 500px){
+    .carousel-part__image-box{
+        height: 320px;
+    }
+}
+
+@media(max-width: 450px){
+    .carousel-part__image-box{
+        height: 280px;
+    }
+}
+
+@media(max-width: 410px){
+    .carousel-part__image-box{
+        height: 240px;
     }
 }

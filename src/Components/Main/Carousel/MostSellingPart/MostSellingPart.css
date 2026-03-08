@@ -103,10 +103,24 @@
     border-radius: 6px;
 }
 
-@media(max-width: 1000px) {
+@media(max-width: 1000px){
+    .most-selling-container{
+        width: 45%;
+        margin-top: 10px;
+        margin-right: 10px;
+        padding: 10px;
+    }
+    .most-selling-list{
+        padding: 0px;
+        height: 400px;
+    }
+}
+
+@media(max-width: 800px) {
     .most-selling-container {
         width: 90%;
         margin: 0 auto;
+        padding: 1rem;
     }
 
     .most-selling-list {

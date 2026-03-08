@@ -194,33 +194,43 @@
     }
 
     .product-image-box {
-        height: 240px;
         padding: 8px;
+        height: 170px;
     }
 
     .product-image {
-        max-height: 200px;
+        max-height: 130px;
     }
 
     .product-info {
         padding: 12px;
-        gap: 6px;
+        gap: 3px;
     }
 
     .product-name {
-        font-size: 0.95rem;
+        font-size: 0.8rem;
     }
 
     .product-price {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
     }
 
     .category-title {
-        font-size: 1.05rem;
+        font-size: 1rem;
     }
 
     .category-link {
         font-size: 0.8rem;
         padding: 5px 10px;
+    }
+    .item-rating{
+        font-size: .7rem !important;
+    }
+    .product-button{
+        font-size: .7rem;
+    }
+
+    .product-stock{
+        font-size: .65rem;
     }
 }
