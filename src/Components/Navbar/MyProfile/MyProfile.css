@@ -6,7 +6,7 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(2px);
-    z-index: 199;
+    z-index: 9999;
 }
 
 .profile-panel {
@@ -20,7 +20,7 @@
     padding: 25px;
     display: flex;
     flex-direction: column;
-    z-index: 200;
+    z-index: 99999;
     animation: slideIn 0.3s ease forwards;
 }
 

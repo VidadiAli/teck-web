@@ -136,7 +136,7 @@ const Navbar = ({
           }
         </li>
         <li className="navbar__item navbar__cta" onClick={isLogin}>
-          <NavLink to="/" className="navbar__link">
+          <NavLink className="navbar__link">
             <FaUserCircle className="navbar__icon" />
             <span>
               {profileInfo ? "Hesabım" : "Daxil ol"}
