@@ -3,11 +3,11 @@ import { NavLink } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import "./SearchNavbar.css";
 
-const SearchNavbar = ({ setSearchData, searchData }) => {
+const SearchNavbar = ({ setSearchData, searchData, closeSearch, setCloseSearch }) => {
     if (!searchData || searchData.length === 0) return;
 
     const handleClose = () => {
-        setSearchData([]);
+        setCloseSearch(false);
     };
 
     return (

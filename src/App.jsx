@@ -20,6 +20,7 @@ const App = () => {
   const [searchData, setSearchData] = useState([]);
   const [categoriesForNav, setCategoriesForNav] = useState([])
   const [profileInfo, setProfileInfo] = useState(null)
+  const [closeSearch, setCloseSearch] = useState(false)
 
   return (
     <div>
@@ -34,8 +35,10 @@ const App = () => {
         setSearchData={setSearchData}
         categoriesForNav={categoriesForNav}
         setCategoriesForNav={setCategoriesForNav}
-        profileInfo={profileInfo} 
-        setProfileInfo={setProfileInfo}/>
+        profileInfo={profileInfo}
+        setProfileInfo={setProfileInfo}
+        closeSearch={closeSearch} 
+        setCloseSearch={setCloseSearch} />
       {
         response?.showAlert && (
           <Alerts response={response} setResponse={setResponse} />

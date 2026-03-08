@@ -78,8 +78,25 @@ const ProductOrder = ({ profileInfo }) => {
                         </span>
                         <del>{order?.product?.price} ₼</del>
                       </>
-                    : <span style={{ color: 'red' }}>{order?.product?.price * Number(order.productQuantity)} ₼</span>}
+                    : <span style={{ color: 'red' }}>{order?.product?.price} ₼</span>}
                 </p>
+
+                {
+                  order.productQuantity && order.productQuantity != "1" && (
+                    <p >
+                      Toplam:{" "}
+                      {order?.product?.hasDiscount
+                        ? order?.orderType === "Hissəli"
+                          ? <span style={{ color: 'red' }}>{(order.product.price * order.productQuantity).toFixed(2)} ₼</span>
+                          : <>
+                            <span style={{ color: 'red', paddingRight: '10px' }}>
+                              {((order?.product?.price - (order?.product?.price * order?.product?.discountPercent) / 100) * order.productQuantity).toFixed(2)} ₼
+                            </span>
+                          </>
+                        : <span style={{ color: 'red' }}>{order?.product?.price * Number(order.productQuantity)} ₼</span>}
+                    </p>
+                  )
+                }
               </div>
             </div>
             <div className="po-order-status po-2">

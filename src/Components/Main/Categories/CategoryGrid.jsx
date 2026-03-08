@@ -4,6 +4,7 @@ import api from "../../../api";
 import "./CategoryGrid.css";
 import { FaStar } from "react-icons/fa";
 import LoadingCircle from "../../Loading/LoadingCircle";
+import ReclamArea from "./ReclamArea";
 
 const CategoryGrid = ({ categoriesForNav }) => {
   const [loading, setLoading] = useState(false)
@@ -50,89 +51,106 @@ const CategoryGrid = ({ categoriesForNav }) => {
     };
   }, [categoriesForNav]);
 
+
+  const callArea = (product, index) => {
+    return <div key={product?.categoryName + "/" + index} className="category-block">
+      <div className="category-header">
+        <h2 className="category-title">
+          {product?.categoryName.toUpperCase()}
+        </h2>
+
+        <NavLink
+          className="category-link"
+          to={`/category/${product?.categoryId}`}
+        >
+          Daha çox
+        </NavLink>
+      </div>
+
+      <div className="card-grid">
+        {product?.data
+          .map((item) => (
+            <div key={item._id} className="product-card">
+              {item.hasDiscount && item.discountPercent > 0 && (
+                <div className="discount-badge">
+                  - {item.discountPercent}%
+                </div>
+              )}
+
+              <div className="product-image-box">
+                <img
+                  src={
+                    item.itemImage || "/no-image.png"
+                  }
+                  alt={item.itemName}
+                  className="product-image"
+                />
+              </div>
+
+              <div className="product-info">
+                <h3 className="product-name">
+                  {item.itemName}
+                </h3>
+
+                <p className="item-rating">
+                  {/* <FaStar /> {item?.rating} • {item?.salesCount} satış */}
+                  {((item?.price + (item?.price * 21.6) / 100) / 18).toFixed(2)} ₼ x 18 ay
+                </p>
+
+                <p className="product-price">
+                  {item?.hasDiscount ? <>
+                    <span style={{ paddingRight: '15px' }}>₼ {(item?.price - (item?.price * item?.discountPercent) / 100).toFixed(2)}</span>
+                    <del style={{ fontSize: '.9rem', color: 'gray' }}>₼ {item?.price}</del>
+                  </> : <span>₼ {item?.price}</span>}
+                </p>
+
+                <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between' }}>
+                  {/* <p className="product-sales">
+                          Satış: {item.salesCount}
+                        </p> */}
+                  <p className="product-sales product-stock">
+                    {
+                      item?.stock > 0 ?
+                        item?.stock < 10 ? `Son ${item.stock} məhsul` : 'Stokda mövcuddur'
+                        : 'Stokda mövcud deyil'
+                    }
+                  </p>
+                </div>
+
+                <NavLink
+                  className="product-button"
+                  to={`/product/${item._id}`}
+                >
+                  Ətraflı Bax
+                </NavLink>
+              </div>
+            </div>
+          ))}
+      </div>
+    </div>
+  }
+
+  const callDifferentArea = (product, index) => {
+    return <div>
+      <ReclamArea />
+      {
+        callArea(product, index)
+      }
+    </div>
+  }
+
   if (loading) return <LoadingCircle />
 
   return (
     <div className="category-grid-container">
       {mainData?.map((product, index) => {
         if (!(product?.data.length > 0)) return
-        return (
-          <div key={product?.categoryName + "/" + index} className="category-block">
-            <div className="category-header">
-              <h2 className="category-title">
-                {product?.categoryName.toUpperCase()}
-              </h2>
-
-              <NavLink
-                className="category-link"
-                to={`/category/${product?.categoryId}`}
-              >
-                Daha çox
-              </NavLink>
-            </div>
-
-            <div className="card-grid">
-              {product?.data
-                .map((item) => (
-                  <div key={item._id} className="product-card">
-                    {item.hasDiscount && item.discountPercent > 0 && (
-                      <div className="discount-badge">
-                        - {item.discountPercent}%
-                      </div>
-                    )}
-
-                    <div className="product-image-box">
-                      <img
-                        src={
-                          item.itemImage || "/no-image.png"
-                        }
-                        alt={item.itemName}
-                        className="product-image"
-                      />
-                    </div>
-
-                    <div className="product-info">
-                      <h3 className="product-name">
-                        {item.itemName}
-                      </h3>
-
-                      <p className="item-rating">
-                        {/* <FaStar /> {item?.rating} • {item?.salesCount} satış */}
-                        {((item?.price + (item?.price * 21.6) / 100) / 18).toFixed(2)} ₼ x 18 ay
-                      </p>
-
-                      <p className="product-price">
-                        {item?.hasDiscount ? <>
-                          <span style={{ paddingRight: '15px' }}>₼ {(item?.price - (item?.price * item?.discountPercent) / 100).toFixed(2)}</span>
-                          <del style={{ fontSize: '.9rem', color: 'gray' }}>₼ {item?.price}</del>
-                        </> : <span>₼ {item?.price}</span>}
-                      </p>
-
-                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between' }}>
-                        {/* <p className="product-sales">
-                          Satış: {item.salesCount}
-                        </p> */}
-                        <p className="product-sales product-stock">
-                          {
-                            item?.stock > 0 ?
-                              item?.stock < 10 ? `Son ${item.stock} məhsul` : 'Stokda mövcuddur'
-                              : 'Stokda mövcud deyil'
-                          }
-                        </p>
-                      </div>
-
-                      <NavLink
-                        className="product-button"
-                        to={`/product/${item._id}`}
-                      >
-                        Ətraflı Bax
-                      </NavLink>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        );
+        if (index != 2) {
+          return callArea(product, index)
+        }
+        else {
+          return callDifferentArea(product, index)
+        }
       })}
     </div>
   );

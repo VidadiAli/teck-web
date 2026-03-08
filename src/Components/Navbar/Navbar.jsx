@@ -17,6 +17,7 @@ const Navbar = ({
   searchData, setSearchData,
   categoriesForNav, setCategoriesForNav,
   setProfileInfo, profileInfo,
+  closeSearch, setCloseSearch,
   setResponse }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAuthForm, setShowAuthForm] = useState(false);
@@ -63,6 +64,7 @@ const Navbar = ({
         { searchText })
 
       setSearchData(searchProduct?.data)
+      setCloseSearch(true);
     } catch (error) {
 
     }
@@ -162,8 +164,10 @@ const Navbar = ({
       </div>
 
       {
-        searchData.length && !window.location.toString().includes('/search') ? (
-          <SearchNavbar setSearchData={setSearchData} searchData={searchData} />
+        closeSearch && !window.location.toString().includes('/search') ? (
+          <SearchNavbar setSearchData={setSearchData} searchData={searchData}
+            closeSearch={closeSearch}
+            setCloseSearch={setCloseSearch} />
         ) : <></>
       }
 

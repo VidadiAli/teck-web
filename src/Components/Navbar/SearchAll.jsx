@@ -1,24 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaTimes } from "react-icons/fa";
 import "./SearchNavbar.css";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const SearchAll = ({ searchData }) => {
-  const [mainSearchData, setMainSearchData] = useState([])
-
-  const callSearchData = () => {
-    setMainSearchData(searchData)
-    console.log(searchData)
+  if (!searchData || searchData.length === 0) {
+    return <p className="no-results">Nəticə tapılmadı</p>;
   }
-
-
-  useEffect(() => {
-    callSearchData()
-  }, [searchData])
-
-  if (!mainSearchData || mainSearchData.length === 0) return <p className="no-results">Nəticə tapılmadı</p>;
 
   return (
     <div className="search-dropdown search-all-page">
@@ -27,7 +14,7 @@ const SearchAll = ({ searchData }) => {
       </div>
 
       <div className="search-results">
-        {searchData && mainSearchData?.map((item) => {
+        {searchData.map((item) => {
           const hasDiscount = item.hasDiscount && item.discountPercent > 0;
           const discountedPrice = hasDiscount
             ? (item.price - (item.price * item.discountPercent) / 100).toFixed(2)

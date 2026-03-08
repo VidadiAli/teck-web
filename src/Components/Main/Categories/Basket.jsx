@@ -184,6 +184,7 @@ const BasketPage = ({
                   <h3>{item.itemName}</h3>
                   <p>{item.salesCompany}</p>
                   <p>₼ {item.price} | 35 ay: ₼ {((item.price + (item.price * 45) / 100) / 35).toFixed(2)} / ay</p>
+                  <p>Ümumi: {(item?.price * item.quantity).toFixed(2)} ₼</p>
                   <p>⭐ {item.rating}</p>
                 </div>
                 <div className="actions">

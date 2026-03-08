@@ -15,7 +15,8 @@ const Body = ({
   orderValue, setOrderValue,
   searchData, setSearchData,
   setCategoriesForNav, categoriesForNav,
-  setProfileInfo, profileInfo
+  setProfileInfo, profileInfo,
+  closeSearch, setCloseSearch
 }) => {
   return (
     <div style={{ padding: '0px' }}>
@@ -31,6 +32,8 @@ const Body = ({
         setResponse={setResponse}
         setProfileInfo={setProfileInfo}
         profileInfo={profileInfo}
+        closeSearch={closeSearch} 
+        setCloseSearch={setCloseSearch}
       />
 
       <Routes>
