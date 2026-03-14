@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from 'react-router-dom'
 import "./MostSellingPart.css";
 import api from "../../../../api";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import LoadingCircle from "../../../Loading/LoadingCircle";
+import { addLikeds, unLiked } from "../../../../functions";
 
-const MostSellingPart = () => {
+const MostSellingPart = ({ setLikeds, likeds }) => {
   const [mainProductsData, setMainProductsData] = useState([]);
   const [loadingFirst, setLoadingFirst] = useState(false)
 
@@ -32,7 +34,12 @@ const MostSellingPart = () => {
           <div className="most-selling-list">
             {mainProductsData.map((item) => (
               <div key={item._id} className="most-selling-item">
-                <div style={{ padding: '20px 15px', display: 'flex', gap: '10px', flexDirection: 'column' }}>
+                <div style={{ padding: '20px 15px', display: 'flex', gap: '10px', flexDirection: 'column', position: 'relative' }}>
+                  {
+                    likeds.includes(item._id) ?
+                      <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
+                      <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
+                  }
                   <div className="item-image">
                     <img
                       src={item.itemImage || "/no-image.png"}

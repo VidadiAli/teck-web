@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams, NavLink } from "react-router-dom";
 import api from "../../../api";
 import "./CategoryElements.css";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaHeart, FaRegHeart } from "react-icons/fa";
 import LoadingCircle from "../../Loading/LoadingCircle";
+import { addLikeds, unLiked } from "../../../functions";
 
-const CategoryElements = () => {
+const CategoryElements = ({likeds, setLikeds}) => {
   const { categoryId } = useParams();
   const [products, setProducts] = useState([]);
   const [categoryName, setCategoryName] = useState("");
@@ -69,6 +70,12 @@ const CategoryElements = () => {
                 - {item.discountPercent}%
               </div>
             )}
+
+            {
+              likeds.includes(item._id) ?
+                <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
+                <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
+            }
 
             <div className="category-product-image-wrapper">
               <img

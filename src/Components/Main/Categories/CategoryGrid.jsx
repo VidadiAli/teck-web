@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import api from "../../../api";
 import "./CategoryGrid.css";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaHeart, FaRegHeart } from "react-icons/fa";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import ReclamArea from "./ReclamArea";
+import { addLikeds, unLiked } from "../../../functions";
 
-const CategoryGrid = ({ categoriesForNav }) => {
+const CategoryGrid = ({ categoriesForNav, setLikeds, likeds }) => {
   const [loading, setLoading] = useState(false)
   const [mainData, setMainData] = useState([]);
   const [page, setPage] = useState(1);
@@ -47,9 +48,10 @@ const CategoryGrid = ({ categoriesForNav }) => {
 
   useEffect(() => {
     if (categoriesForNav?.length > 0) {
-      callCategories()
+      callCategories();
     };
   }, [categoriesForNav]);
+
 
 
   const callArea = (product, index) => {
@@ -76,7 +78,11 @@ const CategoryGrid = ({ categoriesForNav }) => {
                   - {item.discountPercent}%
                 </div>
               )}
-
+              {
+                likeds.includes(item._id) ?
+                  <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
+                  <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
+              }
               <div className="product-image-box">
                 <img
                   src={
@@ -145,7 +151,7 @@ const CategoryGrid = ({ categoriesForNav }) => {
     <div className="category-grid-container">
       {mainData?.map((product, index) => {
         if (!(product?.data.length > 0)) return
-        if (index != 2) {
+        if (index != 1) {
           return callArea(product, index)
         }
         else {

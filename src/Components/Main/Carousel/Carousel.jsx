@@ -3,11 +3,11 @@ import CarouselPart from './CarouselPart/CarouselPart'
 import MostSellingPart from './MostSellingPart/MostSellingPart'
 import './Carousel.css'
 
-const Carousel = () => {
+const Carousel = ({ likeds, setLikeds }) => {
   return (
     <div className='carousel-main'>
-        <CarouselPart />
-        <MostSellingPart />
+      <CarouselPart />
+      <MostSellingPart setLikeds={setLikeds} likeds={likeds} />
     </div>
   )
 }

@@ -124,7 +124,11 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
     countOfNuva,
     brend,
     year,
-    videoFormat } = product;
+    videoFormat,
+    displaySize,
+    displayView,
+    displayType
+  } = product;
 
   return (
     <section className="item-detail">
@@ -186,51 +190,84 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
         <div className="detail">
           <h2>Xüsusiyyətlər</h2>
           <div className="detail-box">
-            <div className="detail-box-child">
-              <span className="detail-name">Brend</span> <span className="detail-value">{brend || '-'}</span>
-            </div>
-            <div className="detail-box-child">
-              <span className="detail-name">Daxili yaddaş</span> <span className="detail-value">{productSize || '-'}</span>
-            </div>
-            <div className="detail-box-child">
-              <span className="detail-name">Operativ yaddaş</span> <span className="detail-value">{ram || '-'}</span>
-            </div>
-            <div className="detail-box-child">
-              <span className="detail-name">Əməliyyat Sistemi</span> <span className="detail-value">{operationSystem || '-'}</span>
-            </div>
-            <div className="detail-box-child">
-              <span className="detail-name">Nüvələrin sayı</span> <span className="detail-value">{countOfNuva || '-'}</span>
-            </div>
-            <div className="detail-box-child">
-              <span className="detail-name">NFC</span> <span className="detail-value">{nfc ? 'var' : 'yoxdur'}</span>
-            </div>
-            <div className="detail-box-child">
-              <span className="detail-name">Video Format</span> <span className="detail-value">{videoFormat || '-'}</span>
-            </div>
-            <div className="detail-box-child">
-              <span className="detail-name">İstehsal ili</span> <span className="detail-value">{year || '-'}</span>
-            </div>
+            {brend && brend != '0' && brend != '-' &&
+              < div className="detail-box-child">
+                <span className="detail-name">Brend</span> <span className="detail-value">{brend || '-'}</span>
+              </div>
+            }
+            {productSize && productSize != '0' && productSize != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">Daxili yaddaş</span> <span className="detail-value">{productSize || '-'}</span>
+              </div>
+            }
+            {ram && ram != '0' && ram != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">Operativ yaddaş</span> <span className="detail-value">{ram || '-'}</span>
+              </div>
+            }
+            {operationSystem && operationSystem != '0' && operationSystem != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">Əməliyyat Sistemi</span> <span className="detail-value">{operationSystem || '-'}</span>
+              </div>
+            }
+            {countOfNuva && countOfNuva != '0' && countOfNuva != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">Nüvələrin sayı</span> <span className="detail-value">{countOfNuva || '-'}</span>
+              </div>
+            }
+            {ram && ram != '0' && ram != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">NFC</span> <span className="detail-value">{nfc ? 'var' : 'yoxdur'}</span>
+              </div>
+            }
+            {videoFormat && videoFormat != '0' && videoFormat != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">Video Format</span> <span className="detail-value">{videoFormat || '-'}</span>
+              </div>
+            }
+            {year && year != '0' && year != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">İstehsal ili</span> <span className="detail-value">{year || '-'}</span>
+              </div>
+            }
+            {displaySize && displaySize != '0' && displaySize != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">İstehsal ili</span> <span className="detail-value">{displaySize || '-'}</span>
+              </div>
+            }
+            {displayView && displayView != '0' && displayView != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">İstehsal ili</span> <span className="detail-value">{displayView || '-'}</span>
+              </div>
+            }
+            {displayType && displayType != '0' && displayType != '-' &&
+              <div className="detail-box-child">
+                <span className="detail-name">İstehsal ili</span> <span className="detail-value">{displayType || '-'}</span>
+              </div>
+            }
           </div>
         </div>
       </div>
 
-      {showCompanies && (
-        <ChooseSalesCompany
-          setShowCompanies={setShowCompanies}
-          products={companyOptions}
-          addToBasket={(selectedProduct) =>
-            addToBasket(selectedProduct._id)
-          }
-          addingMesage={addingMesage}
-        />
-      )}
+      {
+        showCompanies && (
+          <ChooseSalesCompany
+            setShowCompanies={setShowCompanies}
+            products={companyOptions}
+            addToBasket={(selectedProduct) =>
+              addToBasket(selectedProduct._id)
+            }
+            addingMesage={addingMesage}
+          />
+        )
+      }
 
       {
         showAuthForm && (
           <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
         )
       }
-    </section>
+    </section >
   );
 };
 

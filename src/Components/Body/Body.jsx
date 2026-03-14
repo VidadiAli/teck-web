@@ -8,6 +8,7 @@ import CategoryElements from '../Main/Categories/CategoryElements'
 import ProductOrder from '../Main/Categories/ProductOrder/ProductOrder'
 import SearchAll from '../Navbar/SearchAll'
 import { FaWhatsapp } from "react-icons/fa";
+import Liked from '../Main/Liked/Liked'
 
 const Body = ({
   response, setResponse,
@@ -16,7 +17,8 @@ const Body = ({
   searchData, setSearchData,
   setCategoriesForNav, categoriesForNav,
   setProfileInfo, profileInfo,
-  closeSearch, setCloseSearch
+  closeSearch, setCloseSearch,
+  likeds, setLikeds
 }) => {
   return (
     <div style={{ padding: '0px' }}>
@@ -32,17 +34,19 @@ const Body = ({
         setResponse={setResponse}
         setProfileInfo={setProfileInfo}
         profileInfo={profileInfo}
-        closeSearch={closeSearch} 
+        closeSearch={closeSearch}
         setCloseSearch={setCloseSearch}
       />
 
       <Routes>
-        <Route path="/" element={<Main categoriesForNav={categoriesForNav} />} />
+        <Route path="/" element={<Main categoriesForNav={categoriesForNav} likeds={likeds} setLikeds={setLikeds} />} />
 
         <Route
           path="/category/:categoryId"
-          element={<CategoryElements />}
+          element={<CategoryElements likeds={likeds} setLikeds={setLikeds} />}
         />
+
+        <Route path='/likeds' element={<Liked />} />
 
         <Route
           path="/product/:productId"

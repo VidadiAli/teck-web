@@ -158,6 +158,16 @@
     background: var(--color-primary-hover);
 }
 
+.heart-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 1.2rem;
+    z-index: 10;
+    color: rgb(14, 201, 14);
+    cursor: pointer;
+}
+
 @media (max-width: 1200px) {
     .card-grid {
         grid-template-columns: repeat(4, 1fr);
@@ -223,14 +233,16 @@
         font-size: 0.8rem;
         padding: 5px 10px;
     }
-    .item-rating{
+
+    .item-rating {
         font-size: .7rem !important;
     }
-    .product-button{
+
+    .product-button {
         font-size: .7rem;
     }
 
-    .product-stock{
+    .product-stock {
         font-size: .65rem;
     }
 }

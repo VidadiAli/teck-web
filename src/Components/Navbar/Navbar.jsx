@@ -112,7 +112,7 @@ const Navbar = ({
 
       <ul className={`navbar__links ${menuOpen ? "navbar__links--active" : ""}`}>
         <li className="navbar__item" onClick={() => { setMenuOpen(false) }}>
-          <NavLink to="/" className="navbar__link">
+          <NavLink to="/likeds" className="navbar__link">
             <FiHeart className="navbar__icon" />
             <span>Bəyəndiklərim</span>
           </NavLink>
