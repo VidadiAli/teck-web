@@ -64,6 +64,8 @@ const Body = ({
           setBasketValue={setBasketValue}
           setOrderValue={setOrderValue}
           profileInfo={profileInfo}
+          setLikeds={setLikeds}
+          likeds={likeds}
         />} />
 
         <Route path='/orders' element={<ProductOrder profileInfo={profileInfo} />} />

@@ -232,17 +232,17 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
             }
             {displaySize && displaySize != '0' && displaySize != '-' &&
               <div className="detail-box-child">
-                <span className="detail-name">İstehsal ili</span> <span className="detail-value">{displaySize || '-'}</span>
+                <span className="detail-name">Ekran Ölçüsü</span> <span className="detail-value">{displaySize || '-'}</span>
               </div>
             }
             {displayView && displayView != '0' && displayView != '-' &&
               <div className="detail-box-child">
-                <span className="detail-name">İstehsal ili</span> <span className="detail-value">{displayView || '-'}</span>
+                <span className="detail-name">Ekran Kalitəsi</span> <span className="detail-value">{displayView || '-'}</span>
               </div>
             }
             {displayType && displayType != '0' && displayType != '-' &&
               <div className="detail-box-child">
-                <span className="detail-name">İstehsal ili</span> <span className="detail-value">{displayType || '-'}</span>
+                <span className="detail-name">Ekran Tipi</span> <span className="detail-value">{displayType || '-'}</span>
               </div>
             }
           </div>

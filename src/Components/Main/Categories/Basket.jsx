@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { FiPlus, FiMinus, FiTrash2 } from 'react-icons/fi'
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import './Basket.css'
 import api from '../../../api'
 import OrderForm from './ProductOrder/OrderForm'
 import LoadingCircle from '../../Loading/LoadingCircle'
+import { addLikeds, unLiked } from '../../../functions';
 
 const BasketPage = ({
   setResponse,
   setBasketValue,
   setOrderValue,
-  profileInfo
+  profileInfo,
+  setLikeds,
+  likeds
 }) => {
   const [basket, setBasket] = useState([])
   const [loading, setLoading] = useState(false)
   const [loadingFirst, setLoadingFirst] = useState(false)
+  const [loadingIndex, setLoadingIndex] = useState(false);
   const [creatingMessage, setCreatingMessage] = useState(false)
   const [showOrderForm, setShowOrderForm] = useState(false)
-  const [productInfo, setProductInfo] = useState({})
+  const [productInfo, setProductInfo] = useState({});
 
   const fetchBasket = async (valueOfLoading) => {
     try {
@@ -180,6 +185,11 @@ const BasketPage = ({
                 <div className='basket-image-box'>
                   <img src={item.itemImage} alt={item.itemName} className='basket-img' />
                 </div>
+                {
+                  likeds.includes(item._id) ?
+                    <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
+                    <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
+                }
                 <div className="info">
                   <h3>{item.itemName}</h3>
                   <p>{item.salesCompany}</p>
@@ -189,16 +199,16 @@ const BasketPage = ({
                 </div>
                 <div className="actions">
                   {
-                    loading ? <LoadingCircle size='30px' /> :
+                    loading && index == loadingIndex ? <LoadingCircle size='30px' /> :
                       <>
                         <div className="quantity">
-                          <FiMinus onClick={() => decrement(index)} />
+                          <FiMinus onClick={() => { decrement(index); setLoadingIndex(index) }} />
                           <span>{item.quantity || 1}</span>
-                          <FiPlus onClick={() => increment(index)} />
+                          <FiPlus onClick={() => { increment(index); setLoadingIndex(index) }} />
                         </div>
                         <FiTrash2
                           className="trash"
-                          onClick={() => removeItem(item._id)}
+                          onClick={() => { removeItem(item._id); setLoadingIndex(index) }}
                         />
                       </>
                   }

@@ -1,4 +1,3 @@
-/* Overlay */
 .order-form-overlay {
     position: fixed;
     inset: 0;
@@ -7,11 +6,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 999999;
     animation: fadeIn 0.3s ease;
 }
 
-/* Container */
 .order-form-container {
     position: relative;
     width: 480px;
@@ -23,7 +21,6 @@
     animation: scaleIn 0.3s ease;
 }
 
-/* Close Button */
 .order-form-close {
     position: absolute;
     top: -15px;
@@ -44,7 +41,6 @@
     transform: rotate(90deg) scale(1.1);
 }
 
-/* Title */
 .order-form-title {
     text-align: center;
     margin-bottom: 25px;
@@ -53,7 +49,6 @@
     font-weight: 600;
 }
 
-/* Step Bar */
 .order-form-stepbar {
     display: flex;
     justify-content: space-between;
@@ -109,14 +104,12 @@
     background: #4f46e5;
 }
 
-/* Form */
 .order-form {
     display: flex;
     flex-direction: column;
     gap: 25px;
 }
 
-/* Groups */
 .order-form-group label {
     font-weight: 600;
     margin-bottom: 8px;
@@ -152,7 +145,6 @@
     box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
 }
 
-/* Input */
 .order-form-input {
     width: 100%;
     padding: 14px;
@@ -168,7 +160,6 @@
     outline: none;
 }
 
-/* Submit */
 .order-form-submit {
     padding: 14px;
     border-radius: 14px;
@@ -279,7 +270,6 @@
     }
 }
 
-/* Mobile */
 @media (max-width: 600px) {
     .order-form-container {
         width: 85%;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import api from '../../../api';
 import { FaHeart } from "react-icons/fa";
 import './Liked.css';
@@ -105,12 +105,12 @@ const Liked = () => {
                                                     )}
                                                 </div>
 
-                                                <Link
+                                                <NavLink
                                                     to={`/product/${product?._id}`}
                                                     className="tvef-liked-detail-btn"
                                                 >
                                                     Ətraflı bax
-                                                </Link>
+                                                </NavLink>
                                             </div>
                                         </div>
                                     );
