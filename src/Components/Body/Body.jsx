@@ -9,6 +9,8 @@ import ProductOrder from '../Main/Categories/ProductOrder/ProductOrder'
 import SearchAll from '../Navbar/SearchAll'
 import { FaWhatsapp } from "react-icons/fa";
 import Liked from '../Main/Liked/Liked'
+import Footer from '../Footer/Footer'
+import CategoryGrid from '../Main/Categories/CategoryGrid'
 
 const Body = ({
   response, setResponse,
@@ -39,11 +41,15 @@ const Body = ({
       />
 
       <Routes>
-        <Route path="/" element={<Main categoriesForNav={categoriesForNav} likeds={likeds} setLikeds={setLikeds} />} />
+        <Route path="/" element={<Main
+          categoriesForNav={categoriesForNav}
+          likeds={likeds} setLikeds={setLikeds}
+          setResponse={setResponse}
+          setBasketValue={setBasketValue} />} />
 
         <Route
           path="/category/:categoryId"
-          element={<CategoryElements likeds={likeds} setLikeds={setLikeds} />}
+          element={<CategoryElements likeds={likeds} setLikeds={setLikeds} setResponse={setResponse} setBasketValue={setBasketValue} />}
         />
 
         <Route path='/likeds' element={<Liked />} />
@@ -72,8 +78,18 @@ const Body = ({
 
         <Route path='/search' element={<SearchAll searchData={searchData} />} />
 
+
+        <Route path='/products' element={<CategoryGrid
+          categoriesForNav={categoriesForNav}
+          setLikeds={setLikeds}
+          likeds={likeds}
+          setResponse={setResponse}
+          setBasketValue={setBasketValue} />}
+        />
+
       </Routes>
 
+      <Footer />
 
       <div className="whatsapp-wrapper">
         <button

@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import api from "../../../api";
 import "./CategoryGrid.css";
-import { FaStar, FaHeart, FaRegHeart } from "react-icons/fa";
-import LoadingCircle from "../../Loading/LoadingCircle";
 import ReclamArea from "./ReclamArea";
-import { addLikeds, unLiked } from "../../../functions";
+import LoadingAllData from "../../../loadings/LoadingAllData";
+import ProductCard from "../PageLayout/ProductCard";
 
-const CategoryGrid = ({ categoriesForNav, setLikeds, likeds }) => {
+const CategoryGrid = ({ categoriesForNav, setLikeds, likeds, setResponse, setBasketValue }) => {
   const [loading, setLoading] = useState(false)
   const [mainData, setMainData] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5)
+  const [pageSize] = useState(5)
 
   const callCategories = async () => {
     setLoading(true)
@@ -28,7 +27,6 @@ const CategoryGrid = ({ categoriesForNav, setLikeds, likeds }) => {
             }
           );
 
-          console.log(res?.data)
           return {
             categoryName: data?.name,
             categoryId: data?._id,
@@ -55,7 +53,7 @@ const CategoryGrid = ({ categoriesForNav, setLikeds, likeds }) => {
 
 
   const callArea = (product, index) => {
-    return <div key={product?.categoryName + "/" + index} className="category-block">
+    return <div key={product?.categoryName + "/" + index + '1'} className="category-block">
       <div className="category-header">
         <h2 className="category-title">
           {product?.categoryName.toUpperCase()}
@@ -72,72 +70,21 @@ const CategoryGrid = ({ categoriesForNav, setLikeds, likeds }) => {
       <div className="card-grid">
         {product?.data
           .map((item) => (
-            <div key={item._id} className="product-card">
-              {item.hasDiscount && item.discountPercent > 0 && (
-                <div className="discount-badge">
-                  - {item.discountPercent}%
-                </div>
-              )}
-              {
-                likeds.includes(item._id) ?
-                  <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
-                  <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
-              }
-              <div className="product-image-box">
-                <img
-                  src={
-                    item.itemImage || "/no-image.png"
-                  }
-                  alt={item.itemName}
-                  className="product-image"
-                />
-              </div>
-
-              <div className="product-info">
-                <h3 className="product-name">
-                  {item.itemName}
-                </h3>
-
-                <p className="item-rating">
-                  {/* <FaStar /> {item?.rating} • {item?.salesCount} satış */}
-                  {((item?.price + (item?.price * 21.6) / 100) / 18).toFixed(2)} ₼ x 18 ay
-                </p>
-
-                <p className="product-price">
-                  {item?.hasDiscount ? <>
-                    <span style={{ paddingRight: '15px' }}>₼ {(item?.price - (item?.price * item?.discountPercent) / 100).toFixed(2)}</span>
-                    <del style={{ fontSize: '.9rem', color: 'gray' }}>₼ {item?.price}</del>
-                  </> : <span>₼ {item?.price}</span>}
-                </p>
-
-                <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between' }}>
-                  {/* <p className="product-sales">
-                          Satış: {item.salesCount}
-                        </p> */}
-                  <p className="product-sales product-stock">
-                    {
-                      item?.stock > 0 ?
-                        item?.stock < 10 ? `Son ${item.stock} məhsul` : 'Stokda mövcuddur'
-                        : 'Stokda mövcud deyil'
-                    }
-                  </p>
-                </div>
-
-                <NavLink
-                  className="product-button"
-                  to={`/product/${item._id}`}
-                >
-                  Ətraflı Bax
-                </NavLink>
-              </div>
-            </div>
+            <ProductCard
+              key={item._id || item.id}
+              item={item}
+              likeds={likeds}
+              setLikeds={setLikeds}
+              setResponse={setResponse}
+              setBasketValue={setBasketValue}
+            />
           ))}
       </div>
     </div>
   }
 
   const callDifferentArea = (product, index) => {
-    return <div>
+    return <div key={index}>
       <ReclamArea />
       {
         callArea(product, index)
@@ -145,19 +92,21 @@ const CategoryGrid = ({ categoriesForNav, setLikeds, likeds }) => {
     </div>
   }
 
-  if (loading) return <LoadingCircle />
 
   return (
     <div className="category-grid-container">
-      {mainData?.map((product, index) => {
-        if (!(product?.data.length > 0)) return
-        if (index != 1) {
-          return callArea(product, index)
-        }
-        else {
-          return callDifferentArea(product, index)
-        }
-      })}
+      {
+        loading ? <LoadingAllData /> :
+          mainData?.map((product, index) => {
+            if (!(product?.data.length > 0)) return
+            if (index != 1) {
+              return callArea(product, index)
+            }
+            else {
+              return callDifferentArea(product, index)
+            }
+          })
+      }
     </div>
   );
 };

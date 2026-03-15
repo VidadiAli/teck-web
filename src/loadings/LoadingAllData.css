@@ -2,21 +2,21 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
 }
 
 @media (max-width: 1000px) {
     .tvef-loading-grid {
         grid-template-columns: repeat(3, 1fr);
-        width: 90%;
+        width: 100%;
     }
 }
 
 @media (max-width: 600px) {
     .tvef-loading-grid {
         grid-template-columns: repeat(2, 1fr);
-        width: 98%;
+        width: 100%;
     }
 }
 

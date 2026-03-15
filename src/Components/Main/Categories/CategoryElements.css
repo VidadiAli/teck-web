@@ -24,104 +24,6 @@
   gap: 22px;
 }
 
-.category-product-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: 0.3s;
-  position: relative;
-}
-
-.category-product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
-}
-
-.category-product-badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: red;
-  color: #fff;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  border-radius: 50%;
-  font-weight: 600;
-  z-index: 1;
-}
-
-.category-product-image-wrapper {
-  width: 100%;
-  height: 190px;
-  background: var(--color-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px;
-}
-
-.category-product-image {
-  max-width: 100%;
-  max-height: 160px;
-  object-fit: contain;
-  transition: 0.3s;
-}
-
-.category-product-card:hover .category-product-image {
-  transform: scale(1.05);
-}
-
-.category-product-body {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 5px;
-  flex: 1;
-}
-
-.category-product-title {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--color-text-primary);
-  line-height: 1.3;
-}
-
-.category-product-price {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
-}
-
-.category-product-price del {
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
-  margin-left: 6px;
-}
-
-.category-product-button {
-  margin-top: 10px;
-  text-align: center;
-  text-decoration: none;
-  padding: 8px 0;
-  border-radius: 25px;
-  font-weight: 600;
-  background: var(--color-primary);
-  color: #fff;
-  transition: 0.3s;
-}
-
-.category-product-button:hover {
-  background: var(--color-primary-hover);
-}
-
 .more-products {
   display: block;
   margin: 20px auto;
@@ -170,32 +72,6 @@
   .category-page-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
-  }
-
-  .category-product-card {
-    border-radius: 12px;
-  }
-
-  .category-product-image-wrapper {
-    height: 140px;
-    padding: 8px;
-  }
-
-  .category-product-image {
-    max-height: 115px;
-  }
-
-  .category-product-body {
-    padding: 12px;
-    gap: 6px;
-  }
-
-  .category-product-title {
-    font-size: 0.9rem;
-  }
-
-  .category-product-price {
-    font-size: 0.95rem;
   }
 
   .category-page-title {

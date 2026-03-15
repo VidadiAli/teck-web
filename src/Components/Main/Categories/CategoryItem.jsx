@@ -12,6 +12,7 @@ import api from "../../../api";
 import AuthForm from "../../Register/AuthForm";
 import { percentage } from "../../Data/DataFile";
 import LoadingCircle from "../../Loading/LoadingCircle";
+import { addToBasket } from "../../../functions";
 
 const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   const { productId } = useParams();
@@ -79,36 +80,6 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
     } catch (error) {
       console.error(error);
       setResponse({ type: "error", message: "Xəta baş verdi ❌", showAlert: true });
-    }
-  };
-
-  const addToBasket = async (productId) => {
-    try {
-      setLoading(true)
-      setError("S")
-      const res = await api.post("/basket/addToBasket", {
-        productId,
-        quantity: 1,
-      });
-
-      setBasketValue(res.data.count);
-
-      setResponse({
-        type: "success",
-        message: "Səbətə əlavə olundu ✅",
-        showAlert: true,
-        head: "Uğurlu!",
-      });
-
-      setShowCompanies(false);
-
-    } catch (error) {
-      console.error(error);
-      setResponse({
-        type: "error",
-        message: "Səbətə əlavə edilə bilmədi ❌",
-        showAlert: true
-      });
     }
   };
 
@@ -255,7 +226,7 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
             setShowCompanies={setShowCompanies}
             products={companyOptions}
             addToBasket={(selectedProduct) =>
-              addToBasket(selectedProduct._id)
+              addToBasket(selectedProduct._id, setLoading, setError, setBasketValue, setResponse, setShowCompanies, true)
             }
             addingMesage={addingMesage}
           />

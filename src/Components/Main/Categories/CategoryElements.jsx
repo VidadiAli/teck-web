@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, NavLink } from "react-router-dom";
 import api from "../../../api";
 import "./CategoryElements.css";
-import { FaStar, FaHeart, FaRegHeart } from "react-icons/fa";
 import LoadingCircle from "../../Loading/LoadingCircle";
-import { addLikeds, unLiked } from "../../../functions";
+import ProductCard from "../PageLayout/ProductCard";
 
-const CategoryElements = ({likeds, setLikeds}) => {
+const CategoryElements = ({ likeds, setLikeds, setResponse, setBasketValue }) => {
   const { categoryId } = useParams();
   const [products, setProducts] = useState([]);
   const [categoryName, setCategoryName] = useState("");
@@ -64,62 +63,14 @@ const CategoryElements = ({likeds, setLikeds}) => {
 
       <div className="category-page-grid">
         {products.map((item) => (
-          <div key={item._id} className="category-product-card">
-            {item.hasDiscount && item.discountPercent > 0 && (
-              <div className="category-product-badge">
-                - {item.discountPercent}%
-              </div>
-            )}
-
-            {
-              likeds.includes(item._id) ?
-                <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
-                <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
-            }
-
-            <div className="category-product-image-wrapper">
-              <img
-                src={item.itemImage || "/no-image.png"}
-                alt={item.itemName}
-                className="category-product-image"
-              />
-            </div>
-
-            <div className="category-product-body">
-              <h3 className="category-product-title">
-                {item.itemName}
-              </h3>
-
-              {/* <p className="item-rating">
-                <FaStar /> {item?.rating} • {item?.salesCount} satış
-              </p> */}
-
-              <p className="item-rating">
-                {/* <FaStar /> {item?.rating} • {item?.salesCount} satış */}
-                {((item?.price + (item?.price * 21.6) / 100) / 18).toFixed(2)} ₼ x 18 ay
-              </p>
-
-              <div className="category-product-price">
-                {item?.hasDiscount ? <>
-                  <span style={{ paddingRight: '15px' }}>₼ {(item?.price - (item?.price * item?.discountPercent) / 100).toFixed(2)}</span>
-                  <del style={{ fontSize: '.9rem', color: 'gray' }}>₼ {item?.price}</del>
-                </> : <span>₼ {item?.price}</span>}
-              </div>
-              <p className="product-sales product-stock">
-                {
-                  item?.stock > 0 ?
-                    item?.stock < 10 ? `son ${item.stock} məhsul` : 'Stokda mövcuddur'
-                    : 'Stokda mövcud deyil'
-                }
-              </p>
-              <NavLink
-                to={`/product/${item._id}`}
-                className="category-product-button"
-              >
-                Məhsula bax
-              </NavLink>
-            </div>
-          </div>
+          <ProductCard
+            key={item._id || item.id}
+            item={item}
+            likeds={likeds}
+            setLikeds={setLikeds}
+            setResponse={setResponse}
+            setBasketValue={setBasketValue}
+          />
         ))}
       </div>
       {

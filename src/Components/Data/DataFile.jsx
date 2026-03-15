@@ -68,3 +68,15 @@ export const ORDER_STATUS_LABEL = [
     statusKey: 'completed'
   }
 ];
+
+
+export const brands = [
+  {
+    id: '1',
+    name: 'apple'
+  },
+  {
+    id: '2',
+    name: 'samsung'
+  }
+]

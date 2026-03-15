@@ -2,19 +2,25 @@ import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./CarouselPart.css";
 import api from "../../../../api";
+import LoadingAllData from "../../../../loadings/LoadingAllData";
 
 const CarouselPart = () => {
   const [width, setWidth] = useState(window.innerWidth);
   const [carouselPartArr, setCarouselPartArr] = useState([]);
+  const [loading, setLoading] = useState(false)
   const intervalRef = useRef(null);
 
   const allCarouselPosts = async () => {
     try {
+      setLoading(true)
       const res = await api.get("/customer/getAllCarouselPosts");
       const list = Array.isArray(res?.data) ? res.data : res?.data?.posts || [];
       setCarouselPartArr(list);
     } catch (error) {
       console.log(error);
+    }
+    finally {
+      setLoading(false)
     }
   };
 
@@ -94,6 +100,8 @@ const CarouselPart = () => {
       }
     };
   }, [width, carouselPartArr]);
+
+  if (loading) return <LoadingAllData />
 
   return (
     <section className="carousel-part">
