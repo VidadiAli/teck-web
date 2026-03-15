@@ -25,6 +25,10 @@
     gap: 28px;
 }
 
+.vns-catalog-content-reverse{
+    flex-direction: column-reverse;
+}
+
 .vns-filter {
     background: var(--color-bg);
     border: 1px solid var(--color-border);
@@ -319,6 +323,39 @@
 .vns-product-cart-btn:hover {
     border-color: var(--color-success);
     color: var(--color-success);
+}
+
+.vns-load-more-btn {
+  margin: 28px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  min-width: 160px;
+  padding: 0 22px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.vns-load-more-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.12);
+}
+
+.vns-load-more-btn:active {
+  transform: translateY(1px);
+}
+
+.vns-load-more-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 1280px) {

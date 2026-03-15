@@ -16,6 +16,8 @@
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--color-text-primary);
+  text-transform: capitalize;
+  margin-bottom: 0px;
 }
 
 .category-page-grid {
@@ -75,6 +77,6 @@
   }
 
   .category-page-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 }

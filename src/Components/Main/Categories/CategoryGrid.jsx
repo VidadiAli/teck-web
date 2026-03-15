@@ -56,7 +56,7 @@ const CategoryGrid = ({ categoriesForNav, setLikeds, likeds, setResponse, setBas
     return <div key={product?.categoryName + "/" + index + '1'} className="category-block">
       <div className="category-header">
         <h2 className="category-title">
-          {product?.categoryName.toUpperCase()}
+          {product?.categoryName}
         </h2>
 
         <NavLink

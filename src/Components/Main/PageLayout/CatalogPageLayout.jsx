@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CatalogPageLayout.css";
 import ProductRowsSection from "./ProductRowsSection";
 import FilterSidebar from "./FilterSideBar";
@@ -21,8 +21,24 @@ const CatalogPageLayout = ({
     setLikeds,
     loadingMixed,
     setResponse,
-    setBasketValue
+    setBasketValue,
+    loadingFilterd,
+    totalPages,
+    setPageFilter,
+    pageFilter
 }) => {
+
+    const [reversValue, setReverseValue] = useState('')
+
+    useEffect(() => {
+        if (minPrice != '' || maxPrice != '' || selectedBrand != '' || selectedCategory != '') {
+            setReverseValue('none')
+        }
+        else {
+            setReverseValue('')
+        }
+    }, [minPrice, maxPrice, selectedBrand, selectedCategory])
+
     return (
         <div className="vns-catalog-page">
             <div className="vns-catalog-shell">
@@ -39,10 +55,11 @@ const CatalogPageLayout = ({
                         onMinPriceChange={onMinPriceChange}
                         onMaxPriceChange={onMaxPriceChange}
                         onResetFilters={onResetFilters}
+                        setPageFilter={setPageFilter}
                     />
                 </aside>
 
-                <div className="vns-catalog-content">
+                <div className={`vns-catalog-content`}>
                     <ProductRowsSection
                         title="Sizin üçün seçilənlər"
                         subtitle="Fərqli növ məhsulların toplandığı seçilmiş təkliflər."
@@ -53,6 +70,12 @@ const CatalogPageLayout = ({
                         loadingMixed={loadingMixed}
                         setResponse={setResponse}
                         setBasketValue={setBasketValue}
+                        showMore={true}
+                        style={reversValue}
+                        loadingFilterd={loadingFilterd}
+                        totalPages={totalPages}
+                        setPageFilter={setPageFilter}
+                        pageFilter={pageFilter}
                     />
 
                     <ProductRowsSection
@@ -60,6 +83,17 @@ const CatalogPageLayout = ({
                         subtitle="Kateqoriya və brendlərə görə baxa biləcəyin əsas məhsullar."
                         moreLink="/products"
                         items={products}
+                        likeds={likeds}
+                        setLikeds={setLikeds}
+                        loadingMixed={loadingMixed}
+                        setResponse={setResponse}
+                        setBasketValue={setBasketValue}
+                        showMore={false}
+                        style={''}
+                        loadingFilterd={loadingFilterd}
+                        totalPages={totalPages}
+                        setPageFilter={setPageFilter}
+                        pageFilter={pageFilter}
                     />
                 </div>
             </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import LoadingAllData from "../../../loadings/LoadingAllData";
+import LoadingMore from "../../../loadings/LoadingMore";
 
 const ProductRowsSection = ({
     title,
@@ -12,10 +13,16 @@ const ProductRowsSection = ({
     setLikeds,
     loadingMixed,
     setResponse,
-    setBasketValue
+    setBasketValue,
+    showMore,
+    style,
+    loadingFilterd,
+    totalPages,
+    setPageFilter,
+    pageFilter
 }) => {
     return (
-        <section className="vns-section">
+        <section className="vns-section" style={{ display: style }}>
 
             <div className="vns-section-head">
                 <div>
@@ -23,9 +30,11 @@ const ProductRowsSection = ({
                     <p className="vns-section-subtitle">{subtitle}</p>
                 </div>
 
-                <Link to={moreLink} className="vns-section-more">
-                    Daha ətraflı
-                </Link>
+                {
+                    showMore && <Link to={moreLink} className="vns-section-more">
+                        Daha ətraflı
+                    </Link>
+                }
             </div>
 
             {
@@ -44,6 +53,25 @@ const ProductRowsSection = ({
                     />
                 ))}
             </div>
+
+            {
+                !showMore && (
+                    <>
+                        {
+                            loadingFilterd && <LoadingMore />
+                        }
+                        {
+                            pageFilter < totalPages &&
+                            <button
+                                className="vns-load-more-btn"
+                                onClick={() => setPageFilter(prev => prev + 1)}
+                            >
+                                Daha çox
+                            </button>
+                        }
+                    </>
+                )
+            }
         </section>
     );
 };

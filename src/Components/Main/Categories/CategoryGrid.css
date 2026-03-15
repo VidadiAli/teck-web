@@ -18,6 +18,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--color-text-primary);
+    text-transform: capitalize;
 }
 
 .category-link {
@@ -98,5 +99,12 @@
 
     .item-rating {
         font-size: .7rem !important;
+    }
+
+    .category-title {
+        font-size: 1.05rem;
+    }
+    .category-link{
+        font-size: .8rem;
     }
 }
