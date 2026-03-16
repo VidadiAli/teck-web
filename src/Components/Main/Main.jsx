@@ -53,6 +53,7 @@ const Main = ({ categoriesForNav, likeds, setLikeds, setResponse, setBasketValue
           }
         }
       );
+      
       itsPageFiltered
         ? setFilteredProducts([...filteredProducts, ...res.data.data])
         : setFilteredProducts(res.data.data);

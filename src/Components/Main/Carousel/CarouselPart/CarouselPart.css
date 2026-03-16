@@ -1,7 +1,8 @@
 .carousel-part {
     width: 75%;
     margin: 2rem auto;
-    padding: 1rem 0;
+    padding: 0px;
+    margin-bottom: 0px;
 }
 
 .carousel-part__grid {
@@ -28,7 +29,7 @@
 
 .carousel-part__image-box {
     width: 100%;
-    height: 200px;
+    height: 230px;
     overflow: hidden;
     position: relative;
     border-radius: 20px;

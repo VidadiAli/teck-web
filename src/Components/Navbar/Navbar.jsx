@@ -18,14 +18,15 @@ const Navbar = ({
   categoriesForNav, setCategoriesForNav,
   setProfileInfo, profileInfo,
   closeSearch, setCloseSearch,
-  setResponse }) => {
+  setResponse, setTotalSearchPages,
+  searchPage, setSearchPage,
+  setSearchLoading }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAuthForm, setShowAuthForm] = useState(false);
   const [customerToken, setCustomerToken] = useState('');
   const [closeProfile, setCloseProfile] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(150);
-  const [totalPages, setTotalPages] = useState(null)
+  const [pageSize] = useState(10);
+  const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
     const fetchBasketCount = async () => {
@@ -61,21 +62,27 @@ const Navbar = ({
     fetchCategories();
   }, [profileInfo]);
 
-  const getProductsBySearchText = async (searchText) => {
+  const getProductsBySearchText = async () => {
+    if (searchText.trim() == '') return;
+
     try {
+      setSearchLoading(true)
       const searchProduct = await api.post("/customer/searchByProductNameAsCustomer",
-        { searchText }, {
+        { searchText: searchText }, {
         params: {
-          page, pageSize
+          page: searchPage, pageSize
         }
-      }
-      )
+      });
 
       setSearchData([...searchData, ...searchProduct?.data.data]);
-      setTotalPages(searchProduct.data.totalPages);
+      setTotalSearchPages(searchProduct.data.totalPages);
       setCloseSearch(true);
+
     } catch (error) {
       console.log(error);
+    }
+    finally {
+      setSearchLoading(false)
     }
   }
 
@@ -101,10 +108,9 @@ const Navbar = ({
     getProfile()
   }, [])
 
-  // useEffect(()=>{
-  //   isLogin()
-  // }, [profileInfo])
-
+  useEffect(() => {
+    getProductsBySearchText();
+  }, [searchText, searchPage])
 
   return (
     <nav className="navbar">
@@ -115,7 +121,8 @@ const Navbar = ({
       </div>
 
       <div className="navbar__search">
-        <input type="text" className="navbar__search-input" placeholder="Axtar..." onChange={(e) => getProductsBySearchText(e.target.value)} />
+        <input type="text" className="navbar__search-input" placeholder="Axtar..."
+          onChange={(e) => { setSearchText(e.target.value); setSearchPage(1); setSearchData([]) }} />
         <FiSearch className="navbar__search-icon" />
       </div>
 
@@ -177,7 +184,7 @@ const Navbar = ({
           <SearchNavbar setSearchData={setSearchData} searchData={searchData}
             closeSearch={closeSearch}
             setCloseSearch={setCloseSearch}
-            />
+          />
         ) : <></>
       }
 

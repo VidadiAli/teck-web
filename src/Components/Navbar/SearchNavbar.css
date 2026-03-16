@@ -115,6 +115,24 @@
     background: #9333ea;
 }
 
+.search-load-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.search-load-more__btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background: #2563eb;
+    color: #fff;
+    cursor: pointer;
+}
+
+
 @media (max-width: 1000px) {
     .search-dropdown {
         width: 90%;

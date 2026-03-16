@@ -27,11 +27,14 @@ const CategoryGrid = ({ categoriesForNav, setLikeds, likeds, setResponse, setBas
             }
           );
 
+          console.log(res.data.products)
+          
           return {
             categoryName: data?.name,
             categoryId: data?._id,
             data: res?.data?.products
           };
+
         } catch (error) {
           return null;
         }

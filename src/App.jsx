@@ -23,7 +23,10 @@ const App = () => {
   const [categoriesForNav, setCategoriesForNav] = useState([])
   const [profileInfo, setProfileInfo] = useState(null)
   const [closeSearch, setCloseSearch] = useState(false);
-  const [likeds, setLikeds] = useState([])
+  const [likeds, setLikeds] = useState([]);
+  const [totalSearchPages, setTotalSearchPages] = useState(null);
+  const [searchPage, setSearchPage] = useState(1);
+  const [searchLoading, setSearchLoading] = useState(false)
 
   const callLikeds = async () => {
     try {
@@ -57,7 +60,14 @@ const App = () => {
         closeSearch={closeSearch}
         setCloseSearch={setCloseSearch}
         likeds={likeds}
-        setLikeds={setLikeds} />
+        setLikeds={setLikeds}
+        totalSearchPages={totalSearchPages}
+        setTotalSearchPages={setTotalSearchPages}
+        searchPage={searchPage}
+        setSearchPage={setSearchPage}
+        searchLoading={searchLoading}
+        setSearchLoading={setSearchLoading}
+         />
       {
         response?.showAlert && (
           <Alerts response={response} setResponse={setResponse} />

@@ -1,8 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./SearchNavbar.css";
+import LoadingMore from "../../loadings/LoadingMore";
 
-const SearchAll = ({ searchData }) => {
+const SearchAll = ({
+  searchData,
+  searchPage,
+  setSearchPage,
+  totalSearchPages,
+  searchLoading
+}) => {
   if (!searchData || searchData.length === 0) {
     return <p className="no-results">Nəticə tapılmadı</p>;
   }
@@ -47,6 +54,20 @@ const SearchAll = ({ searchData }) => {
           );
         })}
       </div>
+
+      {searchLoading && <LoadingMore />}
+      {
+        searchPage < totalSearchPages && (
+          <div className="search-load-more">
+            <button
+              className="search-load-more__btn"
+              onClick={() => setSearchPage((prev) => prev + 1)}
+            >
+              Daha çox
+            </button>
+          </div>
+        )
+      }
     </div>
   );
 };

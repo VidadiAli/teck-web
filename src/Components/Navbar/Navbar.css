@@ -145,12 +145,18 @@
     color: var(--color-text-primary);
 }
 
+
+@media(max-width: 1280px) {
+    .navbar {
+        width: 90%;
+    }
+}
+
 @media(max-width: 1000px) {
     .navbar {
         width: 100%;
         padding: .75rem 10px;
     }
-
 
     .categories__name_list.open {
         right: 5%;

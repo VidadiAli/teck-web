@@ -20,7 +20,13 @@ const Body = ({
   setCategoriesForNav, categoriesForNav,
   setProfileInfo, profileInfo,
   closeSearch, setCloseSearch,
-  likeds, setLikeds
+  likeds, setLikeds,
+  totalSearchPages,
+  setTotalSearchPages,
+  searchPage,
+  setSearchPage,
+  searchLoading,
+  setSearchLoading
 }) => {
   return (
     <div style={{ padding: '0px' }}>
@@ -38,6 +44,10 @@ const Body = ({
         profileInfo={profileInfo}
         closeSearch={closeSearch}
         setCloseSearch={setCloseSearch}
+        setTotalSearchPages={setTotalSearchPages}
+        searchPage={searchPage}
+        setSearchPage={setSearchPage}
+        setSearchLoading={setSearchLoading}
       />
 
       <Routes>
@@ -76,7 +86,13 @@ const Body = ({
 
         <Route path='/orders' element={<ProductOrder profileInfo={profileInfo} />} />
 
-        <Route path='/search' element={<SearchAll searchData={searchData} />} />
+        <Route path='/search' element={<SearchAll
+          searchData={searchData}
+          searchPage={searchPage}
+          setSearchPage={setSearchPage}
+          totalSearchPages={totalSearchPages}
+          searchLoading={searchLoading}
+        />} />
 
 
         <Route path='/products' element={<CategoryGrid

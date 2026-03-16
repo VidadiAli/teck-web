@@ -4,9 +4,10 @@
     gap: 20px;
     width: 80%;
     margin: 0 10%;
+    margin-bottom: 40px;
 }
 
-@media(max-width: 1150px){
+@media(max-width: 1280px){
     .carousel-main{
         width: 90%;
         margin: 0 auto;
