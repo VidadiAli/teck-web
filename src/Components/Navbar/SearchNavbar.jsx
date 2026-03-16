@@ -20,7 +20,7 @@ const SearchNavbar = ({ setSearchData, searchData, closeSearch, setCloseSearch }
             </div>
 
             <div className="search-results">
-                {searchData.slice(0, 4).map((item) => {
+                {searchData.slice(0, 5).map((item) => {
                     const hasDiscount = item.hasDiscount && item.discountPercent > 0;
                     const discountedPrice = hasDiscount
                         ? (item.price - (item.price * item.discountPercent) / 100).toFixed(2)

@@ -22,7 +22,10 @@ const Navbar = ({
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAuthForm, setShowAuthForm] = useState(false);
   const [customerToken, setCustomerToken] = useState('');
-  const [closeProfile, setCloseProfile] = useState(false)
+  const [closeProfile, setCloseProfile] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(150);
+  const [totalPages, setTotalPages] = useState(null)
 
   useEffect(() => {
     const fetchBasketCount = async () => {
@@ -61,12 +64,18 @@ const Navbar = ({
   const getProductsBySearchText = async (searchText) => {
     try {
       const searchProduct = await api.post("/customer/searchByProductNameAsCustomer",
-        { searchText })
+        { searchText }, {
+        params: {
+          page, pageSize
+        }
+      }
+      )
 
-      setSearchData(searchProduct?.data)
+      setSearchData([...searchData, ...searchProduct?.data.data]);
+      setTotalPages(searchProduct.data.totalPages);
       setCloseSearch(true);
     } catch (error) {
-
+      console.log(error);
     }
   }
 
@@ -167,7 +176,8 @@ const Navbar = ({
         closeSearch && !window.location.toString().includes('/search') ? (
           <SearchNavbar setSearchData={setSearchData} searchData={searchData}
             closeSearch={closeSearch}
-            setCloseSearch={setCloseSearch} />
+            setCloseSearch={setCloseSearch}
+            />
         ) : <></>
       }
 
