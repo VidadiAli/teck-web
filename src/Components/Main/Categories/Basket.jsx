@@ -109,7 +109,6 @@ const BasketPage = ({
         percentageValue: orderData?.percentageValue,
       };
 
-      console.log(item, payload)
       const res = await api.post(
         "/customer/createOrder",
         payload
@@ -132,7 +131,7 @@ const BasketPage = ({
         });
 
         setCreatingMessage(false)
-        // window.location = "/orders/"
+        window.location = "/orders/"
       } catch (error) {
         console.log(error)
       }
