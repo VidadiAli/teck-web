@@ -115,19 +115,26 @@ const BasketPage = ({
       );
 
       setOrderValue(res?.data?.count);
-      await removeItem(orderData?.productId);
+      try {
+        await api.patch(`/customer/updateProductStock/${item._id}`,
+          { sellerId: item.sellerId });
 
-      setResponse({
-        message: 'Sifariş uğurla yaradıldı',
-        head: 'Uğurlu!',
-        api: '',
-        isQuestion: false,
-        showAlert: true,
-        type: 'success'
-      });
+        await removeItem(orderData?.productId);
 
-      setCreatingMessage(false)
-      window.location = "/orders/"
+        setResponse({
+          message: 'Sifariş uğurla yaradıldı',
+          head: 'Uğurlu!',
+          api: '',
+          isQuestion: false,
+          showAlert: true,
+          type: 'success'
+        });
+
+        setCreatingMessage(false)
+        window.location = "/orders/"
+      } catch (error) {
+        console.log(error)
+      }
 
     } catch (error) {
       console.error(error);
@@ -142,14 +149,6 @@ const BasketPage = ({
       setCreatingMessage(false)
     }
   };
-
-
-  // basket.map((item) => (
-  //   <div key={item._id}>
-  //     <p>{item.itemName}</p>
-  //     <button onClick={() => createOrder(item._id)}>Order et</button>
-  //   </div>
-  // ));
 
   const removeItem = async (productId) => {
     try {
