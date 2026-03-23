@@ -11,6 +11,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import Liked from '../Main/Liked/Liked'
 import Footer from '../Footer/Footer'
 import CategoryGrid from '../Main/Categories/CategoryGrid'
+import { useState } from 'react'
 
 const Body = ({
   response, setResponse,
@@ -55,11 +56,16 @@ const Body = ({
           categoriesForNav={categoriesForNav}
           likeds={likeds} setLikeds={setLikeds}
           setResponse={setResponse}
-          setBasketValue={setBasketValue} />} />
+          setBasketValue={setBasketValue}
+          profileInfo={profileInfo} />} />
 
         <Route
           path="/category/:categoryId"
-          element={<CategoryElements likeds={likeds} setLikeds={setLikeds} setResponse={setResponse} setBasketValue={setBasketValue} />}
+          element={<CategoryElements
+            likeds={likeds} setLikeds={setLikeds}
+            setResponse={setResponse}
+            setBasketValue={setBasketValue}
+            profileInfo={profileInfo} />}
         />
 
         <Route path='/likeds' element={<Liked />} />
@@ -100,7 +106,8 @@ const Body = ({
           setLikeds={setLikeds}
           likeds={likeds}
           setResponse={setResponse}
-          setBasketValue={setBasketValue} />}
+          setBasketValue={setBasketValue}
+          profileInfo={profileInfo} />}
         />
 
       </Routes>

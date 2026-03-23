@@ -19,7 +19,8 @@ const ProductRowsSection = ({
     loadingFilterd,
     totalPages,
     setPageFilter,
-    pageFilter
+    pageFilter,
+    profileInfo
 }) => {
     return (
         <section className="vns-section" style={{ display: style }}>
@@ -50,6 +51,7 @@ const ProductRowsSection = ({
                         setLikeds={setLikeds}
                         setResponse={setResponse}
                         setBasketValue={setBasketValue}
+                        profileInfo={profileInfo}
                     />
                 ))}
             </div>

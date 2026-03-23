@@ -12,24 +12,33 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
         setLoginSystem(true)
         e.preventDefault();
         try {
+            if (phone.length < 13 && phone.slice(0, 4) != '+994') {
+                setResponse({
+                    showAlert: true,
+                    message: 'Telefon nömrə +994505005050 formatına uyğun olmalıdır',
+                    type: 'error'
+                });
+                return;
+            }
+
+            const phoneNumber = `+994${phone.slice(-9)}`
             const res = await api.post("/customer/register", {
                 name,
-                phone,
+                phone: phoneNumber,
                 password
             });
-
 
             setResponse({
                 showAlert: true,
                 message: 'Heaba daxil oldunuz. Xoş alış-verişlər',
                 type: 'success'
             })
-            
+
             setShowAuthForm(false);
             setLoginSystem(false);
+            window.location.reload();
 
         } catch (err) {
-            console.error(err);
             setError(err.response?.data?.message || "Xəta baş verdi");
             setLoginSystem(false)
         }

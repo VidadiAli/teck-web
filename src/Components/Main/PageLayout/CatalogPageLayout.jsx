@@ -25,7 +25,8 @@ const CatalogPageLayout = ({
     loadingFilterd,
     totalPages,
     setPageFilter,
-    pageFilter
+    pageFilter,
+    profileInfo
 }) => {
 
     const [reversValue, setReverseValue] = useState('')
@@ -76,6 +77,7 @@ const CatalogPageLayout = ({
                         totalPages={totalPages}
                         setPageFilter={setPageFilter}
                         pageFilter={pageFilter}
+                        profileInfo={profileInfo}
                     />
 
                     <ProductRowsSection
@@ -94,6 +96,7 @@ const CatalogPageLayout = ({
                         totalPages={totalPages}
                         setPageFilter={setPageFilter}
                         pageFilter={pageFilter}
+                        profileInfo={profileInfo}
                     />
                 </div>
             </div>

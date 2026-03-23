@@ -20,6 +20,19 @@ export const unLiked = async (id, setLikeds) => {
     }
 }
 
+export const addToBasketFromLocal = async (itemId, quantity) => {
+    try {
+        const res = await api.post("/customer/addToBasket", {
+            productId: itemId,
+            quantity: quantity,
+        });
+
+        setBasketValue(res.data.count);
+    } catch (error) {
+
+    }
+}
+
 export const addToBasket = async (productId, setLoading, setError, setBasketValue, setResponse, setShowCompanies, fromItem) => {
     try {
         setLoading(true)
@@ -51,3 +64,60 @@ export const addToBasket = async (productId, setLoading, setError, setBasketValu
         setLoading(false)
     }
 };
+
+
+export const callLocalBasket = (item, setResponse, showResponse) => {
+    const basketValues = localStorage.getItem('basketValues') ?
+        JSON.parse(localStorage.getItem('basketValues')) : [];
+
+    const ids = basketValues.map((e) => e._id)
+    if (ids.includes(item._id)) {
+        const quantity = basketValues.find((e) => e._id == item._id).quantity
+        const newData = basketValues.filter((e) => e._id != item._id);
+        newData.push({ ...item, quantity: Number(quantity) + 1 });
+        localStorage.setItem('basketValues', JSON.stringify(newData));
+    } else {
+        basketValues.push({ ...item, quantity: 1 });
+        localStorage.setItem('basketValues', JSON.stringify(basketValues));
+    }
+    window.dispatchEvent(new Event("basketUpdated"));
+
+    showResponse && setResponse({
+        type: "success",
+        message: "Səbətə əlavə olundu ✅",
+        showAlert: true,
+        head: "Uğurlu!",
+    });
+};
+
+export const decreaseItem = (item) => {
+    const basketValues = localStorage.getItem('basketValues') ?
+        JSON.parse(localStorage.getItem('basketValues')) : [];
+
+    const ids = basketValues.map((e) => e._id)
+    if (ids.includes(item._id)) {
+        const quantity = basketValues.find((e) => e._id == item._id).quantity
+        const newData = basketValues.filter((e) => e._id != item._id);
+        newData.push({ ...item, quantity: Number(quantity) - 1 });
+        localStorage.setItem('basketValues', JSON.stringify(newData));
+    } else {
+        basketValues.push({ ...item, quantity: 1 });
+        localStorage.setItem('basketValues', JSON.stringify(basketValues));
+    }
+    window.dispatchEvent(new Event("basketUpdated"));
+}
+
+export const deleteItem = (item) => {
+    const basketValues = localStorage.getItem('basketValues') ?
+        JSON.parse(localStorage.getItem('basketValues')) : [];
+
+    const ids = basketValues.map((e) => e._id)
+    if (ids.includes(item._id)) {
+        const newData = basketValues.filter((e) => e._id != item._id);
+        localStorage.setItem('basketValues', JSON.stringify(newData));
+    } else {
+        basketValues.push({ ...item, quantity: 1 });
+        localStorage.setItem('basketValues', JSON.stringify(basketValues));
+    }
+    window.dispatchEvent(new Event("basketUpdated"));
+}

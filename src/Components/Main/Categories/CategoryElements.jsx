@@ -5,7 +5,12 @@ import "./CategoryElements.css";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import ProductCard from "../PageLayout/ProductCard";
 
-const CategoryElements = ({ likeds, setLikeds, setResponse, setBasketValue }) => {
+const CategoryElements = ({
+  likeds,
+  setLikeds, setResponse,
+  setBasketValue,
+  profileInfo
+}) => {
   const { categoryId } = useParams();
   const [products, setProducts] = useState([]);
   const [categoryName, setCategoryName] = useState("");
@@ -70,6 +75,7 @@ const CategoryElements = ({ likeds, setLikeds, setResponse, setBasketValue }) =>
             setLikeds={setLikeds}
             setResponse={setResponse}
             setBasketValue={setBasketValue}
+            profileInfo={profileInfo}
           />
         ))}
       </div>

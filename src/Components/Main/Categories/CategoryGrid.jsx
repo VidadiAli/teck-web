@@ -6,7 +6,12 @@ import ReclamArea from "./ReclamArea";
 import LoadingAllData from "../../../loadings/LoadingAllData";
 import ProductCard from "../PageLayout/ProductCard";
 
-const CategoryGrid = ({ categoriesForNav, setLikeds, likeds, setResponse, setBasketValue }) => {
+const CategoryGrid = ({
+  categoriesForNav,
+  setLikeds, likeds,
+  setResponse, setBasketValue,
+  profileInfo
+}) => {
   const [loading, setLoading] = useState(false)
   const [mainData, setMainData] = useState([]);
   const [page, setPage] = useState(1);
@@ -28,7 +33,7 @@ const CategoryGrid = ({ categoriesForNav, setLikeds, likeds, setResponse, setBas
           );
 
           console.log(res.data.products)
-          
+
           return {
             categoryName: data?.name,
             categoryId: data?._id,
@@ -80,6 +85,7 @@ const CategoryGrid = ({ categoriesForNav, setLikeds, likeds, setResponse, setBas
               setLikeds={setLikeds}
               setResponse={setResponse}
               setBasketValue={setBasketValue}
+              profileInfo={profileInfo}
             />
           ))}
       </div>

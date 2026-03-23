@@ -12,7 +12,7 @@ import api from "../../../api";
 import AuthForm from "../../Register/AuthForm";
 import { percentage } from "../../Data/DataFile";
 import LoadingCircle from "../../Loading/LoadingCircle";
-import { addToBasket } from "../../../functions";
+import { addToBasket, callLocalBasket } from "../../../functions";
 
 const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   const { productId } = useParams();
@@ -44,11 +44,10 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
     fetchProduct();
   }, [productId]);
 
-  const addItem = async () => {
+  const addItem = async (item) => {
     try {
       if (!profileInfo) {
-        setResponse({ type: "info", message: "Xahiş olunur hesabınıza daxil olun", showAlert: true });
-        setShowAuthForm(true)
+        callLocalBasket(item, setResponse, true);
         return;
       }
 
@@ -153,7 +152,7 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
             </div>
           </div>
 
-          <button className="add-to-cart-main" onClick={addItem}>
+          <button className="add-to-cart-main" onClick={()=>addItem(product)}>
             <FaShoppingCart /> {addingMesage ? "Səbətə Əlavə edilir..." : "Səbətə əlavə et"}
           </button>
         </div>
@@ -225,8 +224,10 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
           <ChooseSalesCompany
             setShowCompanies={setShowCompanies}
             products={companyOptions}
-            addToBasket={(selectedProduct) =>
-              addToBasket(selectedProduct._id, setLoading, setError, setBasketValue, setResponse, setShowCompanies, true)
+            addToBasket={
+              (selectedProduct) => {
+                addToBasket(selectedProduct._id, setLoading, setError, setBasketValue, setResponse, setShowCompanies, true)
+              }
             }
             addingMesage={addingMesage}
           />
@@ -235,7 +236,11 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
 
       {
         showAuthForm && (
-          <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
+          <AuthForm
+            setCustomerToken={setCustomerToken}
+            setShowAuthForm={setShowAuthForm}
+            setResponse={setResponse}
+          />
         )
       }
     </section >

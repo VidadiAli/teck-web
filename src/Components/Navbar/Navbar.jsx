@@ -110,7 +110,35 @@ const Navbar = ({
 
   useEffect(() => {
     getProductsBySearchText();
-  }, [searchText, searchPage])
+  }, [searchText, searchPage]);
+
+
+  useEffect(() => {
+    if (profileInfo) return; 
+
+    const updateBasket = () => {
+      let count = 0;
+
+      const data = localStorage.getItem("basketValues")
+        ? JSON.parse(localStorage.getItem("basketValues"))
+        : [];
+
+      data.forEach((e) => (count += Number(e.quantity)));
+
+      setBasketValue(count);
+    };
+
+    updateBasket();
+
+    window.addEventListener("storage", updateBasket);
+
+    window.addEventListener("basketUpdated", updateBasket);
+
+    return () => {
+      window.removeEventListener("storage", updateBasket);
+      window.removeEventListener("basketUpdated", updateBasket);
+    };
+  }, [profileInfo]);
 
   return (
     <nav className="navbar">
@@ -190,7 +218,11 @@ const Navbar = ({
 
       {
         showAuthForm && (
-          <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
+          <AuthForm
+            setCustomerToken={setCustomerToken}
+            setShowAuthForm={setShowAuthForm}
+            setResponse={setResponse}
+          />
         )
       }
 

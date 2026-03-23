@@ -24,6 +24,7 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
         const res = await api.post("/customer/logout", {});
         setProfileInfo(null);
         setCloseProfile(null);
+        window.location.reload()
     };
 
     const editInfo = (e) => {

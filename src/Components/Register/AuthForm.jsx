@@ -18,7 +18,7 @@ const AuthForm = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
                         className={isLogin ? "active" : ""}
                         onClick={() => setIsLogin(true)}
                     >
-                        Login
+                        Daxil ol
                     </button>
                     <button
                         className={!isLogin ? "active" : ""}
@@ -30,9 +30,17 @@ const AuthForm = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
 
                 <div className="form-wrapper">
                     {isLogin ? (
-                        <Login setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
+                        <Login
+                            setCustomerToken={setCustomerToken}
+                            setShowAuthForm={setShowAuthForm}
+                            setResponse={setResponse}
+                        />
                     ) : (
-                        <Register setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
+                        <Register
+                            setCustomerToken={setCustomerToken}
+                            setShowAuthForm={setShowAuthForm}
+                            setResponse={setResponse}
+                        />
                     )}
                 </div>
             </div>

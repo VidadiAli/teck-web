@@ -5,7 +5,8 @@ import './Basket.css'
 import api from '../../../api'
 import OrderForm from './ProductOrder/OrderForm'
 import LoadingCircle from '../../Loading/LoadingCircle'
-import { addLikeds, unLiked } from '../../../functions';
+import { addLikeds, callLocalBasket, decreaseItem, deleteItem, unLiked } from '../../../functions';
+import AuthForm from '../../Register/AuthForm';
 
 const BasketPage = ({
   setResponse,
@@ -22,6 +23,8 @@ const BasketPage = ({
   const [creatingMessage, setCreatingMessage] = useState(false)
   const [showOrderForm, setShowOrderForm] = useState(false)
   const [productInfo, setProductInfo] = useState({});
+  const [showAuthForm, setShowAuthForm] = useState(false);
+  const [customerToken, setCustomerToken] = useState(null)
 
   const fetchBasket = async (valueOfLoading) => {
     try {
@@ -37,9 +40,12 @@ const BasketPage = ({
   }
 
   useEffect(() => {
-    profileInfo && (
+    profileInfo ? (
       fetchBasket("firstFetch")
-    );
+    ) : setBasket(localStorage.getItem('basketValues') ?
+      JSON.parse(localStorage.getItem('basketValues')) : []
+    )
+
   }, [profileInfo])
 
   const increment = async (index) => {
@@ -84,6 +90,10 @@ const BasketPage = ({
   )
 
   const createOrderInfo = (index, productId) => {
+    if (!profileInfo) {
+      setShowAuthForm(true);
+      return;
+    }
     setShowOrderForm(true)
     setProductInfo({
       index: index,
@@ -201,13 +211,43 @@ const BasketPage = ({
                     loading && index == loadingIndex ? <LoadingCircle size='30px' /> :
                       <>
                         <div className="quantity">
-                          <FiMinus onClick={() => { decrement(index); setLoadingIndex(index) }} />
+                          <FiMinus onClick={() => {
+                            if (item.quantity > 1) {
+                              if (!profileInfo) {
+                                decreaseItem(item);
+                                setBasket(localStorage.getItem('basketValues') ?
+                                  JSON.parse(localStorage.getItem('basketValues')) : [])
+                                return;
+                              }
+
+                              decrement(index);
+                              setLoadingIndex(index)
+                            }
+                          }} />
                           <span>{item.quantity || 1}</span>
-                          <FiPlus onClick={() => { increment(index); setLoadingIndex(index) }} />
+                          <FiPlus onClick={() => {
+                            if (!profileInfo) {
+                              callLocalBasket(item, setResponse, false);
+                              setBasket(localStorage.getItem('basketValues') ?
+                                JSON.parse(localStorage.getItem('basketValues')) : [])
+                              return;
+                            }
+                            increment(index);
+                            setLoadingIndex(index)
+                          }} />
                         </div>
                         <FiTrash2
                           className="trash"
-                          onClick={() => { removeItem(item._id); setLoadingIndex(index) }}
+                          onClick={() => {
+                            if (!profileInfo) {
+                              deleteItem(item);
+                              setBasket(localStorage.getItem('basketValues') ?
+                                JSON.parse(localStorage.getItem('basketValues')) : [])
+                              return;
+                            }
+                            removeItem(item._id);
+                            setLoadingIndex(index)
+                          }}
                         />
                       </>
                   }
@@ -235,6 +275,12 @@ const BasketPage = ({
             createOrder={createOrder}
             creatingMessage={creatingMessage}
           />
+        )
+      }
+
+      {
+        showAuthForm && (
+          <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
         )
       }
     </div>

@@ -44,10 +44,7 @@ api.interceptors.response.use(
 
         try {
           await api.post("/customer/logout");
-          localStorage.clear()
         } catch (e) {
-          console.log(e)
-          localStorage.clear()
         }
         return Promise.reject(refreshErr);
       }

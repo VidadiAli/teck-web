@@ -3,7 +3,12 @@ import Carousel from './Carousel/Carousel'
 import CatalogPageLayout from './PageLayout/CatalogPageLayout'
 import api from '../../api'
 
-const Main = ({ categoriesForNav, likeds, setLikeds, setResponse, setBasketValue }) => {
+const Main = ({
+  categoriesForNav,
+  likeds, setLikeds,
+  setResponse, setBasketValue,
+  profileInfo,
+}) => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [minPrice, setMinPrice] = useState('');
@@ -53,7 +58,7 @@ const Main = ({ categoriesForNav, likeds, setLikeds, setResponse, setBasketValue
           }
         }
       );
-      
+
       itsPageFiltered
         ? setFilteredProducts([...filteredProducts, ...res.data.data])
         : setFilteredProducts(res.data.data);
@@ -132,6 +137,7 @@ const Main = ({ categoriesForNav, likeds, setLikeds, setResponse, setBasketValue
         totalPages={totalPages}
         setPageFilter={setPageFilter}
         pageFilter={pageFilter}
+        profileInfo={profileInfo}
       />
     </div>
   )
