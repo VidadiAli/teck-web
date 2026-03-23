@@ -535,14 +535,16 @@
     .vns-filter,
     .vns-section {
         border-radius: 16px;
-        padding: 14px;
+        padding: 14px 10px;
     }
 
     .vns-product-image-box {
         height: 165px;
     }
 
-    .vns-product-actions {
-        grid-template-columns: 1fr;
+    .vns-product-detail-btn,
+    .vns-product-cart-btn {
+        font-size: 11px;
+        height: 25px;
     }
 }
