@@ -22,30 +22,30 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
 
       const phoneNumber = `+994${phone.slice(-9)}`;
 
-      setLoginSystem(true)
-      const res = await api.post("/customer/login", { phone: phoneNumber, password });
-      setShowAuthForm(false)
+      await api.post("/customer/login", { phone: phoneNumber, password });
+
+      const newData = localStorage.getItem('basketValues')
+        ? JSON.parse(localStorage.getItem('basketValues'))
+        : [];
+
+      if (newData.length) {
+        for (const e of newData) {
+          await addToBasketFromLocal(e._id, e.quantity);
+        }
+      }
+
+      localStorage.removeItem('basketValues');
       setResponse({
         showAlert: true,
         message: 'Heaba daxil oldunuz. Xoş alış-verişlər',
         type: 'success'
       });
 
-      const newData = localStorage.getItem('basketValues') ?
-        JSON.parse(localStorage.getItem('basketValues')) : [];
-
-      if (newData.length) {
-        await Promise.all(
-          newData.map((e) =>
-            addToBasketFromLocal(e._id, e.quantity)
-          )
-        );
-      }
-
-      localStorage.removeItem('basketValues');
+      setShowAuthForm(false);
       window.location.reload();
-      setLoginSystem(false)
-      
+      localStorage.removeItem('basketValues');
+      setLoginSystem(false);
+
     } catch (err) {
       setError(err.response?.data?.message || "Xəta baş verdi");
       setLoginSystem(false)

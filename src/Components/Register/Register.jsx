@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import api from "../../api";
+import { addToBasketFromLocal } from "../../functions";
 
 const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
     const [name, setName] = useState("");
@@ -22,32 +23,34 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
             }
 
             const phoneNumber = `+994${phone.slice(-9)}`
-            const res = await api.post("/customer/register", {
+            await api.post("/customer/register", {
                 name,
                 phone: phoneNumber,
                 password
             });
 
+
+            const newData = localStorage.getItem('basketValues')
+                ? JSON.parse(localStorage.getItem('basketValues'))
+                : [];
+
+            if (newData.length) {
+                for (const e of newData) {
+                    await addToBasketFromLocal(e._id, e.quantity);
+                }
+            }
+
+            localStorage.removeItem('basketValues');
+
             setResponse({
                 showAlert: true,
                 message: 'Heaba daxil oldunuz. Xoş alış-verişlər',
                 type: 'success'
-            })
+            });
 
             setShowAuthForm(false);
-            const newData = localStorage.getItem('basketValues') ?
-                JSON.parse(localStorage.getItem('basketValues')) : [];
-
-            if (newData.length) {
-                await Promise.all(
-                    newData.map((e) =>
-                        addToBasketFromLocal(e._id, e.quantity)
-                    )
-                );
-            }
-
-            localStorage.removeItem('basketValues');
             window.location.reload();
+            localStorage.removeItem('basketValues');
             setLoginSystem(false);
 
         } catch (err) {
