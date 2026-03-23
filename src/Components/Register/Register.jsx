@@ -35,8 +35,20 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
             })
 
             setShowAuthForm(false);
-            setLoginSystem(false);
+            const newData = localStorage.getItem('basketValues') ?
+                JSON.parse(localStorage.getItem('basketValues')) : [];
+
+            if (newData.length) {
+                await Promise.all(
+                    newData.map((e) =>
+                        addToBasketFromLocal(e._id, e.quantity)
+                    )
+                );
+            }
+
+            localStorage.removeItem('basketValues');
             window.location.reload();
+            setLoginSystem(false);
 
         } catch (err) {
             setError(err.response?.data?.message || "Xəta baş verdi");
