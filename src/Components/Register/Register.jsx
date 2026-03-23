@@ -84,7 +84,7 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
                 onChange={e => setPassword(e.target.value)}
                 required
             />
-            <button type="submit">{loginSystem ? "Hesab yaradılır..." : "Qeydiyyatdan keç"}</button>
+            <button type="submit" disabled={loginSystem}>{loginSystem ? "Hesab yaradılır..." : "Qeydiyyatdan keç"}</button>
         </form>
     );
 };

@@ -11,6 +11,7 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
+      setLoginSystem(true)
       if (phone.length < 13 && phone.slice(0, 4) != '+994') {
         setResponse({
           showAlert: true,
@@ -69,8 +70,8 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
         onChange={e => setPassword(e.target.value)}
         required
       />
-      <button type="submit">
-        {loginSystem ? "Daxil olunur..." : "Davam et"}
+      <button type="submit" disabled={loginSystem}>
+        {loginSystem ? "Daxil olunur..." : "Daxil Ol"}
       </button>
     </form>
   );
