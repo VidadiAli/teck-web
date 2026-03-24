@@ -96,11 +96,11 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   if (error) return <>
     <Helmet>
       <title>
-        {itemName ? `${itemName} | VNS Electronics` : "Product | VNS Electronics"}
+        { "Product | VNS Electronics"}
       </title>
       <meta
-        name={`${itemName && itemName}`}
-        content={`${itemName && itemName} məhsulu.`}
+        name={`Məhsul`}
+        content={`Məhsul`}
       />
     </Helmet>
     <h2 style={{ padding: "40px" }}>{error}</h2>
@@ -108,11 +108,11 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   if (!product) return <>
     <Helmet>
       <title>
-        {itemName ? `${itemName} | VNS Electronics` : "Product | VNS Electronics"}
+        {"Product | VNS Electronics"}
       </title>
       <meta
-        name={`${itemName && itemName}`}
-        content={`${itemName && itemName} məhsulu.`}
+        name={`Məhsul`}
+        content={`Məhsul`}
       />
     </Helmet>
     <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>
