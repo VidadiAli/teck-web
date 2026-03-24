@@ -121,3 +121,21 @@ export const deleteItem = (item) => {
     }
     window.dispatchEvent(new Event("basketUpdated"));
 }
+
+
+export const createSlug = (text) => {
+    return text
+        .toLowerCase()
+        .trim()
+        .replaceAll("ə", "e")
+        .replaceAll("ü", "u")
+        .replaceAll("ö", "o")
+        .replaceAll("ğ", "g")
+        .replaceAll("ş", "s")
+        .replaceAll("ç", "c")
+        .replaceAll("ı", "i")
+        .replaceAll("İ", "i")
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+};

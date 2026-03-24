@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import "./SearchNavbar.css";
 import LoadingMore from "../../loadings/LoadingMore";
+import { createSlug } from "../../functions";
 
 const SearchAll = ({
   searchData,
@@ -30,7 +31,7 @@ const SearchAll = ({
           return (
             <NavLink
               key={item._id}
-              to={`/product/${item._id}`}
+              to={`/product/${createSlug(item.itemName).split(" ").join('-').split('/').join('-') + "-id-" + item._id}`}
               className="search-item"
             >
               <img

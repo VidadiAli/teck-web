@@ -4,6 +4,7 @@ import api from "../../../api";
 import "./CategoryElements.css";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import ProductCard from "../PageLayout/ProductCard";
+import { Helmet } from "react-helmet-async";
 
 const CategoryElements = ({
   likeds,
@@ -23,7 +24,7 @@ const CategoryElements = ({
   const fetchCategoryProducts = async (valueOfLoading) => {
     valueOfLoading == "loadingFirst" ? setLoadingFirst(true) : setLoading(true)
     try {
-      const res = await api.get(`/customer/getProductsByCategory/${categoryId}`,
+      const res = await api.get(`/customer/getProductsByCategory/${categoryId.split("-id-")[1]}`,
         {
           params: {
             page, pageSize
@@ -36,7 +37,6 @@ const CategoryElements = ({
       valueOfLoading == "loadingFirst" ? setLoadingFirst(false) : setLoading(false)
       if (data.length > 0) setCategoryName(data[0].category.name);
     } catch (error) {
-      console.error(error);
       valueOfLoading == "loadingFirst" ? setLoadingFirst(false) : setLoading(false)
     }
   };
@@ -61,30 +61,41 @@ const CategoryElements = ({
   }
 
   return (
-    <div className="category-page">
-      <div className="category-page-header">
-        <h1 className="category-page-title">{categoryName}</h1>
-      </div>
+    <>
+      <Helmet>
+        <title>
+          {categoryName ? `${categoryName} | VNS Electronics` : "Kateqoriya | VNS Electronics"}
+        </title>
+        <meta
+          name="description"
+          content={`${categoryName} kateqoriyasında məhsullara baxın.`}
+        />
+      </Helmet>
+      <div className="category-page">
+        <div className="category-page-header">
+          <h1 className="category-page-title">{categoryName}</h1>
+        </div>
 
-      <div className="category-page-grid">
-        {products.map((item) => (
-          <ProductCard
-            key={item._id || item.id}
-            item={item}
-            likeds={likeds}
-            setLikeds={setLikeds}
-            setResponse={setResponse}
-            setBasketValue={setBasketValue}
-            profileInfo={profileInfo}
-          />
-        ))}
+        <div className="category-page-grid">
+          {products.map((item) => (
+            <ProductCard
+              key={item._id || item.id}
+              item={item}
+              likeds={likeds}
+              setLikeds={setLikeds}
+              setResponse={setResponse}
+              setBasketValue={setBasketValue}
+              profileInfo={profileInfo}
+            />
+          ))}
+        </div>
+        {
+          products?.length < totalItem && (
+            loading ? <LoadingCircle /> : <button onClick={moreProducts} className="more-products">Daha çox</button>
+          )
+        }
       </div>
-      {
-        products?.length < totalItem && (
-          loading ? <LoadingCircle /> : <button onClick={moreProducts} className="more-products">Daha çox</button>
-        )
-      }
-    </div>
+    </>
   );
 };
 

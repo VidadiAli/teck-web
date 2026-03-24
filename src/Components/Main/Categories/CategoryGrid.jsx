@@ -5,6 +5,8 @@ import "./CategoryGrid.css";
 import ReclamArea from "./ReclamArea";
 import LoadingAllData from "../../../loadings/LoadingAllData";
 import ProductCard from "../PageLayout/ProductCard";
+import { Helmet } from "react-helmet-async";
+import { createSlug } from "../../../functions";
 
 const CategoryGrid = ({
   categoriesForNav,
@@ -69,7 +71,7 @@ const CategoryGrid = ({
 
         <NavLink
           className="category-link"
-          to={`/category/${product?.categoryId}`}
+          to={`/category/${createSlug(product?.categoryName).split(" ").join('-') + '-id-' + product?.categoryId}`}
         >
           Daha çox
         </NavLink>
@@ -103,20 +105,31 @@ const CategoryGrid = ({
 
 
   return (
-    <div className="category-grid-container">
-      {
-        loading ? <LoadingAllData /> :
-          mainData?.map((product, index) => {
-            if (!(product?.data.length > 0)) return
-            if (index != 1) {
-              return callArea(product, index)
-            }
-            else {
-              return callDifferentArea(product, index)
-            }
-          })
-      }
-    </div>
+    <>
+      <Helmet>
+        <title>
+          {"Elektrik Məhsulları | VNS Electronics"}
+        </title>
+        <meta
+          name={`Elektrik Məhsulları.`}
+          content={`Elektrik Məhsulları.`}
+        />
+      </Helmet>
+      <div className="category-grid-container">
+        {
+          loading ? <LoadingAllData /> :
+            mainData?.map((product, index) => {
+              if (!(product?.data.length > 0)) return
+              if (index != 1) {
+                return callArea(product, index)
+              }
+              else {
+                return callDifferentArea(product, index)
+              }
+            })
+        }
+      </div>
+    </>
   );
 };
 

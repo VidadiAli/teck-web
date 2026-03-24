@@ -13,6 +13,7 @@ import AuthForm from "../../Register/AuthForm";
 import { percentage } from "../../Data/DataFile";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import { addToBasket, callLocalBasket } from "../../../functions";
+import { Helmet } from "react-helmet-async";
 
 const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   const { productId } = useParams();
@@ -32,10 +33,9 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const res = await api.get(`/customer/getProductById/${productId}`);
+        const res = await api.get(`/customer/getProductById/${productId.split('-id-')[1]}`);
         setProduct(res.data);
       } catch (err) {
-        console.error(err);
         setError("Məhsul tapılmadı ❌");
       } finally {
         setLoading(false);
@@ -93,8 +93,30 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   }, [product]);
 
   if (loading) return <LoadingCircle />;
-  if (error) return <h2 style={{ padding: "40px" }}>{error}</h2>;
-  if (!product) return <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>;
+  if (error) return <>
+    <Helmet>
+      <title>
+        {itemName ? `${itemName} | VNS Electronics` : "Product | VNS Electronics"}
+      </title>
+      <meta
+        name={`${itemName && itemName}`}
+        content={`${itemName && itemName} məhsulu.`}
+      />
+    </Helmet>
+    <h2 style={{ padding: "40px" }}>{error}</h2>
+  </>;
+  if (!product) return <>
+    <Helmet>
+      <title>
+        {itemName ? `${itemName} | VNS Electronics` : "Product | VNS Electronics"}
+      </title>
+      <meta
+        name={`${itemName && itemName}`}
+        content={`${itemName && itemName} məhsulu.`}
+      />
+    </Helmet>
+    <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>
+  </>;
 
   const { itemName, price, rating, itemImage, salesCount, hasDiscount, discountPercent,
     productSize,
@@ -119,160 +141,171 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   }
 
   return (
-    <section className="item-detail">
-      <div className="item-container">
+    <>
+      <Helmet>
+        <title>
+          {itemName ? `${itemName} | VNS Electronics` : "Product | VNS Electronics"}
+        </title>
+        <meta
+          name={`${itemName && itemName}`}
+          content={`${itemName && itemName} məhsulu.`}
+        />
+      </Helmet>
+      <section className="item-detail">
+        <div className="item-container">
 
-        <div className="item-image">
-          <div className="first-img">
-            <img src={imgsList[0]} alt={itemName} className="item-picture" />
+          <div className="item-image">
+            <div className="first-img">
+              <img src={imgsList[0]} alt={itemName} className="item-picture" />
+            </div>
+            <div className="item-images-box">
+              {
+                imgsList.slice(1).map((image, index) => (
+                  <div className="other-imgs" key={image + index} onClick={() => changeImage(image)}>
+                    <img src={image} alt={itemName} className="item-picture" />
+                  </div>
+                ))
+              }
+            </div>
           </div>
-          <div className="item-images-box">
-            {
-              imgsList.slice(1).map((image, index) => (
-                <div className="other-imgs" key={image + index} onClick={() => changeImage(image)}>
-                  <img src={image} alt={itemName} className="item-picture" />
-                </div>
-              ))
-            }
-          </div>
-        </div>
 
-        <div className="item-info">
-          <h1 className="item-title">{itemName}</h1>
+          <div className="item-info">
+            <h1 className="item-title">{itemName}</h1>
 
-          {/* <p className="item-rating">
+            {/* <p className="item-rating">
             {<FaStar />}
           </p> */}
 
-          <div className="item-price">
-            <FaMoneyBillWave />
-            <span >{hasDiscount ? <>
-              <span style={{ paddingRight: '15px' }}>{(price - (price * discountPercent) / 100).toFixed(2)} ₼</span>
-              <del style={{ fontSize: '1.5rem', color: 'gray' }}>{price} ₼</del>
-            </> : <span>{price} ₼</span>}</span>
-            <p>Birdəfəlik Qiymət</p>
-          </div>
-
-          <div className="installment">
-            <h3>
-              <FaCalendarAlt /> Aylıq ödəniş
-            </h3>
-
-            <div className="month-options">
-              {percentage.map(m => (
-                <button
-                  key={m?.id}
-                  className={month === m?.percentageMonth ? "active" : ""}
-                  onClick={() => {
-                    setMonth(m?.percentageMonth);
-                    setPercentageValue(m?.percentage)
-                  }}
-                >
-                  {m?.percentageMonth} ay
-                </button>
-              ))}
+            <div className="item-price">
+              <FaMoneyBillWave />
+              <span >{hasDiscount ? <>
+                <span style={{ paddingRight: '15px' }}>{(price - (price * discountPercent) / 100).toFixed(2)} ₼</span>
+                <del style={{ fontSize: '1.5rem', color: 'gray' }}>{price} ₼</del>
+              </> : <span>{price} ₼</span>}</span>
+              <p>Birdəfəlik Qiymət</p>
             </div>
 
-            <div className="monthly-result">
-              <strong>{month} ay x {((((price * percentageValue) / 100) + price) / month).toFixed(2)} ₼</strong>
-              <span>{
-                (((price * percentageValue) / 100) + price).toFixed(2)
-              } ₼</span>
+            <div className="installment">
+              <h3>
+                <FaCalendarAlt /> Aylıq ödəniş
+              </h3>
+
+              <div className="month-options">
+                {percentage.map(m => (
+                  <button
+                    key={m?.id}
+                    className={month === m?.percentageMonth ? "active" : ""}
+                    onClick={() => {
+                      setMonth(m?.percentageMonth);
+                      setPercentageValue(m?.percentage)
+                    }}
+                  >
+                    {m?.percentageMonth} ay
+                  </button>
+                ))}
+              </div>
+
+              <div className="monthly-result">
+                <strong>{month} ay x {((((price * percentageValue) / 100) + price) / month).toFixed(2)} ₼</strong>
+                <span>{
+                  (((price * percentageValue) / 100) + price).toFixed(2)
+                } ₼</span>
+              </div>
             </div>
+
+            <button className="add-to-cart-main" onClick={() => addItem(product)}>
+              <FaShoppingCart /> {addingMesage ? "Səbətə Əlavə edilir..." : "Səbətə əlavə et"}
+            </button>
           </div>
 
-          <button className="add-to-cart-main" onClick={() => addItem(product)}>
-            <FaShoppingCart /> {addingMesage ? "Səbətə Əlavə edilir..." : "Səbətə əlavə et"}
-          </button>
-        </div>
-
-        <div className="detail">
-          <h2>Xüsusiyyətlər</h2>
-          <div className="detail-box">
-            {brend && brend != '0' && brend != '-' &&
-              < div className="detail-box-child">
-                <span className="detail-name">Brend</span> <span className="detail-value">{brend || '-'}</span>
-              </div>
-            }
-            {productSize && productSize != '0' && productSize != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">Daxili yaddaş</span> <span className="detail-value">{productSize || '-'}</span>
-              </div>
-            }
-            {ram && ram != '0' && ram != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">Operativ yaddaş</span> <span className="detail-value">{ram || '-'}</span>
-              </div>
-            }
-            {operationSystem && operationSystem != '0' && operationSystem != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">Əməliyyat Sistemi</span> <span className="detail-value">{operationSystem || '-'}</span>
-              </div>
-            }
-            {countOfNuva && countOfNuva != '0' && countOfNuva != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">Nüvələrin sayı</span> <span className="detail-value">{countOfNuva || '-'}</span>
-              </div>
-            }
-            {ram && ram != '0' && ram != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">NFC</span> <span className="detail-value">{nfc ? 'var' : 'yoxdur'}</span>
-              </div>
-            }
-            {videoFormat && videoFormat != '0' && videoFormat != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">Video Format</span> <span className="detail-value">{videoFormat || '-'}</span>
-              </div>
-            }
-            {year && year != '0' && year != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">İstehsal ili</span> <span className="detail-value">{year || '-'}</span>
-              </div>
-            }
-            {displaySize && displaySize != '0' && displaySize != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">Ekran Ölçüsü</span> <span className="detail-value">{displaySize || '-'}</span>
-              </div>
-            }
-            {displayView && displayView != '0' && displayView != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">Ekran Kalitəsi</span> <span className="detail-value">{displayView || '-'}</span>
-              </div>
-            }
-            {displayType && displayType != '0' && displayType != '-' &&
-              <div className="detail-box-child">
-                <span className="detail-name">Ekran Tipi</span> <span className="detail-value">{displayType || '-'}</span>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
-
-      {
-        showCompanies && (
-          <ChooseSalesCompany
-            setShowCompanies={setShowCompanies}
-            products={companyOptions}
-            addToBasket={
-              (selectedProduct) => {
-                addToBasket(selectedProduct._id, setLoading, setError, setBasketValue, setResponse, setShowCompanies, true)
+          <div className="detail">
+            <h2>Xüsusiyyətlər</h2>
+            <div className="detail-box">
+              {brend && brend != '0' && brend != '-' &&
+                < div className="detail-box-child">
+                  <span className="detail-name">Brend</span> <span className="detail-value">{brend || '-'}</span>
+                </div>
               }
-            }
-            addingMesage={addingMesage}
-          />
-        )
-      }
+              {productSize && productSize != '0' && productSize != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">Daxili yaddaş</span> <span className="detail-value">{productSize || '-'}</span>
+                </div>
+              }
+              {ram && ram != '0' && ram != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">Operativ yaddaş</span> <span className="detail-value">{ram || '-'}</span>
+                </div>
+              }
+              {operationSystem && operationSystem != '0' && operationSystem != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">Əməliyyat Sistemi</span> <span className="detail-value">{operationSystem || '-'}</span>
+                </div>
+              }
+              {countOfNuva && countOfNuva != '0' && countOfNuva != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">Nüvələrin sayı</span> <span className="detail-value">{countOfNuva || '-'}</span>
+                </div>
+              }
+              {ram && ram != '0' && ram != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">NFC</span> <span className="detail-value">{nfc ? 'var' : 'yoxdur'}</span>
+                </div>
+              }
+              {videoFormat && videoFormat != '0' && videoFormat != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">Video Format</span> <span className="detail-value">{videoFormat || '-'}</span>
+                </div>
+              }
+              {year && year != '0' && year != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">İstehsal ili</span> <span className="detail-value">{year || '-'}</span>
+                </div>
+              }
+              {displaySize && displaySize != '0' && displaySize != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">Ekran Ölçüsü</span> <span className="detail-value">{displaySize || '-'}</span>
+                </div>
+              }
+              {displayView && displayView != '0' && displayView != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">Ekran Kalitəsi</span> <span className="detail-value">{displayView || '-'}</span>
+                </div>
+              }
+              {displayType && displayType != '0' && displayType != '-' &&
+                <div className="detail-box-child">
+                  <span className="detail-name">Ekran Tipi</span> <span className="detail-value">{displayType || '-'}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
 
-      {
-        showAuthForm && (
-          <AuthForm
-            setCustomerToken={setCustomerToken}
-            setShowAuthForm={setShowAuthForm}
-            setResponse={setResponse}
-          />
-        )
-      }
-    </section >
+        {
+          showCompanies && (
+            <ChooseSalesCompany
+              setShowCompanies={setShowCompanies}
+              products={companyOptions}
+              addToBasket={
+                (selectedProduct) => {
+                  addToBasket(selectedProduct._id, setLoading, setError, setBasketValue, setResponse, setShowCompanies, true)
+                }
+              }
+              addingMesage={addingMesage}
+            />
+          )
+        }
+
+        {
+          showAuthForm && (
+            <AuthForm
+              setCustomerToken={setCustomerToken}
+              setShowAuthForm={setShowAuthForm}
+              setResponse={setResponse}
+            />
+          )
+        }
+      </section >
+    </>
   );
 };
 

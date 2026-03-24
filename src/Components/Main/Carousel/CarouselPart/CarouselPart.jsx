@@ -108,7 +108,7 @@ const CarouselPart = () => {
       <div className="carousel-part__grid">
         {carouselPartArr?.map((e) => (
           <NavLink
-            to={`category/${e.itemLink}`}
+            to={`category/${"c" + '-id-' + e.itemLink}`}
             key={e._id}
             className="carousel-part__card"
             id={e._id}

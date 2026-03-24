@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { addLikeds, addToBasket, callLocalBasket, unLiked } from "../../../functions";
+import { addLikeds, addToBasket, callLocalBasket, createSlug, unLiked } from "../../../functions";
 import { FaStar, FaHeart, FaRegHeart, FaCalendarAlt } from "react-icons/fa";
 import { percentage } from "../../Data/DataFile";
 import { useEffect } from "react";
@@ -126,7 +126,7 @@ const ProductCard = ({
                     </div>
 
                     <div className="vns-product-actions">
-                        <Link to={`/product/${item._id}`} className="vns-product-detail-btn">
+                        <Link to={`/product/${createSlug(item.itemName).split(" ").join('-').split('/').join('-') + "-id-" + item._id}`} className="vns-product-detail-btn">
                             Ətraflı bax
                         </Link>
 

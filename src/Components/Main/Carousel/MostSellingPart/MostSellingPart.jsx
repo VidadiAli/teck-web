@@ -4,7 +4,7 @@ import "./MostSellingPart.css";
 import api from "../../../../api";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import LoadingCircle from "../../../Loading/LoadingCircle";
-import { addLikeds, unLiked } from "../../../../functions";
+import { addLikeds, createSlug, unLiked } from "../../../../functions";
 
 const MostSellingPart = ({ setLikeds, likeds }) => {
   const [mainProductsData, setMainProductsData] = useState([]);
@@ -70,7 +70,7 @@ const MostSellingPart = ({ setLikeds, likeds }) => {
                 <div className="most-sell-item-ope">
                   <NavLink
                     className="product-button-most-selling"
-                    to={`/product/${item._id}`}
+                    to={`/product/${createSlug(item.itemName).split(" ").join('-').split('/').join('-') + "-id-" + item._id}`}
                   >
                     İndi al
                   </NavLink>

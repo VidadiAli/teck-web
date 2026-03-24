@@ -10,6 +10,7 @@ import api from '../../api';
 import SearchNavbar from './SearchNavbar';
 import AuthForm from '../Register/AuthForm';
 import MyProfile from './MyProfile/MyProfile';
+import { createSlug } from '../../functions';
 
 const Navbar = ({
   basketValue, setBasketValue,
@@ -194,7 +195,7 @@ const Navbar = ({
           <li key={cat._id} className="categories__name">
             <NavLink
               className="categories__name_link"
-              to={`/category/${cat._id}`}
+              to={`/category/${createSlug(cat.name).split(" ").join('-') + '-id-' + cat._id}`}
               onClick={() => setMenuOpen(false)}
             >
               {cat.name}

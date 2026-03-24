@@ -5,6 +5,7 @@ import { FaHeart } from "react-icons/fa";
 import './Liked.css';
 import LoadingAllData from '../../../loadings/LoadingAllData';
 import LoadingMore from '../../../../../teck-seller/src/loadings/LoadingMore';
+import { Helmet } from "react-helmet-async";
 
 const Liked = () => {
     const [allLoading, setAllLoading] = useState(false)
@@ -33,7 +34,7 @@ const Liked = () => {
     const unLiked = async (id) => {
         try {
             const res = await api.delete(`/customer/unLikedAsPart/${id}`, {
-                params: {page, pageSize}
+                params: { page, pageSize }
             });
 
             setLikedProducts(res.data.data);
@@ -54,86 +55,98 @@ const Liked = () => {
     }, [page]);
 
     return (
-        <div className="tvef-liked-page">
-            {
-                allLoading ?
-                    <LoadingAllData /> :
-                    <>
-                        <div className="tvef-liked-head">
-                            <h1 className="tvef-liked-title">Bəyənilən məhsullar</h1>
-                            <p className="tvef-liked-subtitle">Seçdiyin məhsulları buradan izləyə bilərsən</p>
-                        </div>
 
-                        {likedProducts.length === 0 ? (
-                            <div className="tvef-liked-empty">Hələ bəyənilən məhsul yoxdur</div>
-                        ) : (
-                            <div className="tvef-liked-list">
-                                {likedProducts.map((item) => {
-                                    const product = item.product;
-                                    const discountedPrice = product?.hasDiscount
-                                        ? Math.round(product.price - (product.price * product.discountPercent) / 100)
-                                        : product?.price;
+        <>
+            <Helmet>
+                <title>
+                    {"Bəyəndiklərim | VNS Electronics"}
+                </title>
+                <meta
+                    name="description"
+                    content={`Bəyəndiyiniz məhsullara baxın.`}
+                />
+            </Helmet>
+            <div className="tvef-liked-page">
+                {
+                    allLoading ?
+                        <LoadingAllData /> :
+                        <>
+                            <div className="tvef-liked-head">
+                                <h1 className="tvef-liked-title">Bəyənilən məhsullar</h1>
+                                <p className="tvef-liked-subtitle">Seçdiyin məhsulları buradan izləyə bilərsən</p>
+                            </div>
 
-                                    return (
-                                        <div className="tvef-liked-card" key={item._id || product?._id}>
-                                            {product?.hasDiscount && (
-                                                <div className="tvef-liked-badge">-{product.discountPercent}%</div>
-                                            )}
+                            {likedProducts.length === 0 ? (
+                                <div className="tvef-liked-empty">Hələ bəyənilən məhsul yoxdur</div>
+                            ) : (
+                                <div className="tvef-liked-list">
+                                    {likedProducts.map((item) => {
+                                        const product = item.product;
+                                        const discountedPrice = product?.hasDiscount
+                                            ? Math.round(product.price - (product.price * product.discountPercent) / 100)
+                                            : product?.price;
 
-                                            <div className="tvef-liked-image-box">
-                                                <img
-                                                    src={product?.itemImage}
-                                                    alt={product?.itemName}
-                                                    className="tvef-liked-image"
-                                                />
-                                            </div>
+                                        return (
+                                            <div className="tvef-liked-card" key={item._id || product?._id}>
+                                                {product?.hasDiscount && (
+                                                    <div className="tvef-liked-badge">-{product.discountPercent}%</div>
+                                                )}
 
-                                            <FaHeart className="heart-icon" onClick={() => unLiked(product._id)} />
-
-                                            <div className="tvef-liked-content">
-                                                <p className="tvef-liked-company">{product?.salesCompany}</p>
-                                                <h3 className="tvef-liked-name">{product?.itemName}</h3>
-
-                                                <div className="tvef-liked-price-box">
-                                                    {product?.hasDiscount ? (
-                                                        <>
-                                                            <span className="tvef-liked-price">{discountedPrice} ₼</span>
-                                                            <span className="tvef-liked-old-price">{product?.price} ₼</span>
-                                                        </>
-                                                    ) : (
-                                                        <span className="tvef-liked-price">{product?.price} ₼</span>
-                                                    )}
+                                                <div className="tvef-liked-image-box">
+                                                    <img
+                                                        src={product?.itemImage}
+                                                        alt={product?.itemName}
+                                                        className="tvef-liked-image"
+                                                    />
                                                 </div>
 
-                                                <NavLink
-                                                    to={`/product/${product?._id}`}
-                                                    className="tvef-liked-detail-btn"
-                                                >
-                                                    Ətraflı bax
-                                                </NavLink>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
+                                                <FaHeart className="heart-icon" onClick={() => unLiked(product._id)} />
 
-                        {
-                            loadingMore && <LoadingMore />
-                        }
-                        {
-                            page < totalPages && <div className="tvef-loadmore-wrapper">
-                                <button
-                                    className="tvef-loadmore-btn"
-                                    onClick={() => setPage(page + 1)}
-                                >
-                                    Data çox
-                                </button>
-                            </div>
-                        }
-                    </>
-            }
-        </div>
+                                                <div className="tvef-liked-content">
+                                                    <p className="tvef-liked-company">{product?.salesCompany}</p>
+                                                    <h3 className="tvef-liked-name">{product?.itemName}</h3>
+
+                                                    <div className="tvef-liked-price-box">
+                                                        {product?.hasDiscount ? (
+                                                            <>
+                                                                <span className="tvef-liked-price">{discountedPrice} ₼</span>
+                                                                <span className="tvef-liked-old-price">{product?.price} ₼</span>
+                                                            </>
+                                                        ) : (
+                                                            <span className="tvef-liked-price">{product?.price} ₼</span>
+                                                        )}
+                                                    </div>
+
+                                                    <NavLink
+                                                        to={`/product/${product?._id}`}
+                                                        className="tvef-liked-detail-btn"
+                                                    >
+                                                        Ətraflı bax
+                                                    </NavLink>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+
+                            {
+                                loadingMore && <LoadingMore />
+                            }
+                            {
+                                page < totalPages && <div className="tvef-loadmore-wrapper">
+                                    <button
+                                        className="tvef-loadmore-btn"
+                                        onClick={() => setPage(page + 1)}
+                                    >
+                                        Data çox
+                                    </button>
+                                </div>
+                            }
+                        </>
+                }
+            </div>
+        </>
     );
 };
 

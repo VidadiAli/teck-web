@@ -7,6 +7,7 @@ import OrderForm from './ProductOrder/OrderForm'
 import LoadingCircle from '../../Loading/LoadingCircle'
 import { addLikeds, callLocalBasket, decreaseItem, deleteItem, unLiked } from '../../../functions';
 import AuthForm from '../../Register/AuthForm';
+import { Helmet } from "react-helmet-async";
 
 const BasketPage = ({
   setResponse,
@@ -182,108 +183,119 @@ const BasketPage = ({
   );
 
   return (
-    <div className="basket-page">
-      <h1>Səbət</h1>
-      {basket.length === 0 ? (
-        <p className="empty">Səbət boşdur!</p>
-      ) : (
-        <>
-          <div className="basket-items">
-            {basket.map((item, index) => (
-              <div className="basket-item" key={index}>
-                <div className='basket-image-box'>
-                  <img src={item.itemImage} alt={item.itemName} className='basket-img' />
-                </div>
-                {
-                  likeds.includes(item._id) ?
-                    <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
-                    <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
-                }
-                <div className="info">
-                  <h3>{item.itemName}</h3>
-                  <p>{item.salesCompany}</p>
-                  <p>₼ {item.price} | 35 ay: ₼ {((item.price + (item.price * 45) / 100) / 35).toFixed(2)} / ay</p>
-                  <p>Ümumi: {(item?.price * item.quantity).toFixed(2)} ₼</p>
-                  <p>⭐ {item.rating}</p>
-                </div>
-                <div className="actions">
+    <>
+      <Helmet>
+        <title>
+          {"Səbətim | VNS Electronics"}
+        </title>
+        <meta
+          name="description"
+          content={`Səbətdə olan məhsullara baxın.`}
+        />
+      </Helmet>
+      <div className="basket-page">
+        <h1>Səbət</h1>
+        {basket.length === 0 ? (
+          <p className="empty">Səbət boşdur!</p>
+        ) : (
+          <>
+            <div className="basket-items">
+              {basket.map((item, index) => (
+                <div className="basket-item" key={index}>
+                  <div className='basket-image-box'>
+                    <img src={item.itemImage} alt={item.itemName} className='basket-img' />
+                  </div>
                   {
-                    loading && index == loadingIndex ? <LoadingCircle size='30px' /> :
-                      <>
-                        <div className="quantity">
-                          <FiMinus onClick={() => {
-                            if (item.quantity > 1) {
+                    likeds.includes(item._id) ?
+                      <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
+                      <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
+                  }
+                  <div className="info">
+                    <h3>{item.itemName}</h3>
+                    <p>{item.salesCompany}</p>
+                    <p>₼ {item.price} | 35 ay: ₼ {((item.price + (item.price * 45) / 100) / 35).toFixed(2)} / ay</p>
+                    <p>Ümumi: {(item?.price * item.quantity).toFixed(2)} ₼</p>
+                    <p>⭐ {item.rating}</p>
+                  </div>
+                  <div className="actions">
+                    {
+                      loading && index == loadingIndex ? <LoadingCircle size='30px' /> :
+                        <>
+                          <div className="quantity">
+                            <FiMinus onClick={() => {
+                              if (item.quantity > 1) {
+                                if (!profileInfo) {
+                                  decreaseItem(item);
+                                  setBasket(localStorage.getItem('basketValues') ?
+                                    JSON.parse(localStorage.getItem('basketValues')) : [])
+                                  return;
+                                }
+
+                                decrement(index);
+                                setLoadingIndex(index)
+                              }
+                            }} />
+                            <span>{item.quantity || 1}</span>
+                            <FiPlus onClick={() => {
                               if (!profileInfo) {
-                                decreaseItem(item);
+                                callLocalBasket(item, setResponse, false);
                                 setBasket(localStorage.getItem('basketValues') ?
                                   JSON.parse(localStorage.getItem('basketValues')) : [])
                                 return;
                               }
-
-                              decrement(index);
+                              increment(index);
                               setLoadingIndex(index)
-                            }
-                          }} />
-                          <span>{item.quantity || 1}</span>
-                          <FiPlus onClick={() => {
-                            if (!profileInfo) {
-                              callLocalBasket(item, setResponse, false);
-                              setBasket(localStorage.getItem('basketValues') ?
-                                JSON.parse(localStorage.getItem('basketValues')) : [])
-                              return;
-                            }
-                            increment(index);
-                            setLoadingIndex(index)
-                          }} />
-                        </div>
-                        <FiTrash2
-                          className="trash"
-                          onClick={() => {
-                            if (!profileInfo) {
-                              deleteItem(item);
-                              setBasket(localStorage.getItem('basketValues') ?
-                                JSON.parse(localStorage.getItem('basketValues')) : [])
-                              return;
-                            }
-                            removeItem(item._id);
-                            setLoadingIndex(index)
-                          }}
-                        />
-                      </>
-                  }
+                            }} />
+                          </div>
+                          <FiTrash2
+                            className="trash"
+                            onClick={() => {
+                              if (!profileInfo) {
+                                deleteItem(item);
+                                setBasket(localStorage.getItem('basketValues') ?
+                                  JSON.parse(localStorage.getItem('basketValues')) : [])
+                                return;
+                              }
+                              removeItem(item._id);
+                              setLoadingIndex(index)
+                            }}
+                          />
+                        </>
+                    }
+                  </div>
+                  <button className="checkout" onClick={() => createOrderInfo(index, item._id)}>
+                    {
+                      creatingMessage ? "Sifariş yaradılır..." : "Sifariş et"
+                    }
+                  </button>
                 </div>
-                <button className="checkout" onClick={() => createOrderInfo(index, item._id)}>
-                  {
-                    creatingMessage ? "Sifariş yaradılır..." : "Sifariş et"
-                  }
-                </button>
-              </div>
-            ))}
-          </div>
-          <div className="basket-footer">
-            <p className="total">Cəmi: ₼ {totalPrice.toFixed(2)}</p>
-          </div>
-        </>
-      )}
+              ))}
+            </div>
+            <div className="basket-footer">
+              <p className="total">Cəmi: ₼ {totalPrice.toFixed(2)}</p>
+            </div>
+          </>
+        )}
 
-      {
-        showOrderForm && (
-          <OrderForm
-            setShowOrderForm={setShowOrderForm}
-            setProductInfo={setProductInfo}
-            productInfo={productInfo}
-            createOrder={createOrder}
-            creatingMessage={creatingMessage}
-          />
-        )
-      }
+        {
+          showOrderForm && (
+            <OrderForm
+              setShowOrderForm={setShowOrderForm}
+              setProductInfo={setProductInfo}
+              productInfo={productInfo}
+              createOrder={createOrder}
+              creatingMessage={creatingMessage}
+            />
+          )
+        }
 
-      {
-        showAuthForm && (
-          <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
-        )
-      }
-    </div>
+        {
+          showAuthForm && (
+            <AuthForm setCustomerToken={setCustomerToken} setShowAuthForm={setShowAuthForm} setResponse={setResponse} />
+          )
+        }
+      </div>
+    </>
   )
 }
 

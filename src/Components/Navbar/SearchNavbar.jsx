@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import "./SearchNavbar.css";
+import { createSlug } from "../../functions";
 
 const SearchNavbar = ({ setSearchData, searchData, closeSearch, setCloseSearch }) => {
     if (!searchData || searchData.length === 0) return;
@@ -29,7 +30,7 @@ const SearchNavbar = ({ setSearchData, searchData, closeSearch, setCloseSearch }
                     return (
                         <NavLink
                             key={item._id}
-                            to={`/product/${item._id}`}
+                            to={`/product/${createSlug(item.itemName).split(" ").join('-').split('/').join('-') + "-id-" + item._id}`}
                             className="search-item"
                             onClick={handleClose}
                         >
