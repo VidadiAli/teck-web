@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { addLikeds, addToBasket, callLocalBasket, unLiked } from "../../../functions";
 import { FaStar, FaHeart, FaRegHeart, FaCalendarAlt } from "react-icons/fa";
 import { percentage } from "../../Data/DataFile";
+import { useEffect } from "react";
 
 const ProductCard = ({
     item,
@@ -12,11 +13,49 @@ const ProductCard = ({
 
     const [loading, setLoading] = useState(false);
     const [month, setMonth] = useState(3);
-    const [percentageValue, setPercentageValue] = useState(4.2)
+    const [percentageValue, setPercentageValue] = useState(4.2);
+    const [imgsList, setImgsList] = useState([]);
+    const imageBoxRef = useRef(null);
 
     const finalPrice = item.hasDiscount
         ? (item.price - (item.price * item.discountPercent) / 100).toFixed(2)
         : item.price;
+
+    useEffect(() => {
+        const imagesList = item?.itemImageList?.map(e => e.imageUrl) ?? [];
+        imagesList.unshift(item.itemImage);
+        setImgsList([...imagesList]);
+    }, [item]);
+
+    useEffect(() => {
+        const box = imageBoxRef.current;
+        if (!box) return;
+
+        const elements = box.querySelectorAll(".vns-product-image-slide");
+        if (!elements.length) return;
+
+        if (elements.length === 1) {
+            elements[0].style.transform = "translateX(0)";
+            return;
+        }
+
+        let currentIndex = 0;
+
+        elements.forEach((el, index) => {
+            el.style.transform = `translateX(${index * 100}%)`;
+            el.style.transition = "transform 0.5s ease";
+        });
+
+        const interval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % elements.length;
+
+            elements.forEach((el, index) => {
+                el.style.transform = `translateX(${(index - currentIndex) * 100}%)`;
+            });
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [imgsList]);
 
     return (
         <>
@@ -34,12 +73,19 @@ const ProductCard = ({
                         <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
                 }
 
-                <div className="vns-product-image-box">
-                    <img
-                        src={item.itemImage}
-                        alt={item.itemName}
-                        className="vns-product-image"
-                    />
+                <div className="vns-product-image-box" ref={imageBoxRef}>
+                    {imgsList?.map((image, index) => (
+                        <div
+                            key={item._id + image + index}
+                            className="vns-product-image-slide"
+                        >
+                            <img
+                                src={image}
+                                alt={item.itemName}
+                                className="vns-product-image"
+                            />
+                        </div>
+                    ))}
                 </div>
 
                 <div className="vns-product-body">

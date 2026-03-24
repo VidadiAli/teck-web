@@ -24,8 +24,9 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   const [error, setError] = useState(null);
   const [companyOptions, setCompanyOptions] = useState([]);
   const [showAuthForm, setShowAuthForm] = useState(false);
-  const [customerToken, setCustomerToken] = useState('')
-  const [addingMesage, setAddingMessage] = useState(false)
+  const [customerToken, setCustomerToken] = useState('');
+  const [addingMesage, setAddingMessage] = useState(false);
+  const [imgsList, setImgsList] = useState([]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -82,6 +83,15 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
     }
   };
 
+
+  useEffect(() => {
+    if (product) {
+      const imagesList = product?.itemImageList?.map(e => e.imageUrl) ?? [];
+      imagesList.unshift(product.itemImage);
+      setImgsList([...imagesList]);
+    }
+  }, [product]);
+
   if (loading) return <LoadingCircle />;
   if (error) return <h2 style={{ padding: "40px" }}>{error}</h2>;
   if (!product) return <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>;
@@ -100,12 +110,31 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
     displayType
   } = product;
 
+
+  const changeImage = (item) => {
+    const firstImage = imgsList.find(e => e == item)
+    const newList = imgsList.filter(e => e != item);
+    newList.unshift(firstImage);
+    setImgsList([...newList]);
+  }
+
   return (
     <section className="item-detail">
       <div className="item-container">
 
         <div className="item-image">
-          <img src={itemImage} alt={itemName} />
+          <div className="first-img">
+            <img src={imgsList[0]} alt={itemName} className="item-picture" />
+          </div>
+          <div className="item-images-box">
+            {
+              imgsList.slice(1).map((image, index) => (
+                <div className="other-imgs" key={image + index} onClick={() => changeImage(image)}>
+                  <img src={image} alt={itemName} className="item-picture" />
+                </div>
+              ))
+            }
+          </div>
         </div>
 
         <div className="item-info">
@@ -152,7 +181,7 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
             </div>
           </div>
 
-          <button className="add-to-cart-main" onClick={()=>addItem(product)}>
+          <button className="add-to-cart-main" onClick={() => addItem(product)}>
             <FaShoppingCart /> {addingMesage ? "Səbətə Əlavə edilir..." : "Səbətə əlavə et"}
           </button>
         </div>

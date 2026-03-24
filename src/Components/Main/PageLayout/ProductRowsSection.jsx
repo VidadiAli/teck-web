@@ -45,7 +45,7 @@ const ProductRowsSection = ({
             <div className="vns-products-grid">
                 {items.map((item) => (
                     <ProductCard
-                        key={item._id || item.id}
+                        key={item._id}
                         item={item}
                         likeds={likeds}
                         setLikeds={setLikeds}
