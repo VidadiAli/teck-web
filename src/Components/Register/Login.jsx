@@ -21,6 +21,15 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
         return;
       }
 
+      if (password.length < 8) {
+        setResponse({
+          showAlert: true,
+          message: 'Parol ən az 8 elementdən ibarət olmalıdır!F',
+          type: 'error'
+        });
+        return;
+      }
+
       const phoneNumber = `+994${phone.slice(-9)}`;
 
       await api.post("/customer/login", { phone: phoneNumber, password });
