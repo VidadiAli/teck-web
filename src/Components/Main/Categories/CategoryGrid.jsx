@@ -108,11 +108,11 @@ const CategoryGrid = ({
     <>
       <Helmet>
         <title>
-          {"Elektrik Məhsulları | VNS Electronics"}
+          {"Elektronika  Məhsulları | VNS Electronics"}
         </title>
         <meta
-          name={`Elektrik Məhsulları.`}
-          content={`Elektrik Məhsulları.`}
+          name={`Elektronika  Məhsulları.`}
+          content={`Elektronika  Məhsulları.`}
         />
       </Helmet>
       <div className="category-grid-container">
