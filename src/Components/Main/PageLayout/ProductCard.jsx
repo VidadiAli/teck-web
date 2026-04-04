@@ -22,8 +22,13 @@ const ProductCard = ({
         : item.price;
 
     useEffect(() => {
-        const imagesList = item?.itemImageList?.map(e => e.imageUrl) ?? [];
-        imagesList.unshift(item.itemImage);
+        const productColors = [], imagesList = [];
+        item?.itemImageList?.forEach(e => {
+            if (!productColors.includes(e.color)) {
+                imagesList.push(e.imageUrl)
+                productColors.push(e.color);
+            }
+        });
         setImgsList([...imagesList]);
     }, [item]);
 

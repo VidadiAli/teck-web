@@ -28,6 +28,8 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   const [customerToken, setCustomerToken] = useState('');
   const [addingMesage, setAddingMessage] = useState(false);
   const [imgsList, setImgsList] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [mainColor, setMainColor] = useState('');
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -78,7 +80,6 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
       }
 
     } catch (error) {
-      console.error(error);
       setResponse({ type: "error", message: "Xəta baş verdi ❌", showAlert: true });
     }
   };
@@ -86,17 +87,42 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
 
   useEffect(() => {
     if (product) {
-      const imagesList = product?.itemImageList?.map(e => e.imageUrl) ?? [];
-      imagesList.unshift(product.itemImage);
+      const productColors = [];
+      product?.itemImageList?.forEach(e => {
+        if (!productColors.includes(e.color)) {
+          productColors.push(e.color);
+        }
+      });
+
+      setMainColor[productColors[0]];
+      setColors([...productColors]);
+      const imagesList = product?.itemImageList
+        ?.filter(e => e.color === productColors[0])
+        .map(e => e.imageUrl);
       setImgsList([...imagesList]);
     }
   }, [product]);
+
+  const changeImage = (item) => {
+    const firstImage = imgsList.find(e => e == item);
+    const newList = imgsList.filter(e => e != item);
+    newList.unshift(firstImage);
+    setImgsList([...newList]);
+  }
+
+  const changeColor = (color) => {
+    const imagesList = product?.itemImageList
+      ?.filter(e => e.color === color)
+      .map(e => e.imageUrl);
+    setImgsList([...imagesList]);
+  }
+
 
   if (loading) return <LoadingCircle />;
   if (error) return <>
     <Helmet>
       <title>
-        { "Product | VNS Electronics"}
+        {"Product | VNS Electronics"}
       </title>
       <meta
         name={`Məhsul`}
@@ -132,14 +158,6 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
     displayType
   } = product;
 
-
-  const changeImage = (item) => {
-    const firstImage = imgsList.find(e => e == item)
-    const newList = imgsList.filter(e => e != item);
-    newList.unshift(firstImage);
-    setImgsList([...newList]);
-  }
-
   return (
     <>
       <Helmet>
@@ -165,6 +183,17 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
                     <img src={image} alt={itemName} className="item-picture" />
                   </div>
                 ))
+              }
+            </div>
+            <div className="color-boxes">
+              {
+                colors.map((e) => {
+                  return <div
+                    onClick={() => changeColor(e)}
+                    key={e}
+                    className="color-box"
+                    style={{ backgroundColor: e, outlineColor: e }}></div>
+                })
               }
             </div>
           </div>
