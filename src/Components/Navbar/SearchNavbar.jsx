@@ -35,7 +35,7 @@ const SearchNavbar = ({ setSearchData, searchData, closeSearch, setCloseSearch }
                             onClick={handleClose}
                         >
                             <img
-                                src={item.itemImage || "/no-image.png"}
+                                src={item.itemImageList[0].imageUrl || "/no-image.png"}
                                 alt={item.itemName}
                             />
                             <div>
