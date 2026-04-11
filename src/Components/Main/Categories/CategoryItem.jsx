@@ -15,7 +15,7 @@ import LoadingCircle from "../../Loading/LoadingCircle";
 import { addToBasket, callLocalBasket } from "../../../functions";
 import { Helmet } from "react-helmet-async";
 
-const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
+const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForNav }) => {
   const { productId } = useParams();
   const [month, setMonth] = useState(2);
   const [percentageValue, setPercentageValue] = useState(3)
@@ -30,6 +30,7 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
   const [imgsList, setImgsList] = useState([]);
   const [colors, setColors] = useState([]);
   const [mainColor, setMainColor] = useState('');
+  const [productDetails, setProductDetails] = useState([])
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -100,6 +101,11 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
         ?.filter(e => e.color === productColors[0])
         .map(e => e.imageUrl);
       setImgsList([...imagesList]);
+    }
+
+    if (categoriesForNav?.length > 0 && product) {
+      const details = categoriesForNav.find(e => e._id == product.category?._id);
+      setProductDetails(details.productDetails.map(e => e.detailName))
     }
   }, [product]);
 
@@ -250,60 +256,25 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo }) => {
           <div className="detail">
             <h2>Xüsusiyyətlər</h2>
             <div className="detail-box">
-              {brend && brend != '0' && brend != '-' &&
-                < div className="detail-box-child">
-                  <span className="detail-name">Brend</span> <span className="detail-value">{brend || '-'}</span>
-                </div>
-              }
-              {productSize && productSize != '0' && productSize != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">Daxili yaddaş</span> <span className="detail-value">{productSize || '-'}</span>
-                </div>
-              }
-              {ram && ram != '0' && ram != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">Operativ yaddaş</span> <span className="detail-value">{ram || '-'}</span>
-                </div>
-              }
-              {operationSystem && operationSystem != '0' && operationSystem != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">Əməliyyat Sistemi</span> <span className="detail-value">{operationSystem || '-'}</span>
-                </div>
-              }
-              {countOfNuva && countOfNuva != '0' && countOfNuva != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">Nüvələrin sayı</span> <span className="detail-value">{countOfNuva || '-'}</span>
-                </div>
-              }
-              {ram && ram != '0' && ram != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">NFC</span> <span className="detail-value">{nfc ? 'var' : 'yoxdur'}</span>
-                </div>
-              }
-              {videoFormat && videoFormat != '0' && videoFormat != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">Video Format</span> <span className="detail-value">{videoFormat || '-'}</span>
-                </div>
-              }
-              {year && year != '0' && year != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">İstehsal ili</span> <span className="detail-value">{year || '-'}</span>
-                </div>
-              }
-              {displaySize && displaySize != '0' && displaySize != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">Ekran Ölçüsü</span> <span className="detail-value">{displaySize || '-'}</span>
-                </div>
-              }
-              {displayView && displayView != '0' && displayView != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">Ekran Kalitəsi</span> <span className="detail-value">{displayView || '-'}</span>
-                </div>
-              }
-              {displayType && displayType != '0' && displayType != '-' &&
-                <div className="detail-box-child">
-                  <span className="detail-name">Ekran Tipi</span> <span className="detail-value">{displayType || '-'}</span>
-                </div>
+              {product &&
+                Object.entries(product).map(([key, value]) => {
+                  if (productDetails.includes(key) && value != '-' && value != 'false' && value != '0') {
+                    return (
+                      <div className="detail-box-child" key={key}>
+                        <span className="detail-name">
+                          {
+                            categoriesForNav?.
+                              find(e => e._id == product?.category?._id).
+                              productDetails.find(f => f.detailName == key).detail.
+                              split("placeholder:")[0]
+                          }
+                        </span>
+                        <span className="detail-value">{value == 'true' ? 'var' : value  || '-'}</span>
+                      </div>
+                    );
+                  }
+                  return null;
+                })
               }
             </div>
           </div>

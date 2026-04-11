@@ -77,6 +77,7 @@ const Body = ({
               setResponse={setResponse}
               setBasketValue={setBasketValue}
               profileInfo={profileInfo}
+              categoriesForNav={categoriesForNav}
             />
           }
         />
