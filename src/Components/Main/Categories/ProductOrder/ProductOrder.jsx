@@ -82,7 +82,7 @@ const ProductOrder = ({ profileInfo }) => {
             <div className="po-order-card" key={order._id}>
               <div className="po-product-info po-1">
                 <img
-                  src={order.product.itemImage}
+                  src={order.product.itemImageList[0].imageUrl}
                   alt={order.product.itemName}
                   className="po-product-img"
                 />

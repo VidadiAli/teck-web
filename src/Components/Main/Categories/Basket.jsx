@@ -203,7 +203,7 @@ const BasketPage = ({
               {basket.map((item, index) => (
                 <div className="basket-item" key={index}>
                   <div className='basket-image-box'>
-                    <img src={item.itemImage} alt={item.itemName} className='basket-img' />
+                    <img src={item.itemImageList[0].imageUrl} alt={item.itemName} className='basket-img' />
                   </div>
                   {
                     likeds.includes(item._id) ?
