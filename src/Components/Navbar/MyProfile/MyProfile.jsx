@@ -8,6 +8,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
     const [updateInfo, setUpdateInfo] = useState(false);
     const [updatePass, setUpdatePass] = useState(false);
+    const [loading, setLoading] = useState(false)
     const [newProfileInfo, setNewProfileInfo] = useState(null);
     const [showPass, setShowPass] = useState({
         forOld: true,
@@ -21,10 +22,18 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
     })
 
     const handleLogout = async () => {
-        const res = await api.post("/customer/logout", {});
-        setProfileInfo(null);
-        setCloseProfile(null);
-        window.location.reload()
+        try {
+            setLoading(true)
+            const res = await api.post("/customer/logout", {});
+            setProfileInfo(null);
+            setCloseProfile(null);
+            window.location.reload()
+        } catch (error) {
+            console.log(error.message)
+        }
+        finally {
+            setLoading(false)
+        }
     };
 
     const editInfo = (e) => {
@@ -43,7 +52,12 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
             setUpdateInfo(false);
             setNewProfileInfo(res?.data)
         } catch (error) {
-            console.log(error)
+            setResponse({
+                message: error.response?.data?.message,
+                head: 'Xəta!',
+                showAlert: true,
+                type: 'error'
+            });
         }
     }
 
@@ -74,7 +88,12 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
                 newPassRepeat: ''
             })
         } catch (error) {
-            console.log(error)
+            setResponse({
+                message: error.response?.data?.message,
+                head: 'Xəta!',
+                showAlert: true,
+                type: 'error'
+            });
         }
     }
 
@@ -222,7 +241,7 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
                 </div>
 
                 <button className="logout-btn" onClick={handleLogout}>
-                    Hesabdan çıx
+                    {loading ? 'Hesabdan çıxılır...' : ' Hesabdan çıx'}
                 </button>
             </div>
         </>

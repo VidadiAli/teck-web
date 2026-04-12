@@ -90,7 +90,12 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
       }
 
     } catch (error) {
-      setResponse({ type: "error", message: "Xəta baş verdi ❌", showAlert: true });
+      setResponse({
+        message: error.response?.data?.message,
+        head: 'Xəta!',
+        showAlert: true,
+        type: 'error'
+      });
     }
   };
 

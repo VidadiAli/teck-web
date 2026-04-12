@@ -29,7 +29,7 @@ export const addToBasketFromLocal = async (itemId, quantity) => {
 
         setBasketValue(res.data.count);
     } catch (error) {
-
+        // throw new Error(`${error.response?.data?.message}`)
     }
 }
 

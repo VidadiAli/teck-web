@@ -80,7 +80,12 @@ const Navbar = ({
       setCloseSearch(true);
 
     } catch (error) {
-      console.log(error);
+      setResponse({
+        message: error.response?.data?.message,
+        head: 'Xəta!',
+        showAlert: true,
+        type: 'error'
+      });
     }
     finally {
       setSearchLoading(false)
@@ -115,7 +120,7 @@ const Navbar = ({
 
 
   useEffect(() => {
-    if (profileInfo) return; 
+    if (profileInfo) return;
 
     const updateBasket = () => {
       let count = 0;

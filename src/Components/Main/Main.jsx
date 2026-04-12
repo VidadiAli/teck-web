@@ -77,7 +77,6 @@ const Main = ({
     try {
       const res = await api.get(`/customer/getBrands/${selectedCategory}`);
       setBrands([...res.data.filter((e) => e.name != null)])
-      console.log(res.data)
     } catch (error) {
       console.log(error.message)
     }

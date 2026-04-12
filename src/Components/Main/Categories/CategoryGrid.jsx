@@ -33,9 +33,7 @@ const CategoryGrid = ({
               }
             }
           );
-
-          console.log(res.data.products)
-
+          
           return {
             categoryName: data?.name,
             categoryId: data?._id,

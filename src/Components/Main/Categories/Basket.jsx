@@ -36,7 +36,6 @@ const BasketPage = ({
       valueOfLoading == "firstFetch" && setLoadingFirst(false)
     } catch (error) {
       valueOfLoading == "firstFetch" && setLoadingFirst(false)
-      console.error(error)
     }
   }
 
@@ -85,7 +84,12 @@ const BasketPage = ({
       await fetchBasket("decrement");
       setLoading(false)
     } catch (error) {
-      console.error(error);
+      setResponse({
+        message: error.response?.data?.message,
+        head: 'Xəta!',
+        showAlert: true,
+        type: 'error'
+      });
       setLoading(false)
     }
   };
@@ -149,13 +153,16 @@ const BasketPage = ({
         setCreatingMessage(false)
         window.location = "/orders/"
       } catch (error) {
-        console.log(error)
+        setResponse({
+          message: error.response?.data?.message,
+          head: 'Xəta!',
+          showAlert: true,
+          type: 'error'
+        });
       }
-
     } catch (error) {
-      console.error(error);
       setResponse({
-        message: 'Sifariş yaradılmadı',
+        message: error.response?.data?.message,
         head: 'Uğursuz!',
         api: '',
         isQuestion: false,
@@ -178,7 +185,12 @@ const BasketPage = ({
       await fetchBasket("remove");
       setLoading(false)
     } catch (error) {
-      console.error(error);
+      setResponse({
+        message: error.response?.data?.message,
+        head: 'Xəta!',
+        showAlert: true,
+        type: 'error'
+      });
       setLoading(false)
     }
   };

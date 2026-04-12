@@ -27,8 +27,6 @@
     animation: scaleIn 0.3s ease;
 }
 
-/* Toggle Buttons */
-
 .toggle-buttons {
     display: flex;
     border-radius: 12px;
@@ -54,8 +52,6 @@
     color: #fff;
     box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
 }
-
-/* Form */
 
 .form-wrapper .auth-form {
     display: flex;
@@ -86,8 +82,6 @@
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
-/* Submit Button */
-
 .form-wrapper button {
     padding: 14px;
     border: none;
@@ -109,8 +103,6 @@
 .form-wrapper button:active {
     transform: scale(0.97);
 }
-
-/* Close Button */
 
 .close-auth-form {
     position: absolute;
@@ -136,8 +128,6 @@
     transform: rotate(90deg) scale(1.1);
 }
 
-/* Error */
-
 .error {
     background: #fee2e2;
     color: #b91c1c;
@@ -147,8 +137,13 @@
     text-align: center;
 }
 
+.eye {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+}
 
-/* Animations */
 
 @keyframes fadeIn {
     from {

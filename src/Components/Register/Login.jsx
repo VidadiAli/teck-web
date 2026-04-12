@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import api from "../../api";
 import { addToBasketFromLocal } from "../../functions";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
   const [phone, setPhone] = useState("+994");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loginSystem, setLoginSystem] = useState(false)
+  const [showEye, setShowEye] = useState(false)
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -38,23 +40,31 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
         ? JSON.parse(localStorage.getItem('basketValues'))
         : [];
 
-      if (newData.length) {
-        for (const e of newData) {
-          await addToBasketFromLocal(e._id, e.quantity);
+      try {
+        if (newData.length) {
+          for (const e of newData) {
+            await addToBasketFromLocal(e._id, e.quantity);
+          }
         }
+
+        localStorage.removeItem('basketValues');
+        setResponse({
+          showAlert: true,
+          message: 'Heaba daxil oldunuz. Xoş alış-verişlər',
+          type: 'success'
+        });
+
+        setShowAuthForm(false);
+        window.location.reload();
+        setLoginSystem(false);
+      } catch (error) {
+        const msg = error.message.includes('stok')
+          ? 'Səbətdə dəyişiklik edin. Məhsul artıq sizin hesabda mövcuddur.'
+          :
+          error.message
+        setError(msg || "Xəta baş verdii");
+        setLoginSystem(false)
       }
-
-      localStorage.removeItem('basketValues');
-      setResponse({
-        showAlert: true,
-        message: 'Heaba daxil oldunuz. Xoş alış-verişlər',
-        type: 'success'
-      });
-
-      setShowAuthForm(false);
-      window.location.reload();
-      localStorage.removeItem('basketValues');
-      setLoginSystem(false);
 
     } catch (err) {
       setError(err.response?.data?.message || "Xəta baş verdi");
@@ -65,20 +75,35 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
   return (
     <form onSubmit={handleSubmit} className="auth-form">
       {error && <p className="error">{error}</p>}
-      <input
-        type="text"
-        placeholder="+994XXYYYZZTT"
-        value={phone}
-        onChange={e => setPhone(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Şifrə"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        required
-      />
+      <label htmlFor="" style={{ position: 'relative' }}>
+        <input
+          type="text"
+          placeholder="+994XXYYYZZTT"
+          value={phone}
+          onChange={e => setPhone(e.target.value)}
+          required
+        />
+      </label>
+      <label htmlFor="" style={{ position: 'relative' }}>
+        <input
+          type={`${showEye ? 'text' : 'password'}`}
+          placeholder="Şifrə"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
+        {
+          showEye ?
+            <FaEyeSlash
+              onClick={() => setShowEye(!showEye)}
+              className="eye"
+            /> :
+            <FaEye
+              onClick={() => setShowEye(!showEye)}
+              className="eye"
+            />
+        }
+      </label>
       <button type="submit" disabled={loginSystem}>
         {loginSystem ? "Daxil olunur..." : "Daxil Ol"}
       </button>

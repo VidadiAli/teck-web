@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import api from "../../api";
 import { addToBasketFromLocal } from "../../functions";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
     const [name, setName] = useState("");
@@ -8,6 +9,7 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loginSystem, setLoginSystem] = useState(false)
+    const [showEye, setShowEye] = useState(false)
 
     const handleSubmit = async e => {
         setLoginSystem(true)
@@ -30,7 +32,7 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
                 });
                 return;
             }
-            
+
             const phoneNumber = `+994${phone.slice(-9)}`
             await api.post("/customer/register", {
                 name,
@@ -59,7 +61,6 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
 
             setShowAuthForm(false);
             window.location.reload();
-            localStorage.removeItem('basketValues');
             setLoginSystem(false);
 
         } catch (err) {
@@ -81,18 +82,31 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
             />
             <input
                 type="text"
-                placeholder="Telefon"
+                placeholder="+994505005050"
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
                 required
             />
-            <input
-                type="password"
-                placeholder="Şifrə"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-            />
+            <label htmlFor="" style={{ position: 'relative' }}>
+                <input
+                    type={`${showEye ? 'text' : 'password'}`}
+                    placeholder="Şifrə"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
+                />
+                {
+                    showEye ?
+                        <FaEyeSlash
+                            onClick={() => setShowEye(!showEye)}
+                            className="eye"
+                        /> :
+                        <FaEye
+                            onClick={() => setShowEye(!showEye)}
+                            className="eye"
+                        />
+                }
+            </label>
             <button type="submit" disabled={loginSystem}>{loginSystem ? "Hesab yaradılır..." : "Qeydiyyatdan keç"}</button>
         </form>
     );
