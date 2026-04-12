@@ -4,6 +4,7 @@ import { addLikeds, addToBasket, callLocalBasket, createSlug, unLiked } from "..
 import { FaStar, FaHeart, FaRegHeart, FaCalendarAlt } from "react-icons/fa";
 import { percentage } from "../../Data/DataFile";
 import { useEffect } from "react";
+import api from "../../../api";
 
 const ProductCard = ({
     item,
@@ -61,6 +62,26 @@ const ProductCard = ({
 
         return () => clearInterval(interval);
     }, [imgsList]);
+
+
+    const checkProductStock = async () => {
+        try {
+            const count = localStorage.getItem('basketValues')
+                ? JSON.parse(localStorage.getItem('basketValues'))
+                    .reduce((sum, e) => e._id === item?._id ? sum + e.quantity : sum, 0)
+                : 0;
+            await api.post(`/customer/checkProductStock/${item?._id}`, { count: count + 1 })
+            callLocalBasket(item, setResponse, true);
+        } catch (error) {
+            setResponse({
+                message: error.response?.data?.message,
+                head: 'Xəta!',
+                showAlert: true,
+                type: 'error'
+            });
+        }
+        return;
+    }
 
     return (
         <>
@@ -140,7 +161,7 @@ const ProductCard = ({
                             onClick={
                                 () => {
                                     if (!profileInfo) {
-                                        callLocalBasket(item, setResponse, true);
+                                        checkProductStock();
                                         return;
                                     }
                                     addToBasket(item._id, setLoading, false, setBasketValue, setResponse, false, false)

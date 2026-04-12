@@ -55,9 +55,10 @@ export const addToBasket = async (productId, setLoading, setError, setBasketValu
 
     } catch (error) {
         setResponse({
-            type: "error",
-            message: "Səbətə əlavə edilə bilmədi ❌",
-            showAlert: true
+            message: error.response?.data?.message,
+            head: 'Xəta!',
+            showAlert: true,
+            type: 'error'
         });
     }
     finally {

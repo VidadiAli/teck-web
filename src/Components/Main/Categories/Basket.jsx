@@ -62,7 +62,12 @@ const BasketPage = ({
       await fetchBasket("increment");
       setLoading(false)
     } catch (error) {
-      console.error(error);
+      setResponse({
+        message: error.response?.data?.message,
+        head: 'Xəta!',
+        showAlert: true,
+        type: 'error'
+      })
       setLoading(false)
     }
   };
@@ -178,6 +183,28 @@ const BasketPage = ({
     }
   };
 
+
+  const checkProductStock = async (item) => {
+    try {
+      const count = localStorage.getItem('basketValues')
+        ? JSON.parse(localStorage.getItem('basketValues'))
+          .reduce((sum, e) => e._id === item?._id ? sum + e.quantity : sum, 0)
+        : 0;
+      await api.post(`/customer/checkProductStock/${item?._id}`, { count: count + 1 })
+      callLocalBasket(item, setResponse, true);
+      setBasket(localStorage.getItem('basketValues') ?
+        JSON.parse(localStorage.getItem('basketValues')) : [])
+    } catch (error) {
+      setResponse({
+        message: error.response?.data?.message,
+        head: 'Xəta!',
+        showAlert: true,
+        type: 'error'
+      });
+    }
+    return;
+  }
+
   if (loadingFirst) return (
     <LoadingCircle />
   );
@@ -238,9 +265,7 @@ const BasketPage = ({
                             <span>{item.quantity || 1}</span>
                             <FiPlus onClick={() => {
                               if (!profileInfo) {
-                                callLocalBasket(item, setResponse, false);
-                                setBasket(localStorage.getItem('basketValues') ?
-                                  JSON.parse(localStorage.getItem('basketValues')) : [])
+                                checkProductStock(item);
                                 return;
                               }
                               increment(index);
