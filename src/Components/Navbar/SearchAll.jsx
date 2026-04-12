@@ -31,7 +31,7 @@ const SearchAll = ({
           return (
             <NavLink
               key={item._id}
-              to={`/product/${createSlug(item.itemName).split(" ").join('-').split('/').join('-') + "-id-" + item._id}`}
+              to={`/product/${createSlug(item.itemName)}/${item._id}`}
               className="search-item"
             >
               <img

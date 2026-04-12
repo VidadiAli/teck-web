@@ -42,7 +42,7 @@ const MostSellingPart = ({ setLikeds, likeds }) => {
                   }
                   <div className="item-image">
                     <img
-                      src={item.itemImage || "/no-image.png"}
+                      src={item.itemImageList[0].imageUrl || "/no-image.png"}
                       alt={item.itemName}
                       className="item-image-photo"
                     />
@@ -70,7 +70,7 @@ const MostSellingPart = ({ setLikeds, likeds }) => {
                 <div className="most-sell-item-ope">
                   <NavLink
                     className="product-button-most-selling"
-                    to={`/product/${createSlug(item.itemName).split(" ").join('-').split('/').join('-') + "-id-" + item._id}`}
+                    to={`/product/${createSlug(item.itemName)}/${item._id}`}
                   >
                     İndi al
                   </NavLink>

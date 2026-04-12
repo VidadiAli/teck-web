@@ -36,7 +36,8 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const res = await api.get(`/customer/getProductById/${productId.split('-id-')[1]}`);
+        console.log(productId)
+        const res = await api.get(`/customer/getProductById/${productId}`);
         setProduct(res.data);
       } catch (err) {
         setError("Məhsul tapılmadı ❌");
@@ -150,20 +151,7 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
     <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>
   </>;
 
-  const { itemName, price, rating, itemImage, salesCount, hasDiscount, discountPercent,
-    productSize,
-    ram,
-    operationSystem,
-    nfc,
-    countOfNuva,
-    brend,
-    year,
-    videoFormat,
-    displaySize,
-    displayView,
-    displayType
-  } = product;
-
+  const { itemName, hasDiscount, price } = product;
   return (
     <>
       <Helmet>
@@ -258,7 +246,7 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
             <div className="detail-box">
               {product &&
                 Object.entries(product).map(([key, value]) => {
-                  if (productDetails.includes(key) && value != '-' && value != 'false' && value != '0') {
+                  if (productDetails.includes(key) && value != '-' && value != 'false' && value != false && value != '0') {
                     return (
                       <div className="detail-box-child" key={key}>
                         <span className="detail-name">
@@ -266,10 +254,16 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
                             categoriesForNav?.
                               find(e => e._id == product?.category?._id).
                               productDetails.find(f => f.detailName == key).detail.
-                              split("placeholder:")[0]
+                              split("placeholder:")[0].split("(notebook üçün)")[0]
                           }
                         </span>
-                        <span className="detail-value">{value == 'true' ? 'var' : value  || '-'}</span>
+                        <span className="detail-value">
+                          {key == 'weight' ? `${value} qram` :
+                            key == 'guarantee' ? `${value} ay` :
+                              key == 'redTime' ? `${value} saniyə` :
+                                key == 'maxdegrie' ? `${value} °C` :
+                                  value == true || value == 'true' ? 'var' : value || '-'}
+                        </span>
                       </div>
                     );
                   }

@@ -24,7 +24,7 @@ const CategoryElements = ({
   const fetchCategoryProducts = async (valueOfLoading) => {
     valueOfLoading == "loadingFirst" ? setLoadingFirst(true) : setLoading(true)
     try {
-      const res = await api.get(`/customer/getProductsByCategory/${categoryId.split("-id-")[1]}`,
+      const res = await api.get(`/customer/getProductsByCategory/${categoryId}`,
         {
           params: {
             page, pageSize

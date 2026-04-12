@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import "./CarouselPart.css";
 import api from "../../../../api";
 import LoadingAllData from "../../../../loadings/LoadingAllData";
+import { createSlug } from "../../../../functions";
 
 const CarouselPart = () => {
   const [width, setWidth] = useState(window.innerWidth);
@@ -108,7 +109,7 @@ const CarouselPart = () => {
       <div className="carousel-part__grid">
         {carouselPartArr?.map((e) => (
           <NavLink
-            to={`category/${"c" + '-id-' + e.itemLink}`}
+            to={`category/${createSlug(e.itemName)}/${e.itemLink}`}
             key={e._id}
             className="carousel-part__card"
             id={e._id}

@@ -131,7 +131,7 @@ const ProductCard = ({
                     </div>
 
                     <div className="vns-product-actions">
-                        <Link to={`/product/${createSlug(item.itemName).split(" ").join('-').split('/').join('-') + "-id-" + item._id}`} className="vns-product-detail-btn">
+                        <Link to={`/product/${createSlug(item.itemName)}/${item._id}`} className="vns-product-detail-btn">
                             Ətraflı bax
                         </Link>
 

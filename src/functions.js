@@ -125,6 +125,7 @@ export const deleteItem = (item) => {
 
 export const createSlug = (text) => {
     return text
+        .split(" ").join('-').split('/').join('-')
         .toLowerCase()
         .trim()
         .replaceAll("ə", "e")

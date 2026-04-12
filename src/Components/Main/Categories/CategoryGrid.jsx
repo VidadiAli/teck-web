@@ -71,7 +71,7 @@ const CategoryGrid = ({
 
         <NavLink
           className="category-link"
-          to={`/category/${createSlug(product?.categoryName).split(" ").join('-') + '-id-' + product?.categoryId}`}
+          to={`/category/${createSlug(product?.categoryName)}/${product?.categoryId}`}
         >
           Daha çox
         </NavLink>

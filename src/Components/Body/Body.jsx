@@ -60,7 +60,7 @@ const Body = ({
           profileInfo={profileInfo} />} />
 
         <Route
-          path="/category/:categoryId"
+          path="/category/:slug/:categoryId"
           element={<CategoryElements
             likeds={likeds} setLikeds={setLikeds}
             setResponse={setResponse}
@@ -71,7 +71,7 @@ const Body = ({
         <Route path='/likeds' element={<Liked />} />
 
         <Route
-          path="/product/:productId"
+          path="/product/:slug/:productId"
           element={
             <CategoryItem
               setResponse={setResponse}

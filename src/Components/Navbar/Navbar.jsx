@@ -195,7 +195,7 @@ const Navbar = ({
           <li key={cat._id} className="categories__name">
             <NavLink
               className="categories__name_link"
-              to={`/category/${createSlug(cat.name).split(" ").join('-') + '-id-' + cat._id}`}
+              to={`/category/${createSlug(cat?.name)}/${cat?._id}`}
               onClick={() => setMenuOpen(false)}
             >
               {cat.name}
