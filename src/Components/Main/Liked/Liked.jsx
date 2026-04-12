@@ -6,6 +6,7 @@ import './Liked.css';
 import LoadingAllData from '../../../loadings/LoadingAllData';
 import LoadingMore from '../../../../../teck-seller/src/loadings/LoadingMore';
 import { Helmet } from "react-helmet-async";
+import { createSlug } from '../../../functions';
 
 const Liked = () => {
     const [allLoading, setAllLoading] = useState(false)
@@ -118,7 +119,7 @@ const Liked = () => {
                                                     </div>
 
                                                     <NavLink
-                                                        to={`/product/${product?._id}`}
+                                                        to={`/product/${createSlug(product?.itemName)}/${product?._id}`}
                                                         className="tvef-liked-detail-btn"
                                                     >
                                                         Ətraflı bax
