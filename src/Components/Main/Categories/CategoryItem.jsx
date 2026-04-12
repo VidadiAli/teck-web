@@ -14,8 +14,9 @@ import { percentage } from "../../Data/DataFile";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import { addToBasket, callLocalBasket } from "../../../functions";
 import { Helmet } from "react-helmet-async";
+import ProductCard from "../PageLayout/ProductCard";
 
-const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForNav }) => {
+const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForNav, likeds, setLikeds }) => {
   const { productId } = useParams();
   const [month, setMonth] = useState(2);
   const [percentageValue, setPercentageValue] = useState(3)
@@ -30,15 +31,22 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
   const [imgsList, setImgsList] = useState([]);
   const [colors, setColors] = useState([]);
   const [mainColor, setMainColor] = useState('');
-  const [productDetails, setProductDetails] = useState([])
+  const [productDetails, setProductDetails] = useState([]);
+  const [modelsLikeIt, setModelsLikeIt] = useState([]);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        console.log(productId)
         const res = await api.get(`/customer/getProductById/${productId}`);
         setProduct(res.data);
+        try {
+          const likeProduct = await api.get(`/customer/getProductsByCategory/${res.data?.category?._id}`);
+          console.log(likeProduct.data.products)
+          setModelsLikeIt(likeProduct.data.products);
+        } catch (error) {
+          setError("Məhsula uyğun modellər tapılmadı ❌");
+        }
       } catch (err) {
         setError("Məhsul tapılmadı ❌");
       } finally {
@@ -271,6 +279,27 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
                 })
               }
             </div>
+          </div>
+        </div>
+
+        <div>
+          <h1 style={{marginTop: '50px'}}>Bunlara da bax</h1>
+          <div className="models-grid">
+            {
+              modelsLikeIt.length > 0 && (
+                modelsLikeIt.map((e) => {
+                  return <ProductCard
+                    key={e._id}
+                    item={e}
+                    likeds={likeds}
+                    setLikeds={setLikeds}
+                    setResponse={setResponse}
+                    setBasketValue={setBasketValue}
+                    profileInfo={profileInfo}
+                  />
+                })
+              )
+            }
           </div>
         </div>
 

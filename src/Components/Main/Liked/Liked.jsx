@@ -94,7 +94,7 @@ const Liked = () => {
 
                                                 <div className="tvef-liked-image-box">
                                                     <img
-                                                        src={product?.itemImage}
+                                                        src={product.itemImageList[0].imageUrl}
                                                         alt={product?.itemName}
                                                         className="tvef-liked-image"
                                                     />

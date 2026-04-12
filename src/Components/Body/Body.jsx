@@ -78,6 +78,8 @@ const Body = ({
               setBasketValue={setBasketValue}
               profileInfo={profileInfo}
               categoriesForNav={categoriesForNav}
+              likeds={likeds}
+              setLikeds={setLikeds}
             />
           }
         />
