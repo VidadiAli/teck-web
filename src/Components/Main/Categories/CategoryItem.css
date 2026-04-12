@@ -317,16 +317,22 @@
     scale: 1.1;
 }
 
-.models-grid {
+.models-grid-box {
     width: 80%;
-    margin: 0 auto;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.models-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
 }
 
 @media(max-width: 1300px) {
-    .models-grid {
+    .models-grid-box {
         width: 90%;
     }
 }
@@ -390,9 +396,13 @@
         height: 66px;
     }
 
-    .models-grid {
+    .models-grid-box {
         width: 96%;
+    }
+
+    .models-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 }
 

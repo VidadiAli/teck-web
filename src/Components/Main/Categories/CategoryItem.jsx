@@ -282,8 +282,8 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
           </div>
         </div>
 
-        <div>
-          <h1 style={{marginTop: '50px'}}>Bunlara da bax</h1>
+        <div className="models-grid-box">
+          <h1 className="models-grid-head">Bunlara da bax</h1>
           <div className="models-grid">
             {
               modelsLikeIt.length > 0 && (
