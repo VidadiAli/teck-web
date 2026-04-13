@@ -48,6 +48,7 @@ const CategoryElements = ({
 
   useEffect(() => {
     fetchCategoryProducts("loadingFirst");
+    setProducts([])
   }, [categoryId]);
 
   useEffect(() => {
