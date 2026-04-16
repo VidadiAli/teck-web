@@ -275,7 +275,8 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
                             key == 'guarantee' ? `${value} ay` :
                               key == 'redTime' ? `${value} saniyə` :
                                 key == 'maxdegrie' ? `${value} °C` :
-                                  value == true || value == 'true' ? 'var' : value || '-'}
+                                  key == 'power' ? `${value} W` :
+                                    value == true || value == 'true' ? 'var' : value || '-'}
                         </span>
                       </div>
                     );
