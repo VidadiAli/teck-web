@@ -27,7 +27,8 @@ const Navbar = ({
   const [customerToken, setCustomerToken] = useState('');
   const [closeProfile, setCloseProfile] = useState(false);
   const [pageSize] = useState(10);
-  const [searchText, setSearchText] = useState('')
+  const [searchText, setSearchText] = useState('');
+  const [categoryForThisPage, setCategoryForThisPage] = useState([]);
 
   useEffect(() => {
     const fetchBasketCount = async () => {
@@ -51,7 +52,18 @@ const Navbar = ({
     const fetchCategories = async () => {
       try {
         const resCat = await api.get('/customer/getCategories');
-        setCategoriesForNav(resCat?.data);
+        setCategoryForThisPage(resCat?.data)
+        const cats = resCat?.data?.
+          filter(data => data.categoryChild.length > 0)
+          .map(item => item.categoryChild);
+
+        const merged = [
+          ...(resCat?.data || []),
+          ...(cats || [])
+        ].flat();
+
+        setCategoriesForNav(merged);
+
       } catch (error) {
         console.log("Get categories error:", error);
       }
@@ -196,15 +208,43 @@ const Navbar = ({
       </ul>
 
       <ul className={`categories__name_list ${menuOpen ? "open" : ""}`}>
-        {categoriesForNav?.map((cat) => (
+        {categoryForThisPage?.map((cat) => (
           <li key={cat._id} className="categories__name">
-            <NavLink
-              className="categories__name_link"
-              to={`/category/${createSlug(cat?.name)}/${cat?._id}`}
-              onClick={() => setMenuOpen(false)}
-            >
-              {cat.name}
-            </NavLink>
+            {
+              cat?.categoryChild?.length > 0 ?
+                <NavLink
+                  className="categories__name_link"
+                >
+                  {cat.name}
+                </NavLink> :
+
+                <NavLink
+                  className="categories__name_link"
+                  to={`/category/${createSlug(cat?.name)}/${cat?._id}`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {cat.name}
+                </NavLink>
+            }
+            {
+              cat?.categoryChild?.length > 0 && (
+                <ul className='category__child'>
+                  {
+                    cat?.categoryChild?.map((catChild) => (
+                      <li key={catChild._id} className="categories__name">
+                        <NavLink
+                          className="categories__name_link"
+                          to={`/category/${createSlug(catChild?.name)}/${catChild?._id}`}
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          {catChild.name}
+                        </NavLink>
+                      </li>
+                    ))
+                  }
+                </ul>
+              )
+            }
           </li>
         ))}
       </ul>

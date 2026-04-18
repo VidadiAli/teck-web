@@ -42,7 +42,6 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
         setProduct(res.data);
         try {
           const likeProduct = await api.get(`/customer/getProductsByCategory/${res.data?.category?._id}`);
-          console.log(likeProduct.data.products)
           setModelsLikeIt(likeProduct.data.products);
         } catch (error) {
           setError("Məhsula uyğun modellər tapılmadı ❌");
