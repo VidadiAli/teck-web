@@ -270,7 +270,7 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
                           }
                         </span>
                         <span className="detail-value">
-                          {key == 'weight' ? `${value} qram` :
+                          {key == 'volume' ? `${value} dB` :
                             key == 'guarantee' ? `${value} ay` :
                               key == 'redTime' ? `${value} saniyə` :
                                 key == 'maxdegrie' ? `${value} °C` :
