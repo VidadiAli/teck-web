@@ -235,4 +235,8 @@
     .categories__name_link {
         padding: 5px;
     }
+
+    .category__child {
+        position: static;
+    }
 }
