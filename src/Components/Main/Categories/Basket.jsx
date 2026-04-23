@@ -113,15 +113,14 @@ const BasketPage = ({
   }
 
   const createOrder = async (orderData) => {
-    setCreatingMessage(true)
-    try {
+    setCreatingMessage(true);
 
+    try {
       const item = basket[orderData?.index];
 
       const payload = {
         productId: item._id,
-        productQuantity: item.quantity.toString(),
-        orderStatus: "pending",
+        productQuantity: item.quantity,
         orderType: orderData?.orderType,
         orderLocation: orderData?.orderLocation,
         location: orderData?.location,
@@ -129,47 +128,28 @@ const BasketPage = ({
         percentageValue: orderData?.percentageValue,
       };
 
-      const res = await api.post(
-        "/customer/createOrder",
-        payload
-      );
+      const res = await api.post("/customer/createOrder", payload);
 
       setOrderValue(res?.data?.count);
-      try {
-        await api.patch(`/customer/updateProductStock/${item._id}`,
-          { sellerId: item.sellerId });
 
-        await removeItem(orderData?.productId);
+      setResponse({
+        message: 'Sifariş uğurla yaradıldı',
+        head: 'Uğurlu!',
+        showAlert: true,
+        type: 'success'
+      });
 
-        setResponse({
-          message: 'Sifariş uğurla yaradıldı',
-          head: 'Uğurlu!',
-          api: '',
-          isQuestion: false,
-          showAlert: true,
-          type: 'success'
-        });
+      window.location = "/orders/";
 
-        setCreatingMessage(false)
-        window.location = "/orders/"
-      } catch (error) {
-        setResponse({
-          message: error.response?.data?.message,
-          head: 'Xəta!',
-          showAlert: true,
-          type: 'error'
-        });
-      }
     } catch (error) {
       setResponse({
         message: error.response?.data?.message,
-        head: 'Uğursuz!',
-        api: '',
-        isQuestion: false,
+        head: 'Xəta!',
         showAlert: true,
         type: 'error'
       });
-      setCreatingMessage(false)
+    } finally {
+      setCreatingMessage(false);
     }
   };
 
