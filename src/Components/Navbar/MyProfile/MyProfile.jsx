@@ -24,7 +24,7 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
     const handleLogout = async () => {
         try {
             setLoading(true)
-            const res = await api.post("/customer/logout", {});
+            const res = await api.post("/auth/customer/logout");
             setProfileInfo(null);
             setCloseProfile(null);
             window.location.reload()

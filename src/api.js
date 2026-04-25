@@ -21,7 +21,7 @@ api.interceptors.response.use(
     const isAuthEndpoint =
       originalRequest?.url?.includes("/customer/login") ||
       originalRequest?.url?.includes("/auth/refresh/customer") ||
-      originalRequest?.url?.includes("/customer/logout");
+      originalRequest?.url?.includes("/auth/customer/logout");
 
     if (status === 401 && !originalRequest._retry && !isAuthEndpoint) {
       originalRequest._retry = true;
@@ -43,7 +43,7 @@ api.interceptors.response.use(
         refreshPromise = null;
 
         try {
-          await api.post("/customer/logout");
+          await api.post("/auth/customer/logout");
         } catch (e) {
         }
         return Promise.reject(refreshErr);
