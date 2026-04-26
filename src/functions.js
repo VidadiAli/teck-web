@@ -1,6 +1,14 @@
 import api from "./api"
 
-export const addLikeds = async (id, setLikeds) => {
+export const addLikeds = async (id, setLikeds, profileInfo, item) => {
+    if (!profileInfo) {
+        const localLikeds = localStorage.getItem('localLikeds') ?
+            JSON.parse(localStorage.getItem('localLikeds')) : [];
+        localLikeds.push(item);
+        localStorage.setItem('localLikeds', JSON.stringify(localLikeds));
+        setLikeds([...localLikeds.map(e=>e._id)]);
+        return;
+    }
     try {
         const res = await api.post('/customer/addLikeds', { productId: id })
         const ids = res.data.map(item => item.product)
@@ -10,8 +18,16 @@ export const addLikeds = async (id, setLikeds) => {
     }
 }
 
-export const unLiked = async (id, setLikeds) => {
+export const unLiked = async (id, setLikeds, profileInfo, item) => {
     try {
+        if (!profileInfo) {
+            const localLikeds = localStorage.getItem('localLikeds') ?
+                JSON.parse(localStorage.getItem('localLikeds')) : [];
+            const filteredLikeds = localLikeds.filter(e => e._id != id);
+            localStorage.setItem('localLikeds', JSON.stringify(filteredLikeds));
+            setLikeds([...filteredLikeds.map(e=>e._id)]);
+            return;
+        }
         const res = await api.delete(`/customer/unLiked/${id}`)
         const ids = res.data.map(item => item.product)
         setLikeds([...ids])

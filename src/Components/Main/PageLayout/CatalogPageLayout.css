@@ -42,6 +42,11 @@
     border-top: 1px solid var(--color-border);
 }
 
+.vns-filter {
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+}
+
 .vns-filter-title-row {
     display: flex;
     align-items: center;

@@ -107,7 +107,7 @@ const Main = ({
 
   return (
     <div>
-      <Carousel setLikeds={setLikeds} likeds={likeds} />
+      <Carousel setLikeds={setLikeds} likeds={likeds} profileInfo={profileInfo} />
       <CatalogPageLayout
         categories={categoriesForNav}
         brands={brands}

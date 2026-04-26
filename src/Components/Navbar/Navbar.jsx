@@ -58,7 +58,7 @@ const Navbar = ({
           .map(item => item.categoryChild);
 
         const merged = [
-          ...(resCat?.data || []),
+          ...(resCat?.data.filter(e => e.categoryChild?.length == 0) || []),
           ...(cats || [])
         ].flat();
 

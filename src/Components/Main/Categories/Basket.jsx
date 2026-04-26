@@ -226,8 +226,8 @@ const BasketPage = ({
                   </div>
                   {
                     likeds.includes(item._id) ?
-                      <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
-                      <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
+                      <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds, profileInfo, item)} /> :
+                      <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds, profileInfo, item)} />
                   }
                   <div className="info">
                     <h3>{item.itemName}</h3>

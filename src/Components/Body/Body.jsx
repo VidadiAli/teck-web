@@ -68,7 +68,7 @@ const Body = ({
             profileInfo={profileInfo} />}
         />
 
-        <Route path='/likeds' element={<Liked />} />
+        <Route path='/likeds' element={<Liked profileInfo={profileInfo} setLikeds={setLikeds} />} />
 
         <Route
           path="/product/:slug/:productId"

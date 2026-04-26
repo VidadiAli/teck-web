@@ -6,7 +6,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import LoadingCircle from "../../../Loading/LoadingCircle";
 import { addLikeds, createSlug, unLiked } from "../../../../functions";
 
-const MostSellingPart = ({ setLikeds, likeds }) => {
+const MostSellingPart = ({ setLikeds, likeds, profileInfo }) => {
   const [mainProductsData, setMainProductsData] = useState([]);
   const [loadingFirst, setLoadingFirst] = useState(false)
 
@@ -37,8 +37,8 @@ const MostSellingPart = ({ setLikeds, likeds }) => {
                 <div style={{ padding: '20px 15px', display: 'flex', gap: '10px', flexDirection: 'column', position: 'relative' }}>
                   {
                     likeds.includes(item._id) ?
-                      <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds)} /> :
-                      <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds)} />
+                      <FaHeart className="heart-icon" onClick={() => unLiked(item._id, setLikeds, profileInfo, item)} /> :
+                      <FaRegHeart className="heart-icon" onClick={() => addLikeds(item._id, setLikeds, profileInfo, item)} />
                   }
                   <div className="item-image">
                     <img

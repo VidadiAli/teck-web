@@ -6,9 +6,9 @@ import './Liked.css';
 import LoadingAllData from '../../../loadings/LoadingAllData';
 import LoadingMore from '../../../../../teck-seller/src/loadings/LoadingMore';
 import { Helmet } from "react-helmet-async";
-import { createSlug } from '../../../functions';
+import { createSlug, unLiked } from '../../../functions';
 
-const Liked = () => {
+const Liked = ({ profileInfo, setLikeds }) => {
     const [allLoading, setAllLoading] = useState(false)
     const [loadingMore, setLoadingMore] = useState(false)
     const [likedProducts, setLikedProducts] = useState([]);
@@ -16,32 +16,57 @@ const Liked = () => {
     const [pageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(0)
 
+    const likedesInLocal = () => {
+        const localLikeds = localStorage.getItem('localLikeds') ?
+            JSON.parse(localStorage.getItem('localLikeds')) : [];
+        console.log(localLikeds)
+        const newLocalLikeds = [];
+        localLikeds.forEach((e) => {
+            const product = {
+                product: e
+            }
+            newLocalLikeds.push(product)
+        })
+        setLikedProducts([...newLocalLikeds]);
+    }
     const callLikeds = async (isFirst) => {
-        try {
-            isFirst ? setAllLoading(true) : setLoadingMore(true)
-            const res = await api.get('/customer/getLikedsAsPart', {
-                params: { page, pageSize }
-            });
-            setLikedProducts((prev) => [...prev, ...res.data.data]);
-            setTotalPages(res.data.totalPages)
-        } catch (error) {
-            return null;
+        if (profileInfo) {
+            try {
+                isFirst ? setAllLoading(true) : setLoadingMore(true)
+                const res = await api.get('/customer/getLikedsAsPart', {
+                    params: { page, pageSize }
+                });
+                setLikedProducts((prev) => [...prev, ...res.data.data]);
+                setTotalPages(res.data.totalPages)
+            } catch (error) {
+                return null;
+            }
+            finally {
+                isFirst ? setAllLoading(false) : setLoadingMore(false)
+            }
         }
-        finally {
-            isFirst ? setAllLoading(false) : setLoadingMore(false)
+        else {
+            likedesInLocal()
         }
+
     };
 
-    const unLiked = async (id) => {
-        try {
-            const res = await api.delete(`/customer/unLikedAsPart/${id}`, {
-                params: { page, pageSize }
-            });
+    const unLikedFromPart = async (id, item) => {
+        if (profileInfo) {
+            try {
+                const res = await api.delete(`/customer/unLikedAsPart/${id}`, {
+                    params: { page, pageSize }
+                });
 
-            setLikedProducts(res.data.data);
-            setTotalPages(res.data.totalPages)
-        } catch (error) {
-            console.log(error)
+                setLikedProducts(res.data.data);
+                setTotalPages(res.data.totalPages)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        else {
+            unLiked(id, setLikeds, profileInfo, item);
+            likedesInLocal()
         }
     }
 
@@ -101,7 +126,7 @@ const Liked = () => {
                                                     />
                                                 </div>
 
-                                                <FaHeart className="heart-icon" onClick={() => unLiked(product._id)} />
+                                                <FaHeart className="heart-icon" onClick={() => unLikedFromPart(product._id, product)} />
 
                                                 <div className="tvef-liked-content">
                                                     <p className="tvef-liked-company">{product?.salesCompany}</p>

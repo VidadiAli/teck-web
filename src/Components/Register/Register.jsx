@@ -40,9 +40,12 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
                 password
             });
 
-
             const newData = localStorage.getItem('basketValues')
                 ? JSON.parse(localStorage.getItem('basketValues'))
+                : [];
+
+            const likedsData = localStorage.getItem('localLikeds')
+                ? JSON.parse(localStorage.getItem('localLikeds'))
                 : [];
 
             if (newData.length) {
@@ -53,6 +56,18 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
 
             localStorage.removeItem('basketValues');
 
+            if (likedsData.length) {
+                for (const e of likedsData.map(e => e._id)) {
+                    try {
+                        await api.post('/customer/addLikeds', { productId: e });
+                    } catch (err) {
+                        console.log("Skip edildi:", e, err.response?.data);
+                    }
+                }
+
+                localStorage.removeItem('localLikeds');
+            }
+
             setResponse({
                 showAlert: true,
                 message: 'Heaba daxil oldunuz. Xoş alış-verişlər',
@@ -60,7 +75,7 @@ const Register = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
             });
 
             setShowAuthForm(false);
-            window.location.reload();
+            window.location = '/';
             setLoginSystem(false);
 
         } catch (err) {
