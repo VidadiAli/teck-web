@@ -163,7 +163,7 @@ const CategoryItem = ({ setResponse, setBasketValue, profileInfo, categoriesForN
     <h2 style={{ padding: "40px" }}>Məhsul tapılmadı ❌</h2>
   </>;
 
-  const { itemName, hasDiscount, price } = product;
+  const { itemName, hasDiscount, discountPercent, price } = product;
   return (
     <>
       <Helmet>
