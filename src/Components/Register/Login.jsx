@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import api from "../../api";
 import { addToBasketFromLocal } from "../../functions";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
   const [phone, setPhone] = useState("+994");
@@ -54,7 +55,7 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
         localStorage.removeItem('basketValues');
 
         if (likedsData.length) {
-          for (const e of likedsData.map(e=>e._id)) {
+          for (const e of likedsData.map(e => e._id)) {
             try {
               await api.post('/customer/addLikeds', { productId: e });
             } catch (err) {
@@ -124,6 +125,13 @@ const Login = ({ setCustomerToken, setShowAuthForm, setResponse }) => {
       <button type="submit" disabled={loginSystem}>
         {loginSystem ? "Daxil olunur..." : "Daxil Ol"}
       </button>
+      <NavLink
+        to={'/forgetPassword'}
+        style={{ margin: '10px auto' }}
+        onClick={() => setShowAuthForm(false)}
+      >
+        Şifrəni unutdum
+      </NavLink>
     </form>
   );
 };

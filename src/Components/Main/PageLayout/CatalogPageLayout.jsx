@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CatalogPageLayout.css";
 import ProductRowsSection from "./ProductRowsSection";
 import FilterSidebar from "./FilterSideBar";
+import GmailAlert from "../../Navbar/GmailAlert";
 
 const CatalogPageLayout = ({
     categories = [],
@@ -29,7 +30,8 @@ const CatalogPageLayout = ({
     profileInfo
 }) => {
 
-    const [reversValue, setReverseValue] = useState('')
+    const [reversValue, setReverseValue] = useState('');
+    const [googleAlert, setGoogleAlert] = useState(true);
 
     useEffect(() => {
         if (minPrice != '' || maxPrice != '' || selectedBrand != '' || selectedCategory != '') {
@@ -100,6 +102,9 @@ const CatalogPageLayout = ({
                     />
                 </div>
             </div>
+            {
+              profileInfo &&  !profileInfo?.googleId && googleAlert && <GmailAlert setGoogleAlert={setGoogleAlert} />
+            }
         </div>
     );
 };

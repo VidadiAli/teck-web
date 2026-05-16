@@ -4,12 +4,15 @@ import api from "../../../api";
 import { useState } from "react";
 import { useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import ConnectGoogle from "./ConnectGoogle";
+import { AnimatePresence, motion } from "framer-motion";
 
 const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
     const [updateInfo, setUpdateInfo] = useState(false);
     const [updatePass, setUpdatePass] = useState(false);
     const [loading, setLoading] = useState(false)
     const [newProfileInfo, setNewProfileInfo] = useState(null);
+    const [showGoogleAlert, setShowGoogleAlert] = useState(false);
     const [showPass, setShowPass] = useState({
         forOld: true,
         forNew: true,
@@ -98,7 +101,10 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
     }
 
     useEffect(() => {
-        setNewProfileInfo(profileInfo)
+        setNewProfileInfo(profileInfo);
+        if (!profileInfo?.googleId) {
+            setShowGoogleAlert(true);
+        }
     }, [profileInfo])
 
     if (!profileInfo) return null;
@@ -128,6 +134,78 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
                 </div>
 
                 {
+
+                    <div style={{ marginBottom: '25px' }}>
+                        <AnimatePresence>
+                            {showGoogleAlert && (
+                                <motion.div
+                                    initial={{
+                                        opacity: 0,
+                                        y: -15,
+                                        scale: 0.92,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        y: 0,
+                                        scale: 1,
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        y: -10,
+                                        scale: 0.95,
+                                    }}
+                                    transition={{
+                                        duration: 0.5,
+                                        ease: [0.22, 1, 0.36, 1],
+                                    }}
+                                    style={{
+                                        position: "relative",
+                                        borderRadius: "14px",
+                                    }}
+                                >
+                                    <motion.div
+                                        animate={{
+                                            opacity: [0.4, 0.8, 0.4],
+                                            scale: [1, 1.03, 1],
+                                        }}
+                                        transition={{
+                                            duration: 2,
+                                            repeat: Infinity,
+                                            ease: "easeInOut",
+                                        }}
+                                        style={{
+                                            position: "absolute",
+                                            inset: "-4px",
+                                            borderRadius: "18px",
+                                            background:
+                                                "linear-gradient(90deg, #ff003c, #ff4f81, #ff003c)",
+                                            filter: "blur(14px)",
+                                            zIndex: -1,
+                                        }}
+                                    />
+                                    <motion.div
+                                        animate={{
+                                            y: [0, -2, 0],
+                                        }}
+                                        transition={{
+                                            duration: 2.5,
+                                            repeat: Infinity,
+                                            ease: "easeInOut",
+                                        }}
+                                        style={{
+                                            background: "#fff",
+                                            borderRadius: "14px",
+                                        }}
+                                    >
+                                        <ConnectGoogle />
+                                    </motion.div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                }
+
+                {
                     updateInfo ?
                         <form className="profile-content">
                             <label className="profile-item">
@@ -139,11 +217,35 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
                             </label>
 
                             <label className="profile-item">
-                                <span>Mail</span>
-                                <input
-                                    onChange={(e) => editInfo(e)}
-                                    name="email"
-                                    value={newProfileInfo?.email} />
+                                <span>{newProfileInfo?.googleEmail} </span>
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShowGoogleAlert(true);
+                                    }}
+                                    style={{
+                                        width: "100%",
+                                        padding: "10px 14px",
+                                        border: "1px solid #e5e7eb",
+                                        borderRadius: "10px",
+                                        background: "#fff",
+                                        color: "#374151",
+                                        fontSize: "14px",
+                                        fontWeight: "500",
+                                        cursor: "pointer",
+                                        transition: "all 0.2s ease",
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = "#f9fafb";
+                                        e.currentTarget.style.borderColor = "#d1d5db";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = "#fff";
+                                        e.currentTarget.style.borderColor = "#e5e7eb";
+                                    }}
+                                >
+                                    Mail ünvanını dəyiş
+                                </button>
                             </label>
 
                             <label className="profile-item">
@@ -155,6 +257,15 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
                             </label>
                         </form> :
                         <div className="profile-content">
+                            {
+                                newProfileInfo?.googleId && (<div className="profile-image-wrapper">
+                                    <img
+                                        className="profile-image"
+                                        src={newProfileInfo?.picture}
+                                        alt="Profile"
+                                    />
+                                </div>)
+                            }
                             <div className="profile-item">
                                 <span>Tam Ad</span>
                                 <p>{newProfileInfo?.name}</p>
@@ -162,7 +273,7 @@ const MyProfile = ({ profileInfo, setProfileInfo, setCloseProfile }) => {
 
                             <div className="profile-item">
                                 <span>Mail</span>
-                                <p>{newProfileInfo?.email}</p>
+                                <p>{newProfileInfo?.googleEmail}</p>
                             </div>
 
                             <div className="profile-item">

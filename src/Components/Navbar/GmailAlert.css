@@ -1,0 +1,136 @@
+/* GmailAlert.css */
+
+.gmailAlert {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000000;
+}
+
+.gmailAlert__container,
+.gmailAlert__connecting {
+    width: 100%;
+    max-width: 430px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 28px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.08),
+        0 4px 10px rgba(0, 0, 0, 0.04);
+    animation: gmailAlertFade 0.35s ease;
+}
+
+.gmailAlert__icon {
+    width: 85px;
+    height: 85px;
+    margin: 0 auto 25px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #ff5f57, #ff3b30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    box-shadow: 0 10px 25px rgba(255, 59, 48, 0.3);
+}
+
+.gmailAlert__title {
+    font-size: 31px;
+    font-weight: 700;
+    color: #dce2e9;
+    margin-bottom: 18px;
+    letter-spacing: -0.5px;
+}
+
+.gmailAlert__text {
+    font-size: 16px;
+    line-height: 30px;
+    color: #dde8ff;
+    margin-bottom: 32px;
+}
+
+.gmailAlert__addBtn {
+    width: 100%;
+    border: none;
+    padding: 15px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #ea4335, #d93025);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px rgba(234, 67, 53, 0.25);
+}
+
+.gmailAlert__addBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 25px rgba(234, 67, 53, 0.35);
+}
+
+.gmailAlert__addBtn:active {
+    transform: scale(0.98);
+}
+
+.gmailAlert__laterBtn {
+    margin-top: 18px;
+    border: none;
+    background: transparent;
+    color: #e4ecfe;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.gmailAlert__laterBtn:hover {
+    color: #c9daff;
+}
+
+@keyframes gmailAlertFade {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 500px) {
+
+    .gmailAlert__container,
+    .gmailAlert__connecting {
+        padding: 32px 22px;
+        border-radius: 24px;
+    }
+
+    .gmailAlert__title {
+        font-size: 25px;
+    }
+
+    .gmailAlert__text {
+        font-size: 15px;
+        line-height: 27px;
+    }
+
+    .gmailAlert__icon {
+        width: 75px;
+        height: 75px;
+        font-size: 34px;
+    }
+}

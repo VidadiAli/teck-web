@@ -12,6 +12,7 @@ import Liked from '../Main/Liked/Liked'
 import Footer from '../Footer/Footer'
 import CategoryGrid from '../Main/Categories/CategoryGrid'
 import { useState } from 'react'
+import ForgetPassword from '../Register/ForgetPassword'
 
 const Body = ({
   response, setResponse,
@@ -29,6 +30,9 @@ const Body = ({
   searchLoading,
   setSearchLoading
 }) => {
+
+  const [showAuthForm, setShowAuthForm] = useState(false);
+
   return (
     <div style={{ padding: '0px' }}>
       <Navbar
@@ -49,6 +53,8 @@ const Body = ({
         searchPage={searchPage}
         setSearchPage={setSearchPage}
         setSearchLoading={setSearchLoading}
+        showAuthForm={showAuthForm}
+        setShowAuthForm={setShowAuthForm}
       />
 
       <Routes>
@@ -112,6 +118,10 @@ const Body = ({
           setBasketValue={setBasketValue}
           profileInfo={profileInfo} />}
         />
+
+        <Route path='/forgetPassword' element={<ForgetPassword
+          showAuthForm={showAuthForm} setShowAuthForm={setShowAuthForm}
+        />} />
 
       </Routes>
 

@@ -21,9 +21,9 @@ const Navbar = ({
   closeSearch, setCloseSearch,
   setResponse, setTotalSearchPages,
   searchPage, setSearchPage,
-  setSearchLoading }) => {
+  setSearchLoading,
+  showAuthForm, setShowAuthForm }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showAuthForm, setShowAuthForm] = useState(false);
   const [customerToken, setCustomerToken] = useState('');
   const [closeProfile, setCloseProfile] = useState(false);
   const [pageSize] = useState(10);

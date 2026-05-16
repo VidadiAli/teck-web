@@ -24,6 +24,27 @@
     animation: slideIn 0.3s ease forwards;
 }
 
+.profile-image-wrapper {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, #ff3b3b, #ff6b6b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(255, 59, 59, 0.25);
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #fff;
+}
+
 @keyframes slideIn {
     from {
         transform: translateX(100%);
